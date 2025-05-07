@@ -4,34 +4,35 @@ on:
   push:
     branches:
       - main
-      - 'feature/**'
+      - release-*
     paths-ignore: [ '**.md' ]
+    tags:
+      - v*
   pull_request:
     branches:
       - main
-      - 'feature/**'
+      - release-*
     paths-ignore: [ '**.md' ]
 
 env:
   solution: Microsoft.DurableTask.sln
   config: release
+  NUPKG_OUTDIR: bin/Release/nugets
 
 jobs:
   build:
-    runs-on: windows-latest
-
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      
+    - name: Parse release version
+      run: python ./.github/scripts/get_release_version.py
 
     - name: Setup .NET 6.0
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '6.0.x'
-
-    - name: Setup .NET from global.json
-      uses: actions/setup-dotnet@v3
-      with:
-        global-json-file: global.json
+        dotnet-quality: 'ga'
 
     - name: Restore dependencies
       run: dotnet restore $env:solution
@@ -39,14 +40,120 @@ jobs:
     - name: Build
       run: dotnet build $env:solution --configuration $env:config --no-restore -p:FileVersionRevision=$env:GITHUB_RUN_NUMBER
 
-    - name: Test
-      run: dotnet test $env:solution --configuration $env:config --no-build --verbosity normal
-
     - name: Pack
       run: dotnet pack $env:solution --configuration $env:config --no-build
 
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
-        name: pkg
-        path: out/pkg
+        name: packages
+        path: ${{ env.NUPKG_OUTDIR }}
+  test:
+    name: Test - .NET ${{ matrix.dotnet-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dotnet-version: ['6.0', '7.0', '8.0', '9.0']
+        include:
+          - dotnet-version: '6.0'
+            display-name: '.NET 6.0'
+            framework: 'net6'
+            prefix: 'net6'
+            install-version: '6.0.x'
+          - dotnet-version: '7.0'
+            display-name: '.NET 7.0'
+            framework: 'net7'
+            prefix: 'net7'
+            install-version: '7.0.x'
+          - dotnet-version: '8.0'
+            display-name: '.NET 8.0'
+            framework: 'net8'
+            prefix: 'net8'
+            install-version: '8.0.x'
+          - dotnet-version: '9.0'
+            display-name: '.NET 9.0'
+            framework: 'net9'
+            prefix: 'net9'
+            install-version: '9.0.x'
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup ${{ matrix.display-name }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.install-version }}
+          dotnet-quality: 'ga' # Prefer a GA release, but use RC if not available
+      - name: Setup .NET 8 (required)
+        uses: actions/setup-dotnet@v3
+        if: ${{ matrix.install-version != '8.0.x' }}
+        with:
+          dotnet-version: '8.0.x'
+          dotnet-quality: 'ga'
+      - name: Setup .NET 9 (required)
+        uses: actions/setup-dotnet@v3
+        if: ${{ matrix.install-version != '9.0.x' }}
+        with:
+          dotnet-version: '9.0.x'
+          dotnet-quality: 'ga'
+      - name: Build
+        # disable deterministic builds, just for test run. Deterministic builds break coverage for some reason
+        run: dotnet build $env:solution --configuration $env:config --no-restore /p:GITHUB_ACTIONS=false
+      - name: Test
+        continue-on-error: true # proceed if tests fail to allow for the report generation in main or next step failure in PR
+        run: dotnet test $env:solution --configuration $env:config --no-build --no-restore --logger "trx;LogFilePrefix=${{ matrix.prefix}}" --logger "GitHubActions;report-warnings=false" --results-directory "${{ github.workspace }}/TestResults" --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:GITHUB_ACTIONS=false
+      - name: Check test failure in PR
+        if: github.event_name == 'pull_request' && steps.tests.outcome != 'success'
+        run: exit 1
+      - name: Upload test coverage
+        uses: codecov/codecov-action@v1
+        with:
+          flags: ${{ matrix.framework }}
+      - name: Parse Trx files
+        uses: NasAmin/trx-parser@v0.2.0
+        id: trx-parser
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository # does not work on PRs from forks
+        with:
+          TRX_PATH: ${{ github.workspace }}/TestResults
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+  publish:
+    name: Publish Packages
+    needs: ['build', 'test']
+    runs-on: ubuntu-latest
+    if: startswith(github.ref, 'refs/tags/v') && !(endsWith(github.ref, '-rc') || endsWith(github.ref, '-dev') || endsWith(github.ref, '-prerelease'))
+    steps:
+      - name: Download release artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: packages
+          path: packages
+      - name: List packages (for sanity checks)
+        run: ls -R
+        working-directory: packages
+# Re-enable the following step once dapr/durabletask-dotnet secrets the org-level DAPR_BOT_TOKEN secret
+#      - name: Publish binaries to GitHub for tags
+#        if: startswith(github.ref, 'refs/tags/v')
+#        run: |
+#          sudo npm install --silent --no-progress -g github-release-cli@1.3.1
+#
+#          # Parse repository to get owner and repo names
+#          OWNER_NAME="${GITHUB_REPOSITORY%%/*}"
+#          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+#
+#          # Get the list of files
+#          RELEASE_ARTIFACT=(./packages/*)
+#
+#          export GITHUB_TOKEN=${{ secrets.DAPR_BOT_TOKEN }}
+#          echo "Uploading Nuget packages to GitHub Release"
+#          github-release upload \
+#            --owner $OWNER_NAME \
+#            --repo $REPO_NAME \
+#            --body "Release dapr dotnet SDK v${REL_VERSION}" \
+#            --tag "v${REL_VERSION}" \
+#            --name "Dapr dotnet SDK v${REL_VERSION}" \
+#            --prerelease true \
+#            ${RELEASE_ARTIFACT[*]}
+      - name: Publish nuget packages to nuget.org
+        if: startswith(github.ref, 'refs/tags/v') && !(endsWith(github.ref, '-rc') || endsWith(github.ref, '-dev') || endsWith(github.ref, '-prerelease'))
+        run: |
+          dotnet nuget push "./packages/Dapr*.nupkg" --skip-duplicate --api-key ${{ secrets.NUGETORG_DAPR_API_KEY }} --source https://api.nuget.org/v3/index.json
