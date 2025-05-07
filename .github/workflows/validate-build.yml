@@ -73,7 +73,6 @@ jobs:
             path: './test/Worker/Grpc.Tests/Worker.Grpc.Tests.csproj'
             projectName: 'Worker.Grpc.Tests.csproj'
     steps:
-      - 
       - uses: actions/checkout@v1
         
       - name: Setup ${{ matrix.display-name }}
