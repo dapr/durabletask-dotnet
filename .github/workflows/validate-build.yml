@@ -53,7 +53,7 @@ jobs:
         name: packages
         path: ${{ env.NUPKG_OUTDIR }}
   test:
-    name: Test - .NET ${{ matrix.dotnet-version }}
+    name: Test - .NET ${{ matrix.dotnet-version }} - ${{ matrix.projectName }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -68,10 +68,10 @@ jobs:
             install-version: '6.0.x'
           - project: 'Client'
             path: './test/Client/Grpc.Tests/Client.Grpc.Tests.csproj'
-            displayName: 'Client.Grpc.Tests.csproj'
+            projectName: 'Client.Grpc.Tests.csproj'
           - project: 'Worker'
             path: './test/Worker/Grpc.Tests/Worker.Grpc.Tests.csproj'
-            displayName: 'Worker.Grpc.Tests.csproj'
+            projectName: 'Worker.Grpc.Tests.csproj'
     steps:
       - 
       - uses: actions/checkout@v1
@@ -86,7 +86,7 @@ jobs:
 #        # disable deterministic builds, just for test run. Deterministic builds break coverage for some reason
 #        run: dotnet build --configuration Release --framework ${{ matrix.framework }} /p:GITHUB_ACTIONS=false
         
-      - name: Test ${{ matrix.displayName }}
+      - name: Test
         continue-on-error: true # proceed if tests fail to allow for the report generation in main or next step failure in PR
         run: dotnet test ${{ matrix.path }} --configuration Release --logger "trx;LogFilePrefix=${{ matrix.prefix }}" --logger "GitHubActions;report-warnings=false" --results-directory "${{ github.workspace }}/TestResults" --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:GITHUB_ACTIONS=false
       
