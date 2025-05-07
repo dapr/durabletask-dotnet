@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageDescription>Abstractions for the Durable Task Framework.</PackageDescription>
     <EnableStyleCop>true</EnableStyleCop>
   </PropertyGroup>
