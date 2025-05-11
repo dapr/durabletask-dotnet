@@ -47,8 +47,22 @@ public static class Greeting
     }
 
 
-    public record Input(string Name, int Age)
+    public record Input
     {
+        public Input(string Name, int Age)
+        {
+            this.Name = Name;
+            this.Age = Age;
+        }
+
         public string? CustomMessage { get; init; }
+        public string Name { get; init; }
+        public int Age { get; init; }
+
+        public void Deconstruct(out string Name, out int Age)
+        {
+            Name = this.Name;
+            Age = this.Age;
+        }
     }
 }

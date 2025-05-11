@@ -102,10 +102,21 @@ public static class DurableTaskSchedulerWorkerExtensions
     /// Configuration class that sets up gRPC channels for worker options
     /// using the provided Durable Task Scheduler options.
     /// </summary>
-    /// <param name="schedulerOptions">Monitor for accessing the current scheduler options configuration.</param>
-    class ConfigureGrpcChannel(IOptionsMonitor<DurableTaskSchedulerWorkerOptions> schedulerOptions) :
+    class ConfigureGrpcChannel :
         IConfigureNamedOptions<GrpcDurableTaskWorkerOptions>
     {
+        IOptionsMonitor<DurableTaskSchedulerWorkerOptions> _schedulerOptions;
+
+        /// <summary>
+        /// Configuration class that sets up gRPC channels for worker options
+        /// using the provided Durable Task Scheduler options.
+        /// </summary>
+        /// <param name="schedulerOptions">Monitor for accessing the current scheduler options configuration.</param>
+        public ConfigureGrpcChannel(IOptionsMonitor<DurableTaskSchedulerWorkerOptions> schedulerOptions)
+        {
+            this._schedulerOptions = schedulerOptions;
+        }
+
         /// <summary>
         /// Configures the default named options instance.
         /// </summary>
@@ -119,7 +130,7 @@ public static class DurableTaskSchedulerWorkerExtensions
         /// <param name="options">The options instance to configure.</param>
         public void Configure(string? name, GrpcDurableTaskWorkerOptions options)
         {
-            DurableTaskSchedulerWorkerOptions source = schedulerOptions.Get(name ?? Options.DefaultName);
+            DurableTaskSchedulerWorkerOptions source = this._schedulerOptions.Get(name ?? Options.DefaultName);
             options.Channel = source.CreateChannel();
             options.ConfigureForAzureManaged();
         }

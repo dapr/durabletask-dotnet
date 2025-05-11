@@ -14,9 +14,8 @@ namespace Microsoft.DurableTask.Client.Entities;
 /// <remarks>
 /// Initializes a new instance of the <see cref="EntityMetadata{TState}"/> class.
 /// </remarks>
-/// <param name="id">The ID of the entity.</param>
 [JsonConverter(typeof(EntityMetadataConverter))]
-public class EntityMetadata<TState>(EntityInstanceId id)
+public class EntityMetadata<TState>
 {
     readonly TState? state;
 
@@ -33,9 +32,22 @@ public class EntityMetadata<TState>(EntityInstanceId id)
     }
 
     /// <summary>
+    /// Represents entity metadata.
+    /// </summary>
+    /// <typeparam name="TState">The type of state held by the metadata.</typeparam>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="EntityMetadata{TState}"/> class.
+    /// </remarks>
+    /// <param name="id">The ID of the entity.</param>
+    public EntityMetadata(EntityInstanceId id)
+    {
+        this.Id = Check.NotDefault(id);
+    }
+
+    /// <summary>
     /// Gets the ID for this entity.
     /// </summary>
-    public EntityInstanceId Id { get; } = Check.NotDefault(id);
+    public EntityInstanceId Id { get; }
 
     /// <summary>
     /// Gets the time the entity was last modified.
@@ -93,10 +105,18 @@ public class EntityMetadata<TState>(EntityInstanceId id)
 /// <remarks>
 /// Initializes a new instance of the <see cref="EntityMetadata"/> class.
 /// </remarks>
-/// <param name="id">The ID of the entity.</param>
-/// <param name="state">The state of this entity.</param>
 [JsonConverter(typeof(EntityMetadataConverter))]
-public sealed class EntityMetadata(EntityInstanceId id, SerializedData? state = null)
-    : EntityMetadata<SerializedData>(id, state)
+public sealed class EntityMetadata : EntityMetadata<SerializedData>
 {
+    /// <summary>
+    /// Represents the metadata for a durable entity instance.
+    /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="EntityMetadata"/> class.
+    /// </remarks>
+    /// <param name="id">The ID of the entity.</param>
+    /// <param name="state">The state of this entity.</param>
+    public EntityMetadata(EntityInstanceId id, SerializedData? state = null) : base(id, state)
+    {
+    }
 }

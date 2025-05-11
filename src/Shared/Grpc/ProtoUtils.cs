@@ -530,7 +530,7 @@ static class ProtoUtils
         {
             EntityState = entityRequest.EntityState,
             InstanceId = entityRequest.InstanceId,
-            Operations = [], // operations are added to this collection below
+            Operations = new List<OperationRequest> { }, // operations are added to this collection below
         };
 
         operationInfos = new(entityRequest.OperationRequests.Count);
@@ -788,10 +788,14 @@ static class ProtoUtils
         {
             EntityState = entityBatchResult.EntityState,
             FailureDetails = entityBatchResult.FailureDetails.ToProtobuf(),
-            Actions = { entityBatchResult.Actions?.Select(a => a.ToOperationAction()) ?? [] },
-            Results = { entityBatchResult.Results?.Select(a => a.ToOperationResult()) ?? [] },
+            Actions = { entityBatchResult.Actions?.Select(a => a.ToOperationAction()) ??
+                        new List<P.OperationAction> { }.AsReadOnly()
+            },
+            Results = { entityBatchResult.Results?.Select(a => a.ToOperationResult()) ??
+                        new List<P.OperationResult> { }.AsReadOnly()
+            },
             CompletionToken = completionToken ?? string.Empty,
-            OperationInfos = { operationInfos ?? [] },
+            OperationInfos = { operationInfos ?? new List<P.OperationInfo> { }.AsReadOnly() },
         };
     }
 

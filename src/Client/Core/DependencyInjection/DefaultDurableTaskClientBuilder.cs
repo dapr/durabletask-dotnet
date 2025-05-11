@@ -12,17 +12,29 @@ namespace Microsoft.DurableTask.Client;
 /// <remarks>
 /// Initializes a new instance of the <see cref="DefaultDurableTaskClientBuilder"/> class.
 /// </remarks>
-/// <param name="name">The name of the builder.</param>
-/// <param name="services">The service collection.</param>
-public class DefaultDurableTaskClientBuilder(string? name, IServiceCollection services) : IDurableTaskClientBuilder
+public class DefaultDurableTaskClientBuilder : IDurableTaskClientBuilder
 {
     Type? buildTarget;
 
-    /// <inheritdoc/>
-    public string Name { get; } = name ?? Options.DefaultName;
+    /// <summary>
+    /// Default builder for <see cref="IDurableTaskClientBuilder" />.
+    /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="DefaultDurableTaskClientBuilder"/> class.
+    /// </remarks>
+    /// <param name="name">The name of the builder.</param>
+    /// <param name="services">The service collection.</param>
+    public DefaultDurableTaskClientBuilder(string? name, IServiceCollection services)
+    {
+        this.Name = name ?? Options.DefaultName;
+        this.Services = services;
+    }
 
     /// <inheritdoc/>
-    public IServiceCollection Services { get; } = services;
+    public string Name { get; }
+
+    /// <inheritdoc/>
+    public IServiceCollection Services { get; }
 
     /// <inheritdoc/>
     public Type? BuildTarget

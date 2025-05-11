@@ -11,19 +11,31 @@ namespace Microsoft.DurableTask.Client;
 /// <remarks>
 /// Initializes a new instance of the <see cref="SerializedData"/> class.
 /// </remarks>
-/// <param name="data">The serialized data.</param>
-/// <param name="converter">The data converter.</param>
-public sealed class SerializedData(string data, DataConverter? converter = null)
+public sealed class SerializedData
 {
+    /// <summary>
+    /// Gets a type representing serialized data.
+    /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="SerializedData"/> class.
+    /// </remarks>
+    /// <param name="data">The serialized data.</param>
+    /// <param name="converter">The data converter.</param>
+    public SerializedData(string data, DataConverter? converter = null)
+    {
+        this.Value = Check.NotNull(data);
+        this.Converter = converter ?? JsonDataConverter.Default;
+    }
+
     /// <summary>
     /// Gets the serialized value.
     /// </summary>
-    public string Value { get; } = Check.NotNull(data);
+    public string Value { get; }
 
     /// <summary>
     /// Gets the data converter.
     /// </summary>
-    public DataConverter Converter { get; } = converter ?? JsonDataConverter.Default;
+    public DataConverter Converter { get; }
 
     /// <summary>
     /// Deserializes the data into <typeparamref name="T"/>.

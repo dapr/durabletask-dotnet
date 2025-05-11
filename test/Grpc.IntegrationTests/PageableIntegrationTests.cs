@@ -64,5 +64,21 @@ public class PageableIntegrationTests : IntegrationTestBase
         return await pageable.CountAsync();
     }
 
-    record PageRequest(string? Continuation, int? PageSize = null);
+    record PageRequest
+    {
+        public PageRequest(string? Continuation, int? PageSize = null)
+        {
+            this.Continuation = Continuation;
+            this.PageSize = PageSize;
+        }
+
+        public string? Continuation { get; init; }
+        public int? PageSize { get; init; }
+
+        public void Deconstruct(out string? Continuation, out int? PageSize)
+        {
+            Continuation = this.Continuation;
+            PageSize = this.PageSize;
+        }
+    }
 }

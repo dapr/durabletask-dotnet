@@ -12,9 +12,41 @@ using Microsoft.Extensions.Logging;
 
 namespace AzureFunctionsApp.Entities;
 
-public record User(string Name, int Age);
+public record User
+{
+    public User(string Name, int Age)
+    {
+        this.Name = Name;
+        this.Age = Age;
+    }
 
-public record UserUpdate(string? Name, int? Age);
+    public string Name { get; init; }
+    public int Age { get; init; }
+
+    public void Deconstruct(out string Name, out int Age)
+    {
+        Name = this.Name;
+        Age = this.Age;
+    }
+}
+
+public record UserUpdate
+{
+    public UserUpdate(string? Name, int? Age)
+    {
+        this.Name = Name;
+        this.Age = Age;
+    }
+
+    public string? Name { get; init; }
+    public int? Age { get; init; }
+
+    public void Deconstruct(out string? Name, out int? Age)
+    {
+        Name = this.Name;
+        Age = this.Age;
+    }
+}
 
 /// <summary>
 /// This sample demonstrates how to bind to <see cref="TaskEntityContext"/> as well as dispatch to orchestrations.

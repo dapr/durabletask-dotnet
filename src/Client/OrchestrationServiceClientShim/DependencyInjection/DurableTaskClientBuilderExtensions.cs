@@ -72,12 +72,19 @@ public static class DurableTaskClientBuilderExtensions
             ?? services.GetService<IOrchestrationService>() as IEntityOrchestrationService;
     }
 
-    class OptionsConfigure(IServiceProvider services) : IPostConfigureOptions<ShimDurableTaskClientOptions>
+    class OptionsConfigure : IPostConfigureOptions<ShimDurableTaskClientOptions>
     {
+        readonly IServiceProvider _services;
+
+        public OptionsConfigure(IServiceProvider services)
+        {
+            this._services = services;
+        }
+
         public void PostConfigure(string name, ShimDurableTaskClientOptions options)
         {
-            ConfigureClient(services, options);
-            ConfigureEntities(name, services, options); // Must be called after ConfigureClient.
+            ConfigureClient(this._services, options);
+            ConfigureEntities(name, this._services, options); // Must be called after ConfigureClient.
         }
 
         static void ConfigureClient(IServiceProvider services, ShimDurableTaskClientOptions options)

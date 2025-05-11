@@ -14,10 +14,23 @@ namespace Microsoft.DurableTask.ScheduledTasks;
 /// handling operations like creation, updates, pausing/resuming, and executing the task
 /// according to the defined schedule.
 /// </remarks>
-/// <param name="logger">Logger for recording schedule operations and events.</param>
-class Schedule(ILogger<Schedule> logger) : TaskEntity<ScheduleState>
+class Schedule : TaskEntity<ScheduleState>
 {
-    readonly ILogger<Schedule> logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    readonly ILogger<Schedule> logger;
+
+    /// <summary>
+    /// Entity that manages the state and execution of a scheduled task.
+    /// </summary>
+    /// <remarks>
+    /// The Schedule entity maintains the configuration and state of a scheduled task,
+    /// handling operations like creation, updates, pausing/resuming, and executing the task
+    /// according to the defined schedule.
+    /// </remarks>
+    /// <param name="logger">Logger for recording schedule operations and events.</param>
+    public Schedule(ILogger<Schedule> logger)
+    {
+        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
 
     /// <summary>
     /// Creates a new schedule with the specified configuration. If already exists, update it in place.

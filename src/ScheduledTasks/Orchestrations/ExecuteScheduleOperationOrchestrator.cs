@@ -25,7 +25,34 @@ public class ExecuteScheduleOperationOrchestrator : TaskOrchestrator<ScheduleOpe
 /// <summary>
 /// Request for executing a schedule operation.
 /// </summary>
-/// <param name="EntityId">The ID of the entity to execute the operation on.</param>
-/// <param name="OperationName">The name of the operation to execute.</param>
-/// <param name="Input">Optional input for the operation.</param>
-public record ScheduleOperationRequest(EntityInstanceId EntityId, string OperationName, object? Input = null);
+public record ScheduleOperationRequest
+{
+    /// <summary>
+    /// Request for executing a schedule operation.
+    /// </summary>
+    /// <param name="EntityId">The ID of the entity to execute the operation on.</param>
+    /// <param name="OperationName">The name of the operation to execute.</param>
+    /// <param name="Input">Optional input for the operation.</param>
+    public ScheduleOperationRequest(EntityInstanceId EntityId, string OperationName, object? Input = null)
+    {
+        this.EntityId = EntityId;
+        this.OperationName = OperationName;
+        this.Input = Input;
+    }
+
+    /// <summary>The ID of the entity to execute the operation on.</summary>
+    public EntityInstanceId EntityId { get; init; }
+
+    /// <summary>The name of the operation to execute.</summary>
+    public string OperationName { get; init; }
+
+    /// <summary>Optional input for the operation.</summary>
+    public object? Input { get; init; }
+
+    public void Deconstruct(out EntityInstanceId EntityId, out string OperationName, out object? Input)
+    {
+        EntityId = this.EntityId;
+        OperationName = this.OperationName;
+        Input = this.Input;
+    }
+}

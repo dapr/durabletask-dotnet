@@ -95,17 +95,43 @@ public record SubOrchestrationOptions : TaskOptions
 /// <summary>
 /// Options for submitting new orchestrations via the client.
 /// </summary>
-/// <param name="InstanceId">
-/// The unique ID of the orchestration instance to schedule. If not specified, a new GUID value is used.
-/// </param>
-/// <param name="StartAt">
-/// The time when the orchestration instance should start executing. If not specified or if a date-time in the past
-/// is specified, the orchestration instance will be scheduled immediately.
-/// </param>
-public record StartOrchestrationOptions(string? InstanceId = null, DateTimeOffset? StartAt = null)
+public record StartOrchestrationOptions
 {
+    /// <summary>
+    /// Options for submitting new orchestrations via the client.
+    /// </summary>
+    /// <param name="InstanceId">
+    /// The unique ID of the orchestration instance to schedule. If not specified, a new GUID value is used.
+    /// </param>
+    /// <param name="StartAt">
+    /// The time when the orchestration instance should start executing. If not specified or if a date-time in the past
+    /// is specified, the orchestration instance will be scheduled immediately.
+    /// </param>
+    public StartOrchestrationOptions(string? InstanceId = null, DateTimeOffset? StartAt = null)
+    {
+        this.InstanceId = InstanceId;
+        this.StartAt = StartAt;
+    }
+
     /// <summary>
     /// Gets the tags to associate with the orchestration instance.
     /// </summary>
     public IReadOnlyDictionary<string, string> Tags { get; init; } = ImmutableDictionary.Create<string, string>();
+
+    /// <summary>
+    /// The unique ID of the orchestration instance to schedule. If not specified, a new GUID value is used.
+    /// </summary>
+    public string? InstanceId { get; init; }
+
+    /// <summary>
+    /// The time when the orchestration instance should start executing. If not specified or if a date-time in the past
+    /// is specified, the orchestration instance will be scheduled immediately.
+    /// </summary>
+    public DateTimeOffset? StartAt { get; init; }
+
+    public void Deconstruct(out string? InstanceId, out DateTimeOffset? StartAt)
+    {
+        InstanceId = this.InstanceId;
+        StartAt = this.StartAt;
+    }
 }

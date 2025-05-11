@@ -286,7 +286,8 @@ public class MethodProbeOrchestrationVisitor : OrchestrationVisitor
         Action<Diagnostic> reportDiagnostic)
     {
         // add the visited method to the list of orchestrations
-        ConcurrentBag<string> orchestrations = this.orchestrationsByMethod.GetOrAdd(callerSymbol, []);
+        ConcurrentBag<string> orchestrations = this.orchestrationsByMethod.GetOrAdd(callerSymbol,
+            new ConcurrentBag<string> { });
         if (orchestrations.Contains(rootOrchestration))
         {
             // previously tracked method, leave to avoid infinite recursion

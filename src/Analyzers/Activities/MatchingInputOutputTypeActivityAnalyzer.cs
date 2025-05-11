@@ -76,7 +76,7 @@ public class MatchingInputOutputTypeActivityAnalyzer : DiagnosticAnalyzer
             INamedTypeSymbol voidSymbol = context.Compilation.GetSpecialType(SpecialType.System_Void);
 
             // Search for Activity invocations
-            ConcurrentBag<ActivityInvocation> invocations = [];
+            ConcurrentBag<ActivityInvocation> invocations = new() { };
             context.RegisterOperationAction(
                 ctx =>
                 {
@@ -132,7 +132,7 @@ public class MatchingInputOutputTypeActivityAnalyzer : DiagnosticAnalyzer
                 OperationKind.Invocation);
 
             // Search for Durable Functions Activities definitions
-            ConcurrentBag<ActivityDefinition> activities = [];
+            ConcurrentBag<ActivityDefinition> activities = new() { };
             context.RegisterSymbolAction(
                 ctx =>
                 {

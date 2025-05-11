@@ -11,13 +11,36 @@ namespace Microsoft.DurableTask;
 /// <summary>
 /// Record that represents the details of a task failure.
 /// </summary>
-/// <param name="ErrorType">The error type. For .NET, this is the namespace-qualified exception type name.</param>
-/// <param name="ErrorMessage">A summary description of the failure.</param>
-/// <param name="StackTrace">The stack trace of the failure.</param>
-/// <param name="InnerFailure">The inner cause of the task failure.</param>
-public record TaskFailureDetails(string ErrorType, string ErrorMessage, string? StackTrace, TaskFailureDetails? InnerFailure)
+public record TaskFailureDetails
 {
     Type? loadedExceptionType;
+
+    /// <summary>
+    /// Record that represents the details of a task failure.
+    /// </summary>
+    /// <param name="ErrorType">The error type. For .NET, this is the namespace-qualified exception type name.</param>
+    /// <param name="ErrorMessage">A summary description of the failure.</param>
+    /// <param name="StackTrace">The stack trace of the failure.</param>
+    /// <param name="InnerFailure">The inner cause of the task failure.</param>
+    public TaskFailureDetails(string ErrorType, string ErrorMessage, string? StackTrace, TaskFailureDetails? InnerFailure)
+    {
+        this.ErrorType = ErrorType;
+        this.ErrorMessage = ErrorMessage;
+        this.StackTrace = StackTrace;
+        this.InnerFailure = InnerFailure;
+    }
+
+    /// <summary>The error type. For .NET, this is the namespace-qualified exception type name.</summary>
+    public string ErrorType { get; init; }
+
+    /// <summary>A summary description of the failure.</summary>
+    public string ErrorMessage { get; init; }
+
+    /// <summary>The stack trace of the failure.</summary>
+    public string? StackTrace { get; init; }
+
+    /// <summary>The inner cause of the task failure.</summary>
+    public TaskFailureDetails? InnerFailure { get; init; }
 
     /// <summary>
     /// Gets a debug-friendly description of the failure information.
@@ -182,5 +205,13 @@ public record TaskFailureDetails(string ErrorType, string ErrorMessage, string? 
             coreFailureDetails.ErrorMessage,
             coreFailureDetails.StackTrace,
             FromCoreFailureDetailsRecursive(coreFailureDetails.InnerFailure));
+    }
+
+    public void Deconstruct(out string ErrorType, out string ErrorMessage, out string? StackTrace, out TaskFailureDetails? InnerFailure)
+    {
+        ErrorType = this.ErrorType;
+        ErrorMessage = this.ErrorMessage;
+        StackTrace = this.StackTrace;
+        InnerFailure = this.InnerFailure;
     }
 }

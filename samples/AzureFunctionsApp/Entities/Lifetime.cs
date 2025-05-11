@@ -119,4 +119,20 @@ public static class LifetimeApis
     }
 }
 
-public record MyState(string PropA, int PropB);
+public record MyState
+{
+    public MyState(string PropA, int PropB)
+    {
+        this.PropA = PropA;
+        this.PropB = PropB;
+    }
+
+    public string PropA { get; init; }
+    public int PropB { get; init; }
+
+    public void Deconstruct(out string PropA, out int PropB)
+    {
+        PropA = this.PropA;
+        PropB = this.PropB;
+    }
+}

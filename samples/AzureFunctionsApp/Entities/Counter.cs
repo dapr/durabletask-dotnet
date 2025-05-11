@@ -266,7 +266,23 @@ public static class CounterApis
         return result;
     }
 
-    public record Payload(EntityInstanceId Id, int Add);
+    public record Payload
+    {
+        public Payload(EntityInstanceId Id, int Add)
+        {
+            this.Id = Id;
+            this.Add = Add;
+        }
+
+        public EntityInstanceId Id { get; init; }
+        public int Add { get; init; }
+
+        public void Deconstruct(out EntityInstanceId Id, out int Add)
+        {
+            Id = this.Id;
+            Add = this.Add;
+        }
+    }
 
     static EntityInstanceId GetEntityId(HttpRequestData request, string key)
     {

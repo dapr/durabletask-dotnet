@@ -93,7 +93,7 @@ public class IntegrationTestBase : IClassFixture<GrpcSidecarFixture>, IDisposabl
     protected IReadOnlyCollection<LogEntry> GetLogs(string category)
     {
         this.logProvider.TryGetLogs(category, out IReadOnlyCollection<LogEntry> logs);
-        return logs ?? [];
+        return logs ?? new List<LogEntry> { }.AsReadOnly();
     }
 
     protected static bool MatchLog(

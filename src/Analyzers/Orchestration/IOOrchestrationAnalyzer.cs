@@ -45,7 +45,8 @@ public sealed class IOOrchestrationAnalyzer : OrchestrationAnalyzer<IOOrchestrat
         /// <inheritdoc/>
         public override bool Initialize()
         {
-            List<INamedTypeSymbol?> candidateSymbols = [
+            List<INamedTypeSymbol?> candidateSymbols = new()
+            {
                 this.KnownTypeSymbols.HttpClient,
                 this.KnownTypeSymbols.BlobServiceClient,
                 this.KnownTypeSymbols.BlobContainerClient,
@@ -56,7 +57,7 @@ public sealed class IOOrchestrationAnalyzer : OrchestrationAnalyzer<IOOrchestrat
                 this.KnownTypeSymbols.TableClient,
                 this.KnownTypeSymbols.CosmosClient,
                 this.KnownTypeSymbols.SqlConnection,
-                ];
+            };
 
             // filter out null values, since some of them may not be available during compilation:
             this.bannedTypes = candidateSymbols.Where(s => s is not null).ToImmutableArray()!;

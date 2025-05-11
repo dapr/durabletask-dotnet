@@ -19,11 +19,9 @@ namespace Microsoft.DurableTask.Client.OrchestrationServiceClientShim;
 /// <remarks>
 /// Initializes a new instance of the <see cref="ShimDurableTaskClient"/> class.
 /// </remarks>
-/// <param name="name">The name of the client.</param>
-/// <param name="options">The client options.</param>
-class ShimDurableTaskClient(string name, ShimDurableTaskClientOptions options) : DurableTaskClient(name)
+class ShimDurableTaskClient : DurableTaskClient
 {
-    readonly ShimDurableTaskClientOptions options = Check.NotNull(options);
+    readonly ShimDurableTaskClientOptions options;
     ShimDurableEntityClient? entities;
 
     /// <summary>
@@ -36,6 +34,19 @@ class ShimDurableTaskClient(string name, ShimDurableTaskClientOptions options) :
         string name, IOptionsMonitor<ShimDurableTaskClientOptions> options)
         : this(name, Check.NotNull(options).Get(name))
     {
+    }
+
+    /// <summary>
+    /// A shim client for interacting with the backend via <see cref="Core.IOrchestrationServiceClient" />.
+    /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="ShimDurableTaskClient"/> class.
+    /// </remarks>
+    /// <param name="name">The name of the client.</param>
+    /// <param name="options">The client options.</param>
+    public ShimDurableTaskClient(string name, ShimDurableTaskClientOptions options) : base(name)
+    {
+        this.options = Check.NotNull(options);
     }
 
     /// <inheritdoc/>
