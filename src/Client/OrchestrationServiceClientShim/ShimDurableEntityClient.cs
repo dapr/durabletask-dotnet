@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections.Immutable;
 using DurableTask.Core;
 using DurableTask.Core.Entities;
 using Microsoft.DurableTask.Client.Entities;
@@ -154,7 +155,7 @@ class ShimDurableEntityClient : DurableEntityClient
                 },
                 cancellation);
 
-            return new Page<TMetadata>([.. result.Results.Select(select)], result.ContinuationToken);
+            return new Page<TMetadata>(result.Results.Select(select).ToImmutableList(), result.ContinuationToken);
         });
     }
 

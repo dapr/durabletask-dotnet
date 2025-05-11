@@ -154,7 +154,11 @@ public record TaskFailureDetails
     /// </summary>
     /// <param name="coreFailureDetails">The core failure details to use.</param>
     /// <returns>A new task failure details.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("coreFailureDetails")]
+#else
     [return: NotNullIfNotNull(nameof(coreFailureDetails))]
+#endif
     internal static TaskFailureDetails? FromCoreFailureDetails(CoreFailureDetails? coreFailureDetails)
     {
         if (coreFailureDetails is null)
@@ -169,7 +173,11 @@ public record TaskFailureDetails
             FromCoreFailureDetails(coreFailureDetails.InnerFailure));
     }
 
+#if NET6_0
+    [return: NotNullIfNotNull("exception")]
+#else
     [return: NotNullIfNotNull(nameof(exception))]
+#endif
     static TaskFailureDetails? FromExceptionRecursive(Exception? exception)
     {
         if (exception is null)
