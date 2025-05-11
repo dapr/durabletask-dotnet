@@ -66,7 +66,11 @@ static class ShimExtensions
     /// </summary>
     /// <param name="details">The details to convert.</param>
     /// <returns>The task failure details.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("details")]
+#else
     [return: NotNullIfNotNull(nameof(details))]
+#endif
     public static TaskFailureDetails? ConvertFromCore(this Core.FailureDetails? details)
     {
         if (details is null)
@@ -83,7 +87,11 @@ static class ShimExtensions
     /// </summary>
     /// <param name="result">The result to convert.</param>
     /// <returns>The purge result.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("result")]
+#else
     [return: NotNullIfNotNull(nameof(result))]
+#endif
     public static PurgeResult? ConvertFromCore(this Core.PurgeResult? result)
     {
         if (result is null)
@@ -99,7 +107,11 @@ static class ShimExtensions
     /// </summary>
     /// <param name="filter">The result to convert.</param>
     /// <returns>The purge result.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("filter")]
+#else
     [return: NotNullIfNotNull(nameof(filter))]
+#endif
     public static Core.PurgeInstanceFilter? ConvertToCore(this PurgeInstancesFilter? filter)
     {
         if (filter is null)
