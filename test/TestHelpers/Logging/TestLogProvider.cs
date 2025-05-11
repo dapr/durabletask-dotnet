@@ -7,10 +7,15 @@ using Xunit.Abstractions;
 
 namespace Microsoft.DurableTask.Tests.Logging;
 
-public sealed class TestLogProvider(ITestOutputHelper output) : ILoggerProvider
+public sealed class TestLogProvider : ILoggerProvider
 {
-    readonly ITestOutputHelper output = output ?? throw new ArgumentNullException(nameof(output));
+    readonly ITestOutputHelper output;
     readonly ConcurrentDictionary<string, TestLogger> loggers = new(StringComparer.OrdinalIgnoreCase);
+
+    public TestLogProvider(ITestOutputHelper output)
+    {
+        this.output = output ?? throw new ArgumentNullException(nameof(output));
+    }
 
     public bool TryGetLogs(string category, out IReadOnlyCollection<LogEntry> logs)
     {
