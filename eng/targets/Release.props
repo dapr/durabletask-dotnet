@@ -11,7 +11,7 @@
     <Authors>Microsoft, Dapr Authors</Authors>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <RepositoryUrl>https://github.com/dapr/durabletask-dotnet</RepositoryUrl>
-    <PackageLicenseExpression>MIT, Apache-2.0</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT OR Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
     <PackageTags>Durable Task Orchestration Workflow Activity Reliable DTFx Dapr</PackageTags>
   </PropertyGroup>
