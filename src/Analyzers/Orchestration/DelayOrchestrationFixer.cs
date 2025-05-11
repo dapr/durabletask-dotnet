@@ -23,7 +23,8 @@ namespace Microsoft.DurableTask.Analyzers.Orchestration;
 public sealed class DelayOrchestrationFixer : OrchestrationContextFixer
 {
     /// <inheritdoc/>
-    public override ImmutableArray<string> FixableDiagnosticIds => [DelayOrchestrationAnalyzer.DiagnosticId];
+    public override ImmutableArray<string> FixableDiagnosticIds =>
+        new ImmutableArray<string> { DelayOrchestrationAnalyzer.DiagnosticId };
 
     /// <inheritdoc/>
     protected override void RegisterCodeFixes(CodeFixContext context, OrchestrationCodeFixContext orchestrationContext)

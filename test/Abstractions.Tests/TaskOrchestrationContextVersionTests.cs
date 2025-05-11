@@ -44,19 +44,61 @@ public class TaskOrchestrationContextVersionTests
         {
             this.version = version;
         }
-        public override TaskName Name => throw new NotImplementedException();
+        public override TaskName Name
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-        public override string InstanceId => throw new NotImplementedException();
+        public override string InstanceId
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-        public override ParentOrchestrationInstance? Parent => throw new NotImplementedException();
+        public override ParentOrchestrationInstance? Parent
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-        public override DateTime CurrentUtcDateTime => throw new NotImplementedException();
+        public override DateTime CurrentUtcDateTime
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-        public override bool IsReplaying => throw new NotImplementedException();
+        public override bool IsReplaying
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-        public override string Version => this.version;
+        public override string Version
+        {
+            get
+            {
+                return this.version;
+            }
+        }
 
-        protected override ILoggerFactory LoggerFactory => throw new NotImplementedException();
+        protected override ILoggerFactory LoggerFactory
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public override Task<TResult> CallActivityAsync<TResult>(TaskName name, object? input = null, TaskOptions? options = null)
         {

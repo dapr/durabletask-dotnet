@@ -36,7 +36,10 @@ public record EntityQuery
     /// </remarks>
     public string? InstanceIdStartsWith
     {
-        get => this.instanceIdStartsWith;
+        get
+        {
+            return this.instanceIdStartsWith;
+        }
         init
         {
             if (value != null)

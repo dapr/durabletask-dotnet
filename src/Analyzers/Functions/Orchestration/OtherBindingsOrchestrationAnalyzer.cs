@@ -33,7 +33,8 @@ class OtherBindingsOrchestrationAnalyzer : OrchestrationAnalyzer<OtherBindingsOr
         isEnabledByDefault: true);
 
     /// <inheritdoc/>
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [Rule];
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+        new ImmutableArray<DiagnosticDescriptor> { Rule };
 
     /// <summary>
     /// Visitor that inspects Durable Functions' method signatures for parameters binding other than OrchestrationTrigger.
@@ -45,10 +46,10 @@ class OtherBindingsOrchestrationAnalyzer : OrchestrationAnalyzer<OtherBindingsOr
         /// <inheritdoc/>
         public override bool Initialize()
         {
-            List<INamedTypeSymbol?> candidateSymbols = [
-                this.KnownTypeSymbols.DurableClientAttribute,
-                this.KnownTypeSymbols.EntityTriggerAttribute,
-                ];
+            List<INamedTypeSymbol?> candidateSymbols = new()
+            {
+                this.KnownTypeSymbols.DurableClientAttribute, this.KnownTypeSymbols.EntityTriggerAttribute,
+            };
 
             // filter out null values, since some of them may not be available during compilation
             this.bannedBindings = candidateSymbols.Where(s => s != null).ToImmutableArray()!;

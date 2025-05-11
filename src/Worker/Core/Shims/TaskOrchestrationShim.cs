@@ -37,7 +37,13 @@ partial class TaskOrchestrationShim : TaskOrchestration
         this.logger = Logs.CreateWorkerLogger(this.invocationContext.LoggerFactory, "Orchestrations");
     }
 
-    DataConverter DataConverter => this.invocationContext.Options.DataConverter;
+    DataConverter DataConverter
+    {
+        get
+        {
+            return this.invocationContext.Options.DataConverter;
+        }
+    }
 
     /// <inheritdoc/>
     public override async Task<string?> Execute(OrchestrationContext innerContext, string rawInput)

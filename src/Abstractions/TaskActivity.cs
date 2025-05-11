@@ -65,10 +65,22 @@ public interface ITaskActivity
 public abstract class TaskActivity<TInput, TOutput> : ITaskActivity
 {
     /// <inheritdoc/>
-    Type ITaskActivity.InputType => typeof(TInput);
+    Type ITaskActivity.InputType
+    {
+        get
+        {
+            return typeof(TInput);
+        }
+    }
 
     /// <inheritdoc/>
-    Type ITaskActivity.OutputType => typeof(TOutput);
+    Type ITaskActivity.OutputType
+    {
+        get
+        {
+            return typeof(TOutput);
+        }
+    }
 
     /// <inheritdoc/>
     async Task<object?> ITaskActivity.RunAsync(TaskActivityContext context, object? input)

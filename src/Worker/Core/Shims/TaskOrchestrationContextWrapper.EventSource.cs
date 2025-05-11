@@ -31,10 +31,19 @@ sealed partial class TaskOrchestrationContextWrapper
     class EventTaskCompletionSource<T> : TaskCompletionSource<T>, IEventSource
     {
         /// <inheritdoc/>
-        public Type EventType => typeof(T);
+        public Type EventType
+        {
+            get
+            {
+                return typeof(T);
+            }
+        }
 
         /// <inheritdoc/>
-        void IEventSource.TrySetResult(object result) => this.TrySetResult((T)result);
+        void IEventSource.TrySetResult(object result)
+        {
+            this.TrySetResult((T)result);
+        }
     }
 
     class NamedQueue<TValue>

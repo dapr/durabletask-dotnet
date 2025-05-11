@@ -63,13 +63,24 @@ public abstract class TaskOrchestrationContext
     /// <summary>
     /// Gets the version of the current orchestration instance, which was set when the instance was created.
     /// </summary>
-    public virtual string Version => string.Empty;
+    public virtual string Version
+    {
+        get
+        {
+            return string.Empty;
+        }
+    }
 
     /// <summary>
     /// Gets the entity feature, for interacting with entities.
     /// </summary>
-    public virtual TaskOrchestrationEntityFeature Entities =>
-        throw new NotSupportedException($"Durable entities are not supported by {this.GetType()}.");
+    public virtual TaskOrchestrationEntityFeature Entities
+    {
+        get
+        {
+            throw new NotSupportedException($"Durable entities are not supported by {this.GetType()}.");
+        }
+    }
 
     /// <summary>
     /// Gets the logger factory for this context.
@@ -121,14 +132,18 @@ public abstract class TaskOrchestrationContext
     /// <see cref="TaskFailedException.FailureDetails"/> property.
     /// </exception>
     public virtual Task CallActivityAsync(TaskName name, object? input = null, TaskOptions? options = null)
-        => this.CallActivityAsync<object>(name, input, options);
+    {
+        return this.CallActivityAsync<object>(name, input, options);
+    }
 
     /// <returns>
     /// A task that completes when the activity completes or fails. The result of the task is the activity's return value.
     /// </returns>
     /// <inheritdoc cref="CallActivityAsync(TaskName, object?, TaskOptions?)"/>
     public virtual Task CallActivityAsync(TaskName name, TaskOptions options)
-        => this.CallActivityAsync(name, null, options);
+    {
+        return this.CallActivityAsync(name, null, options);
+    }
 
     /// <returns>
     /// A task that completes when the activity completes or fails. The result of the task is the activity's return value.
@@ -136,7 +151,9 @@ public abstract class TaskOrchestrationContext
     /// <typeparam name="TResult">The type into which to deserialize the activity's output.</typeparam>
     /// <inheritdoc cref="CallActivityAsync(TaskName, object?, TaskOptions?)"/>
     public virtual Task<TResult> CallActivityAsync<TResult>(TaskName name, TaskOptions options)
-        => this.CallActivityAsync<TResult>(name, null, options);
+    {
+        return this.CallActivityAsync<TResult>(name, null, options);
+    }
 
     /// <returns>
     /// A task that completes when the activity completes or fails. The result of the task is the activity's return value.
@@ -286,14 +303,18 @@ public abstract class TaskOrchestrationContext
     /// <typeparam name="TResult">The type into which to deserialize the sub-orchestrator's output.</typeparam>
     /// <inheritdoc cref="CallSubOrchestratorAsync(TaskName, object?, TaskOptions?)"/>
     public virtual Task<TResult> CallSubOrchestratorAsync<TResult>(TaskName orchestratorName, TaskOptions options)
-        => this.CallSubOrchestratorAsync<TResult>(orchestratorName, null, options);
+    {
+        return this.CallSubOrchestratorAsync<TResult>(orchestratorName, null, options);
+    }
 
     /// <summary>
     /// Executes a named sub-orchestrator and returns the result.
     /// </summary>
     /// <inheritdoc cref="CallSubOrchestratorAsync(TaskName, object?, TaskOptions?)"/>
     public virtual Task CallSubOrchestratorAsync(TaskName orchestratorName, TaskOptions options)
-        => this.CallSubOrchestratorAsync(orchestratorName, null, options);
+    {
+        return this.CallSubOrchestratorAsync(orchestratorName, null, options);
+    }
 
     /// <summary>
     /// Executes a named sub-orchestrator.
@@ -339,7 +360,9 @@ public abstract class TaskOrchestrationContext
     /// </exception>
     public virtual Task CallSubOrchestratorAsync(
         TaskName orchestratorName, object? input = null, TaskOptions? options = null)
-        => this.CallSubOrchestratorAsync<object>(orchestratorName, input, options);
+    {
+        return this.CallSubOrchestratorAsync<object>(orchestratorName, input, options);
+    }
 
     /// <summary>
     /// Restarts the orchestration with a new input and clears its history.
@@ -392,17 +415,23 @@ public abstract class TaskOrchestrationContext
     /// <param name="categoryName">The logger's category name.</param>
     /// <returns>An instance of <see cref="ILogger"/> that is replay-safe.</returns>
     public virtual ILogger CreateReplaySafeLogger(string categoryName)
-        => new ReplaySafeLogger(this, this.LoggerFactory.CreateLogger(categoryName));
+    {
+        return new ReplaySafeLogger(this, this.LoggerFactory.CreateLogger(categoryName));
+    }
 
     /// <inheritdoc cref="CreateReplaySafeLogger(string)" />
     /// <param name="type">The type to derive the category name from.</param>
     public virtual ILogger CreateReplaySafeLogger(Type type)
-        => new ReplaySafeLogger(this, this.LoggerFactory.CreateLogger(type));
+    {
+        return new ReplaySafeLogger(this, this.LoggerFactory.CreateLogger(type));
+    }
 
     /// <inheritdoc cref="CreateReplaySafeLogger(string)" />
     /// <typeparam name="T">The type to derive category name from.</typeparam>
     public virtual ILogger CreateReplaySafeLogger<T>()
-        => new ReplaySafeLogger(this, this.LoggerFactory.CreateLogger<T>());
+    {
+        return new ReplaySafeLogger(this, this.LoggerFactory.CreateLogger<T>());
+    }
 
     /// <summary>
     /// Checks if the current orchestration version is greater than the specified version.
@@ -436,9 +465,15 @@ public abstract class TaskOrchestrationContext
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public IDisposable BeginScope<TState>(TState state) => this.logger.BeginScope(state);
+        public IDisposable BeginScope<TState>(TState state)
+        {
+            return this.logger.BeginScope(state);
+        }
 
-        public bool IsEnabled(LogLevel logLevel) => this.logger.IsEnabled(logLevel);
+        public bool IsEnabled(LogLevel logLevel)
+        {
+            return this.logger.IsEnabled(logLevel);
+        }
 
         public void Log<TState>(
             LogLevel logLevel,

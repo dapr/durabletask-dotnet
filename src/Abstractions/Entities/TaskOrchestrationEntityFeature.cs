@@ -32,7 +32,9 @@ public abstract class TaskOrchestrationEntityFeature
     /// <returns>The result of the entity operation.</returns>
     public virtual Task<TResult> CallEntityAsync<TResult>(
         EntityInstanceId id, string operationName, CallEntityOptions? options)
-        => this.CallEntityAsync<TResult>(id, operationName, null, options);
+    {
+        return this.CallEntityAsync<TResult>(id, operationName, null, options);
+    }
 
     /// <summary>
     /// Calls an operation on an entity and waits for it to complete.
@@ -53,7 +55,9 @@ public abstract class TaskOrchestrationEntityFeature
     /// <param name="options">The call options.</param>
     /// <returns>A task that completes when the operation has been completed.</returns>
     public virtual Task CallEntityAsync(EntityInstanceId id, string operationName, CallEntityOptions? options)
-        => this.CallEntityAsync(id, operationName, null, options);
+    {
+        return this.CallEntityAsync(id, operationName, null, options);
+    }
 
     /// <summary>
     /// Calls an operation on an entity, but does not wait for completion.
@@ -81,7 +85,9 @@ public abstract class TaskOrchestrationEntityFeature
     /// </returns>
     public virtual Task SignalEntityAsync(
         EntityInstanceId id, string operationName, SignalEntityOptions? options)
-        => this.SignalEntityAsync(id, operationName, null, options);
+    {
+        return this.SignalEntityAsync(id, operationName, null, options);
+    }
 
     /// <summary>
     /// Acquires one or more entity locks.
@@ -96,7 +102,10 @@ public abstract class TaskOrchestrationEntityFeature
     /// <param name="entityIds">The entity IDs to lock.</param>
     /// <returns>An async-disposable which can be disposed to release the lock.</returns>
     public virtual Task<IAsyncDisposable> LockEntitiesAsync(params EntityInstanceId[] entityIds)
-        => this.LockEntitiesAsync((IEnumerable<EntityInstanceId>)entityIds); // let the implementation decide how to handle nulls.
+    {
+        return this.LockEntitiesAsync((IEnumerable<EntityInstanceId>)entityIds);
+        // let the implementation decide how to handle nulls.
+    }
 
     /// <summary>
     /// Gets a value indicating whether this orchestration is in a critical section, and if true, any entity locks are
@@ -110,5 +119,8 @@ public abstract class TaskOrchestrationEntityFeature
     /// Gets a value indicating whether this orchestration is in a critical section.
     /// </summary>
     /// <returns>True if any locks are owned, false otherwise.</returns>
-    public virtual bool InCriticalSection() => this.InCriticalSection(out _);
+    public virtual bool InCriticalSection()
+    {
+        return this.InCriticalSection(out _);
+    }
 }

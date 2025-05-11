@@ -20,15 +20,45 @@ public class InMemoryOrchestrationService : IOrchestrationService, IOrchestratio
     readonly InMemoryInstanceStore instanceStore;
     readonly ILogger logger;
 
-    public int TaskOrchestrationDispatcherCount => 1;
+    public int TaskOrchestrationDispatcherCount
+    {
+        get
+        {
+            return 1;
+        }
+    }
 
-    public int TaskActivityDispatcherCount => 1;
+    public int TaskActivityDispatcherCount
+    {
+        get
+        {
+            return 1;
+        }
+    }
 
-    public int MaxConcurrentTaskOrchestrationWorkItems => Environment.ProcessorCount;
+    public int MaxConcurrentTaskOrchestrationWorkItems
+    {
+        get
+        {
+            return Environment.ProcessorCount;
+        }
+    }
 
-    public int MaxConcurrentTaskActivityWorkItems => Environment.ProcessorCount;
+    public int MaxConcurrentTaskActivityWorkItems
+    {
+        get
+        {
+            return Environment.ProcessorCount;
+        }
+    }
 
-    public BehaviorOnContinueAsNew EventBehaviourForContinueAsNew => BehaviorOnContinueAsNew.Carryover;
+    public BehaviorOnContinueAsNew EventBehaviourForContinueAsNew
+    {
+        get
+        {
+            return BehaviorOnContinueAsNew.Carryover;
+        }
+    }
 
     public InMemoryOrchestrationService(ILoggerFactory? loggerFactory = null)
     {
@@ -73,7 +103,10 @@ public class InMemoryOrchestrationService : IOrchestrationService, IOrchestratio
         return Task.CompletedTask;
     }
 
-    public Task CreateAsync() => Task.CompletedTask;
+    public Task CreateAsync()
+    {
+        return Task.CompletedTask;
+    }
 
     public Task CreateAsync(bool recreateInstanceStore)
     {
@@ -84,7 +117,10 @@ public class InMemoryOrchestrationService : IOrchestrationService, IOrchestratio
         return Task.CompletedTask;
     }
 
-    public Task CreateIfNotExistsAsync() => Task.CompletedTask;
+    public Task CreateIfNotExistsAsync()
+    {
+        return Task.CompletedTask;
+    }
 
     public Task CreateTaskOrchestrationAsync(TaskMessage creationMessage)
     {
@@ -112,7 +148,10 @@ public class InMemoryOrchestrationService : IOrchestrationService, IOrchestratio
         return Task.CompletedTask;
     }
 
-    public Task DeleteAsync() => this.DeleteAsync(true);
+    public Task DeleteAsync()
+    {
+        return this.DeleteAsync(true);
+    }
 
     public Task DeleteAsync(bool deleteInstanceStore)
     {
@@ -169,7 +208,10 @@ public class InMemoryOrchestrationService : IOrchestrationService, IOrchestratio
         return Task.FromResult<OrchestrationState>(null!);
     }
 
-    public bool IsMaxMessageCountExceeded(int currentMessageCount, OrchestrationRuntimeState runtimeState) => false;
+    public bool IsMaxMessageCountExceeded(int currentMessageCount, OrchestrationRuntimeState runtimeState)
+    {
+        return false;
+    }
 
     public async Task<TaskActivityWorkItem> LockNextTaskActivityWorkItem(TimeSpan receiveTimeout, CancellationToken cancellationToken)
     {
@@ -234,11 +276,20 @@ public class InMemoryOrchestrationService : IOrchestrationService, IOrchestratio
         return Task.CompletedTask;
     }
 
-    public Task StartAsync() => Task.CompletedTask;
+    public Task StartAsync()
+    {
+        return Task.CompletedTask;
+    }
 
-    public Task StopAsync() => Task.CompletedTask;
+    public Task StopAsync()
+    {
+        return Task.CompletedTask;
+    }
 
-    public Task StopAsync(bool isForced) => Task.CompletedTask;
+    public Task StopAsync(bool isForced)
+    {
+        return Task.CompletedTask;
+    }
 
     public async Task<OrchestrationState> WaitForOrchestrationAsync(string instanceId, string executionId, TimeSpan timeout, CancellationToken cancellationToken)
     {
@@ -334,7 +385,10 @@ public class InMemoryOrchestrationService : IOrchestrationService, IOrchestratio
 
         readonly ILogger logger;
 
-        public InMemoryInstanceStore(ILogger logger) => this.logger = logger;
+        public InMemoryInstanceStore(ILogger logger)
+        {
+            this.logger = logger;
+        }
 
         public void Reset()
         {
@@ -383,11 +437,13 @@ public class InMemoryOrchestrationService : IOrchestrationService, IOrchestratio
             OrchestrationState statusRecord,
             IEnumerable<TaskMessage> newMessages)
         {
-            static bool IsCompleted(OrchestrationRuntimeState runtimeState) =>
-                runtimeState.OrchestrationStatus == OrchestrationStatus.Completed ||
-                runtimeState.OrchestrationStatus == OrchestrationStatus.Failed ||
-                runtimeState.OrchestrationStatus == OrchestrationStatus.Terminated ||
-                runtimeState.OrchestrationStatus == OrchestrationStatus.Canceled;
+            static bool IsCompleted(OrchestrationRuntimeState runtimeState)
+            {
+                return runtimeState.OrchestrationStatus == OrchestrationStatus.Completed ||
+                       runtimeState.OrchestrationStatus == OrchestrationStatus.Failed ||
+                       runtimeState.OrchestrationStatus == OrchestrationStatus.Terminated ||
+                       runtimeState.OrchestrationStatus == OrchestrationStatus.Canceled;
+            }
 
             if (string.IsNullOrEmpty(runtimeState.OrchestrationInstance?.InstanceId))
             {

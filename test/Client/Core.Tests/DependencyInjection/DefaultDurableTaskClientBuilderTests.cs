@@ -68,7 +68,13 @@ public class DefaultDurableTaskClientBuilderTests
             this.Options = options.Get(name);
         }
 
-        public new string Name => base.Name;
+        public new string Name
+        {
+            get
+            {
+                return base.Name;
+            }
+        }
 
         public DurableTaskClientOptions Options { get; }
 

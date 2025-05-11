@@ -11,11 +11,12 @@ public class HelloSequenceOrchestrator : TaskOrchestrator<string, IEnumerable<st
     public override async Task<IEnumerable<string>> RunAsync(TaskOrchestrationContext context, string input)
     {
         IEnumerable<string> greetings =
-        [
-            await context.CallActivityAsync<string>("SayHello", "Tokyo"),
-            await context.CallActivityAsync<string>("SayHello", "London"),
-            await context.CallActivityAsync<string>("SayHello", "Seattle"),
-        ];
+            new List<string>
+            {
+                await context.CallActivityAsync<string>("SayHello", "Tokyo"),
+                await context.CallActivityAsync<string>("SayHello", "London"),
+                await context.CallActivityAsync<string>("SayHello", "Seattle"),
+            }.AsReadOnly();
 
         return greetings;
     }

@@ -55,7 +55,9 @@ public abstract class DurableEntityClient
         string operationName,
         SignalEntityOptions options,
         CancellationToken cancellation = default)
-        => this.SignalEntityAsync(id, operationName, null, options, cancellation);
+    {
+        return this.SignalEntityAsync(id, operationName, null, options, cancellation);
+    }
 
     /// <summary>
     /// Signals an entity to perform an operation.
@@ -69,7 +71,9 @@ public abstract class DurableEntityClient
         EntityInstanceId id,
         string operationName,
         CancellationToken cancellation)
-        => this.SignalEntityAsync(id, operationName, null, null, cancellation);
+    {
+        return this.SignalEntityAsync(id, operationName, null, null, cancellation);
+    }
 
     /// <summary>
     /// Tries to get the entity with ID of <paramref name="id"/>. Includes entity state by default.
@@ -89,7 +93,9 @@ public abstract class DurableEntityClient
     /// <returns>A response containing metadata describing the entity, or null if the entity does not exist.</returns>
     public virtual Task<EntityMetadata?> GetEntityAsync(
         EntityInstanceId id, CancellationToken cancellation)
-            => this.GetEntityAsync(id, includeState: true, cancellation);
+    {
+        return this.GetEntityAsync(id, includeState: true, cancellation);
+    }
 
     /// <summary>
     /// Tries to get the entity with ID of <paramref name="id"/>. Includes entity state by default.
@@ -111,7 +117,9 @@ public abstract class DurableEntityClient
     /// <returns>A response containing metadata describing the entity, or null if the entity does not exist.</returns>
     public virtual Task<EntityMetadata<T>?> GetEntityAsync<T>(
         EntityInstanceId id, CancellationToken cancellation)
-            => this.GetEntityAsync<T>(id, includeState: true, cancellation);
+    {
+        return this.GetEntityAsync<T>(id, includeState: true, cancellation);
+    }
 
     /// <summary>
     /// Queries entity instances, optionally filtering results with <paramref name="filter"/>.

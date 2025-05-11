@@ -40,7 +40,10 @@ public record ScheduleUpdateOptions
     /// </summary>
     public TimeSpan? Interval
     {
-        get => this.interval;
+        get
+        {
+            return this.interval;
+        }
         init
         {
             if (value.HasValue)

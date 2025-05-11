@@ -25,7 +25,7 @@ public static partial class CSharpCodeFixVerifier<TAnalyzer, TCodeFix>
     public static Task VerifyDurableTaskCodeFixAsync(
         string source, DiagnosticResult expected, string fixedSource, Action<Test>? configureTest = null)
     {
-        return VerifyDurableTaskCodeFixAsync(source, [expected], fixedSource, configureTest);
+        return VerifyDurableTaskCodeFixAsync(source, new[] { expected }, fixedSource, configureTest);
     }
 
     public static async Task VerifyDurableTaskCodeFixAsync(

@@ -164,11 +164,13 @@ sealed partial class TaskOrchestrationContextWrapper
         }
 
         static TaskFailureDetails ConvertFailureDetails(FailureDetails failureDetails)
-         => new(
-             failureDetails.ErrorType,
-             failureDetails.ErrorMessage,
-             failureDetails.StackTrace,
-             failureDetails.InnerFailure != null ? ConvertFailureDetails(failureDetails.InnerFailure) : null);
+        {
+            return new TaskFailureDetails(
+                failureDetails.ErrorType,
+                failureDetails.ErrorMessage,
+                failureDetails.StackTrace,
+                failureDetails.InnerFailure != null ? ConvertFailureDetails(failureDetails.InnerFailure) : null);
+        }
 
         async Task<OperationResult> CallEntityInternalAsync(EntityInstanceId id, string operationName, object? input)
         {

@@ -91,8 +91,8 @@ public class ShimDurableEntityClientTests
     [Fact]
     public async Task GetAllEntitiesAsync_NoFilter_ReturnsExpectedResult()
     {
-        List<EntityBackendQueries.EntityMetadata> entities = [..
-            Enumerable.Range(0, 25).Select(i => CreateCoreMetadata(i))];
+        List<EntityBackendQueries.EntityMetadata> entities =
+            Enumerable.Range(0, 25).Select(i => CreateCoreMetadata(i)).ToList();
 
         string? continuationToken = null;
         foreach (IEnumerable<EntityBackendQueries.EntityMetadata> batch in entities.Chunk(10))
@@ -108,7 +108,7 @@ public class ShimDurableEntityClientTests
                 ContinuationToken = continuationToken,
             };
 
-            List<EntityBackendQueries.EntityMetadata> values = [.. batch];
+            List<EntityBackendQueries.EntityMetadata> values = batch.ToList();
             continuationToken = values.Count == 10 ? Guid.NewGuid().ToString() : null;
             EntityBackendQueries.EntityQueryResult result = new()
             {
@@ -134,8 +134,8 @@ public class ShimDurableEntityClientTests
     [Fact]
     public async Task GetAllEntitiesAsync_WithFilter_ReturnsExpectedResult()
     {
-        List<EntityBackendQueries.EntityMetadata> entities = [..
-            Enumerable.Range(0, 25).Select(i => CreateCoreMetadata(i))];
+        List<EntityBackendQueries.EntityMetadata> entities =
+            Enumerable.Range(0, 25).Select(i => CreateCoreMetadata(i)).ToList();
 
         string? continuationToken = Guid.NewGuid().ToString();
         EntityQuery query = new() { IncludeState = false, PageSize = 10, ContinuationToken = continuationToken };
@@ -152,7 +152,7 @@ public class ShimDurableEntityClientTests
                 ContinuationToken = continuationToken,
             };
 
-            List<EntityBackendQueries.EntityMetadata> values = [.. batch];
+            List<EntityBackendQueries.EntityMetadata> values = batch.ToList();
             continuationToken = values.Count == 10 ? Guid.NewGuid().ToString() : null;
             EntityBackendQueries.EntityQueryResult result = new()
             {
@@ -178,8 +178,8 @@ public class ShimDurableEntityClientTests
     [Fact]
     public async Task GetAllEntitiesAsyncOfT_NoFilter_ReturnsExpectedResult()
     {
-        List<EntityBackendQueries.EntityMetadata> entities = [..
-            Enumerable.Range(0, 25).Select(i => CreateCoreMetadata(i, $"state-{i}"))];
+        List<EntityBackendQueries.EntityMetadata> entities =
+            Enumerable.Range(0, 25).Select(i => CreateCoreMetadata(i, $"state-{i}")).ToList();
 
         string? continuationToken = null;
         foreach (IEnumerable<EntityBackendQueries.EntityMetadata> batch in entities.Chunk(10))
@@ -195,7 +195,7 @@ public class ShimDurableEntityClientTests
                 ContinuationToken = continuationToken,
             };
 
-            List<EntityBackendQueries.EntityMetadata> values = [.. batch];
+            List<EntityBackendQueries.EntityMetadata> values = batch.ToList();
             continuationToken = values.Count == 10 ? Guid.NewGuid().ToString() : null;
             EntityBackendQueries.EntityQueryResult result = new()
             {
@@ -221,8 +221,8 @@ public class ShimDurableEntityClientTests
     [Fact]
     public async Task GetAllEntitiesAsyncOfT_WithFilter_ReturnsExpectedResult()
     {
-        List<EntityBackendQueries.EntityMetadata> entities = [..
-            Enumerable.Range(0, 25).Select(i => CreateCoreMetadata(i, $"state-{i}"))];
+        List<EntityBackendQueries.EntityMetadata> entities =
+            Enumerable.Range(0, 25).Select(i => CreateCoreMetadata(i, $"state-{i}")).ToList();
 
         string? continuationToken = Guid.NewGuid().ToString();
         EntityQuery query = new() { IncludeState = true, PageSize = 10, ContinuationToken = continuationToken };
@@ -239,7 +239,7 @@ public class ShimDurableEntityClientTests
                 ContinuationToken = continuationToken,
             };
 
-            List<EntityBackendQueries.EntityMetadata> values = [.. batch];
+            List<EntityBackendQueries.EntityMetadata> values = batch.ToList();
             continuationToken = values.Count == 10 ? Guid.NewGuid().ToString() : null;
             EntityBackendQueries.EntityQueryResult result = new()
             {

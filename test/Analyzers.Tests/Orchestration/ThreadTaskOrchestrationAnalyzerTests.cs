@@ -36,15 +36,11 @@ async Task Method([OrchestrationTrigger] TaskOrchestrationContext context)
     await {|#6:Task.Factory.StartNew(() => { })|};
 }
 ");
-        string[] invocations = [
-            "Thread.Start()",
-            "Task.Run<int>(Func<int>)",
-            "Task<int>.ContinueWith<int>(Func<Task<int>, int>)",
-            "TaskFactory<int>.StartNew(Func<int>)",
-            "Task.Run(Action)",
-            "Task.ContinueWith(Action<Task>)",
+        string[] invocations = {
+            "Thread.Start()", "Task.Run<int>(Func<int>)", "Task<int>.ContinueWith<int>(Func<Task<int>, int>)",
+            "TaskFactory<int>.StartNew(Func<int>)", "Task.Run(Action)", "Task.ContinueWith(Action<Task>)",
             "TaskFactory.StartNew(Action)",
-        ];
+        };
 
         DiagnosticResult[] expected = invocations.Select(
             (invocation, i) => BuildDiagnostic().WithLocation(i).WithArguments("Method", invocation, "Run")).ToArray();

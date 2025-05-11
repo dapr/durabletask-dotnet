@@ -15,7 +15,9 @@ public static class RandomExtensions
     }
 
     public static DateTimeOffset NextDateTimeOffset(this Random random, TimeSpan max)
-        => random.NextDateTimeOffset(DateTimeOffset.UtcNow, max);
+    {
+        return random.NextDateTimeOffset(DateTimeOffset.UtcNow, max);
+    }
 
     public static DateTime NextDateTime(this Random random, DateTime min, TimeSpan max)
     {
@@ -26,6 +28,8 @@ public static class RandomExtensions
     }
 
     public static DateTime NextDateTime(this Random random, TimeSpan max)
-        => random.NextDateTime(DateTime.UtcNow, max);
+    {
+        return random.NextDateTime(DateTime.UtcNow, max);
+    }
 #endif
 }

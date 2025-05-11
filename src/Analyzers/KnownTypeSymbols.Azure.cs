@@ -26,45 +26,104 @@ public sealed partial class KnownTypeSymbols
     /// <summary>
     /// Gets a BlobServiceClient type symbol.
     /// </summary>
-    public INamedTypeSymbol? BlobServiceClient => this.GetOrResolveFullyQualifiedType("Azure.Storage.Blobs.BlobServiceClient", ref this.blobServiceClient);
+    public INamedTypeSymbol? BlobServiceClient
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Azure.Storage.Blobs.BlobServiceClient",
+                ref this.blobServiceClient);
+        }
+    }
 
     /// <summary>
     /// Gets a BlobContainerClient type symbol.
     /// </summary>
-    public INamedTypeSymbol? BlobContainerClient => this.GetOrResolveFullyQualifiedType("Azure.Storage.Blobs.BlobContainerClient", ref this.blobContainerClient);
+    public INamedTypeSymbol? BlobContainerClient
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Azure.Storage.Blobs.BlobContainerClient",
+                ref this.blobContainerClient);
+        }
+    }
 
     /// <summary>
     /// Gets a BlobClient type symbol.
     /// </summary>
-    public INamedTypeSymbol? BlobClient => this.GetOrResolveFullyQualifiedType("Azure.Storage.Blobs.BlobClient", ref this.blobClient);
+    public INamedTypeSymbol? BlobClient
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Azure.Storage.Blobs.BlobClient", ref this.blobClient);
+        }
+    }
 
     /// <summary>
     /// Gets a QueueServiceClient type symbol.
     /// </summary>
-    public INamedTypeSymbol? QueueServiceClient => this.GetOrResolveFullyQualifiedType("Azure.Storage.Queues.QueueServiceClient", ref this.queueServiceClient);
+    public INamedTypeSymbol? QueueServiceClient
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Azure.Storage.Queues.QueueServiceClient",
+                ref this.queueServiceClient);
+        }
+    }
 
     /// <summary>
     /// Gets a QueueClient type symbol.
     /// </summary>
-    public INamedTypeSymbol? QueueClient => this.GetOrResolveFullyQualifiedType("Azure.Storage.Queues.QueueClient", ref this.queueClient);
+    public INamedTypeSymbol? QueueClient
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Azure.Storage.Queues.QueueClient", ref this.queueClient);
+        }
+    }
 
     /// <summary>
     /// Gets a TableServiceClient type symbol.
     /// </summary>
-    public INamedTypeSymbol? TableServiceClient => this.GetOrResolveFullyQualifiedType("Azure.Data.Tables.TableServiceClient", ref this.tableServiceClient);
+    public INamedTypeSymbol? TableServiceClient
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Azure.Data.Tables.TableServiceClient",
+                ref this.tableServiceClient);
+        }
+    }
 
     /// <summary>
     /// Gets a TableClient type symbol.
     /// </summary>
-    public INamedTypeSymbol? TableClient => this.GetOrResolveFullyQualifiedType("Azure.Data.Tables.TableClient", ref this.tableClient);
+    public INamedTypeSymbol? TableClient
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Azure.Data.Tables.TableClient", ref this.tableClient);
+        }
+    }
 
     /// <summary>
     /// Gets a CosmosClient type symbol.
     /// </summary>
-    public INamedTypeSymbol? CosmosClient => this.GetOrResolveFullyQualifiedType("Microsoft.Azure.Cosmos.CosmosClient", ref this.cosmosClient);
+    public INamedTypeSymbol? CosmosClient
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Microsoft.Azure.Cosmos.CosmosClient", ref this.cosmosClient);
+        }
+    }
 
     /// <summary>
     /// Gets a SqlConnection type symbol.
     /// </summary>
-    public INamedTypeSymbol? SqlConnection => this.GetOrResolveFullyQualifiedType("Microsoft.Data.SqlClient.SqlConnection", ref this.sqlConnection);
+    public INamedTypeSymbol? SqlConnection
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Microsoft.Data.SqlClient.SqlConnection",
+                ref this.sqlConnection);
+        }
+    }
 }

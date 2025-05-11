@@ -6,6 +6,7 @@
   <PropertyGroup Condition="'$(IsRoslynComponent)' != 'true'">
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <IncludeSymbols>true</IncludeSymbols>
+    <TargetFramework>net6.0</TargetFramework>  
   </PropertyGroup>
 
   <PropertyGroup>

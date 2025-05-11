@@ -232,7 +232,9 @@ namespace Microsoft.DurableTask
         /// Gets the generated activity context code.
         /// </summary>
         /// <returns>The generated activity context code.</returns>
-        public static string GetGeneratedActivityContextCode() => $@"
+        public static string GetGeneratedActivityContextCode()
+        {
+            return $@"
         sealed class GeneratedActivityContext : TaskActivityContext
         {{
             public GeneratedActivityContext(TaskName name, string instanceId)
@@ -245,6 +247,7 @@ namespace Microsoft.DurableTask
 
             public override string InstanceId {{ get; }}
         }}";
+        }
 
         static void AddRegistrationMethodForAllTasks(
             StringBuilder sourceBuilder,
@@ -279,9 +282,29 @@ namespace Microsoft.DurableTask
             readonly List<DurableTaskTypeInfo> activities = new();
             readonly List<DurableFunction> durableFunctions = new();
 
-            public IReadOnlyList<DurableTaskTypeInfo> Orchestrators => this.orchestrators;
-            public IReadOnlyList<DurableTaskTypeInfo> Activities => this.activities;
-            public IReadOnlyList<DurableFunction> DurableFunctions => this.durableFunctions;
+            public IReadOnlyList<DurableTaskTypeInfo> Orchestrators
+            {
+                get
+                {
+                    return this.orchestrators;
+                }
+            }
+
+            public IReadOnlyList<DurableTaskTypeInfo> Activities
+            {
+                get
+                {
+                    return this.activities;
+                }
+            }
+
+            public IReadOnlyList<DurableFunction> DurableFunctions
+            {
+                get
+                {
+                    return this.durableFunctions;
+                }
+            }
 
             public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
             {

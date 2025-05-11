@@ -130,8 +130,23 @@ public class EntityMetadataTests
         json.Should().Be($@"{{""Id"":""{this.id}"",""LastModifiedTime"":{nowStr},""State"":""{{\u0022Number\u0022:{state.Number}}}""}}");
     }
 
-    record class State(int Number)
+    record class State
     {
-        public static State GetRandom() => new(Random.Shared.Next(0, 100));
+        public State(int Number)
+        {
+            this.Number = Number;
+        }
+
+        public static State GetRandom()
+        {
+            return new State(Random.Shared.Next(0, 100));
+        }
+
+        public int Number { get; init; }
+
+        public void Deconstruct(out int Number)
+        {
+            Number = this.Number;
+        }
     }
 }

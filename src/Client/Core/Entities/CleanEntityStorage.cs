@@ -12,12 +12,13 @@ public readonly record struct CleanEntityStorageRequest
     /// Gets the default request parameters. The default is meant to represent
     /// "maximal" cleaning that is safe to call at all times.
     /// </summary>
-    public static CleanEntityStorageRequest Default => new()
+    public static CleanEntityStorageRequest Default
     {
-        RemoveEmptyEntities = true,
-        ReleaseOrphanedLocks = true,
-        ContinuationToken = null,
-    };
+        get
+        {
+            return new() { RemoveEmptyEntities = true, ReleaseOrphanedLocks = true, ContinuationToken = null, };
+        }
+    }
 
     /// <summary>
     /// Gets a value indicating whether to remove empty entities. Defaults to true.

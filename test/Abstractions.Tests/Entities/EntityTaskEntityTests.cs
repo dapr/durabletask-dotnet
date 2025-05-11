@@ -172,28 +172,60 @@ public class EntityTaskEntityTests
 #pragma warning disable IDE0060 // Remove unused parameter
     class TestEntity : TaskEntity<int>
     {
-        public static string StaticMethod() => throw new NotImplementedException();
+        public static string StaticMethod()
+        {
+            throw new NotImplementedException();
+        }
 
-        public int Add0(int value) => this.Add(value, default);
+        public int Add0(int value)
+        {
+            return this.Add(value, default);
+        }
 
-        public int Add1(int value, TaskEntityContext context) => this.Add(value, context);
+        public int Add1(int value, TaskEntityContext context)
+        {
+            return this.Add(value, context);
+        }
 
-        public int Get0() => this.Get(default);
+        public int Get0()
+        {
+            return this.Get(default);
+        }
 
-        public int Get1(TaskEntityContext context) => this.Get(context);
+        public int Get1(TaskEntityContext context)
+        {
+            return this.Get(context);
+        }
 
-        public int AmbiguousMatch(TaskEntityContext context) => this.State;
+        public int AmbiguousMatch(TaskEntityContext context)
+        {
+            return this.State;
+        }
 
-        public int AmbiguousMatch(TaskEntityOperation operation) => this.State;
+        public int AmbiguousMatch(TaskEntityOperation operation)
+        {
+            return this.State;
+        }
 
-        public int AmbiguousArgs0(int value, object other) => this.Add0(value);
+        public int AmbiguousArgs0(int value, object other)
+        {
+            return this.Add0(value);
+        }
 
-        public int AmbiguousArgs1(int value, TaskEntityContext context, TaskEntityContext context2) => this.Add0(value);
+        public int AmbiguousArgs1(int value, TaskEntityContext context, TaskEntityContext context2)
+        {
+            return this.Add0(value);
+        }
 
         public int AmbiguousArgs2(int value, TaskEntityOperation operation, TaskEntityOperation operation2)
-            => this.Add0(value);
+        {
+            return this.Add0(value);
+        }
 
-        public string DefaultValue(string toReturn = "default") => toReturn;
+        public string DefaultValue(string toReturn = "default")
+        {
+            return toReturn;
+        }
 
         public Task TaskOp(bool sync)
         {
@@ -266,7 +298,10 @@ public class EntityTaskEntityTests
 
     class DeleteEntity : TaskEntity<int>
     {
-        public void Delete() => this.State = 0;
+        public void Delete()
+        {
+            this.State = 0;
+        }
     }
 #pragma warning restore IDE0060 // Remove unused parameter
 #pragma warning restore CA1822 // Mark members as static

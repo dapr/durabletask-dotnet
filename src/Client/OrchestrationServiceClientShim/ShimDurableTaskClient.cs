@@ -19,11 +19,9 @@ namespace Microsoft.DurableTask.Client.OrchestrationServiceClientShim;
 /// <remarks>
 /// Initializes a new instance of the <see cref="ShimDurableTaskClient"/> class.
 /// </remarks>
-/// <param name="name">The name of the client.</param>
-/// <param name="options">The client options.</param>
-class ShimDurableTaskClient(string name, ShimDurableTaskClientOptions options) : DurableTaskClient(name)
+class ShimDurableTaskClient : DurableTaskClient
 {
-    readonly ShimDurableTaskClientOptions options = Check.NotNull(options);
+    readonly ShimDurableTaskClientOptions options;
     ShimDurableEntityClient? entities;
 
     /// <summary>
@@ -36,6 +34,19 @@ class ShimDurableTaskClient(string name, ShimDurableTaskClientOptions options) :
         string name, IOptionsMonitor<ShimDurableTaskClientOptions> options)
         : this(name, Check.NotNull(options).Get(name))
     {
+    }
+
+    /// <summary>
+    /// A shim client for interacting with the backend via <see cref="Core.IOrchestrationServiceClient" />.
+    /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="ShimDurableTaskClient"/> class.
+    /// </remarks>
+    /// <param name="name">The name of the client.</param>
+    /// <param name="options">The client options.</param>
+    public ShimDurableTaskClient(string name, ShimDurableTaskClientOptions options) : base(name)
+    {
+        this.options = Check.NotNull(options);
     }
 
     /// <inheritdoc/>
@@ -63,14 +74,35 @@ class ShimDurableTaskClient(string name, ShimDurableTaskClientOptions options) :
         }
     }
 
-    DataConverter DataConverter => this.options.DataConverter;
+    DataConverter DataConverter
+    {
+        get
+        {
+            return this.options.DataConverter;
+        }
+    }
 
-    IOrchestrationServiceClient Client => this.options.Client!;
+    IOrchestrationServiceClient Client
+    {
+        get
+        {
+            return this.options.Client!;
+        }
+    }
 
-    IOrchestrationServicePurgeClient PurgeClient => this.CastClient<IOrchestrationServicePurgeClient>();
+    IOrchestrationServicePurgeClient PurgeClient
+    {
+        get
+        {
+            return this.CastClient<IOrchestrationServicePurgeClient>();
+        }
+    }
 
     /// <inheritdoc/>
-    public override ValueTask DisposeAsync() => default;
+    public override ValueTask DisposeAsync()
+    {
+        return default;
+    }
 
     /// <inheritdoc/>
     public override async Task<OrchestrationMetadata?> GetInstancesAsync(
@@ -186,12 +218,16 @@ class ShimDurableTaskClient(string name, ShimDurableTaskClientOptions options) :
     /// <inheritdoc/>
     public override Task SuspendInstanceAsync(
         string instanceId, string? reason = null, CancellationToken cancellation = default)
-        => this.SendInstanceMessageAsync(instanceId, new ExecutionSuspendedEvent(-1, reason), cancellation);
+    {
+        return this.SendInstanceMessageAsync(instanceId, new ExecutionSuspendedEvent(-1, reason), cancellation);
+    }
 
     /// <inheritdoc/>
     public override Task ResumeInstanceAsync(
         string instanceId, string? reason = null, CancellationToken cancellation = default)
-        => this.SendInstanceMessageAsync(instanceId, new ExecutionResumedEvent(-1, reason), cancellation);
+    {
+        return this.SendInstanceMessageAsync(instanceId, new ExecutionResumedEvent(-1, reason), cancellation);
+    }
 
     /// <inheritdoc/>
     public override Task TerminateInstanceAsync(

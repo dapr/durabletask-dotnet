@@ -10,10 +10,19 @@ namespace Microsoft.DurableTask.ScheduledTasks;
 /// <summary>
 /// Client for managing scheduled tasks in a Durable Task application.
 /// </summary>
-class DefaultScheduledTaskClient(DurableTaskClient durableTaskClient, ILogger logger) : ScheduledTaskClient
+class DefaultScheduledTaskClient : ScheduledTaskClient
 {
-    readonly DurableTaskClient durableTaskClient = Check.NotNull(durableTaskClient, nameof(durableTaskClient));
-    readonly ILogger logger = Check.NotNull(logger, nameof(logger));
+    readonly DurableTaskClient durableTaskClient;
+    readonly ILogger logger;
+
+    /// <summary>
+    /// Client for managing scheduled tasks in a Durable Task application.
+    /// </summary>
+    public DefaultScheduledTaskClient(DurableTaskClient durableTaskClient, ILogger logger)
+    {
+        this.durableTaskClient = Check.NotNull(durableTaskClient, nameof(durableTaskClient));
+        this.logger = Check.NotNull(logger, nameof(logger));
+    }
 
     /// <inheritdoc/>
     public override async Task<ScheduleClient> CreateScheduleAsync(ScheduleCreationOptions creationOptions, CancellationToken cancellation = default)

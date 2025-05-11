@@ -10,42 +10,53 @@ namespace Microsoft.DurableTask.Analyzers.Orchestration;
 /// <summary>
 /// Context information for the <see cref="OrchestrationContextFixer"/>.
 /// </summary>
-/// <param name="semanticModel">The Semantic Model retrieved from the Document.</param>
-/// <param name="knownTypeSymbols">Well-known types that are used by the Durable analyzers.</param>
-/// <param name="root">The root Syntax Node retrieved from the Document.</param>
-/// <param name="syntaxNodeWithDiagnostic">Syntax Node that contains the diagnostic.</param>
-/// <param name="taskOrchestrationContextSymbol">The 'TaskOrchestrationContext' symbol.</param>
-public readonly struct OrchestrationCodeFixContext(
-    SemanticModel semanticModel,
-    KnownTypeSymbols knownTypeSymbols,
-    SyntaxNode root,
-    SyntaxNode syntaxNodeWithDiagnostic,
-    IParameterSymbol taskOrchestrationContextSymbol)
+public readonly struct OrchestrationCodeFixContext
 {
+    /// <summary>
+    /// Context information for the <see cref="OrchestrationContextFixer"/>.
+    /// </summary>
+    /// <param name="semanticModel">The Semantic Model retrieved from the Document.</param>
+    /// <param name="knownTypeSymbols">Well-known types that are used by the Durable analyzers.</param>
+    /// <param name="root">The root Syntax Node retrieved from the Document.</param>
+    /// <param name="syntaxNodeWithDiagnostic">Syntax Node that contains the diagnostic.</param>
+    /// <param name="taskOrchestrationContextSymbol">The 'TaskOrchestrationContext' symbol.</param>
+    public OrchestrationCodeFixContext(SemanticModel semanticModel,
+        KnownTypeSymbols knownTypeSymbols,
+        SyntaxNode root,
+        SyntaxNode syntaxNodeWithDiagnostic,
+        IParameterSymbol taskOrchestrationContextSymbol)
+    {
+        this.SemanticModel = semanticModel;
+        this.KnownTypeSymbols = knownTypeSymbols;
+        this.Root = root;
+        this.SyntaxNodeWithDiagnostic = syntaxNodeWithDiagnostic;
+        this.TaskOrchestrationContextSymbol = taskOrchestrationContextSymbol;
+    }
+
     /// <summary>
     /// Gets the Semantic Model retrieved from the Document.
     /// </summary>
-    public SemanticModel SemanticModel { get; } = semanticModel;
+    public SemanticModel SemanticModel { get; }
 
     /// <summary>
     /// Gets the well-known types that are used by the Durable analyzers.
     /// </summary>
-    public KnownTypeSymbols KnownTypeSymbols { get; } = knownTypeSymbols;
+    public KnownTypeSymbols KnownTypeSymbols { get; }
 
     /// <summary>
     /// Gets the root Syntax Node retrieved from the Document.
     /// </summary>
-    public SyntaxNode Root { get; } = root;
+    public SyntaxNode Root { get; }
 
     /// <summary>
     /// Gets the Syntax Node that contains the diagnostic.
     /// </summary>
-    public SyntaxNode SyntaxNodeWithDiagnostic { get; } = syntaxNodeWithDiagnostic;
+    public SyntaxNode SyntaxNodeWithDiagnostic { get; }
 
     /// <summary>
     /// Gets the 'TaskOrchestrationContext' symbol.
     /// </summary>
-    public IParameterSymbol TaskOrchestrationContextSymbol { get; } = taskOrchestrationContextSymbol;
+    public IParameterSymbol TaskOrchestrationContextSymbol { get; }
 }
 
 /// <summary>
@@ -54,7 +65,10 @@ public readonly struct OrchestrationCodeFixContext(
 public abstract class OrchestrationContextFixer : CodeFixProvider
 {
     /// <inheritdoc/>
-    public override FixAllProvider? GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
+    public override FixAllProvider? GetFixAllProvider()
+    {
+        return WellKnownFixAllProviders.BatchFixer;
+    }
 
     /// <inheritdoc/>
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

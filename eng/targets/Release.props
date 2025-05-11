@@ -8,17 +8,22 @@
 
   <!-- Common NuGet settings -->
   <PropertyGroup>
-    <Authors>Microsoft</Authors>
+    <Authors>Microsoft, Dapr Authors</Authors>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
-    <RepositoryUrl>https://github.com/microsoft/durabletask-dotnet</RepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/dapr/durabletask-dotnet</RepositoryUrl>
+    <PackageLicenseExpression>MIT OR Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
-    <PackageTags>Microsoft Durable Task Orchestration Workflow Activity Reliable DTFx</PackageTags>
+    <PackageTags>Durable Task Orchestration Workflow Activity Reliable DTFx Dapr</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup>
-    <VersionPrefix>1.10.0</VersionPrefix>
+    <VersionPrefix>1.15.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
+  </PropertyGroup>
+  
+  <!-- Applies the Dapr prefix to the NuGet package -->
+  <PropertyGroup>
+    <PackageIdPrefix>Dapr.DurableTask.</PackageIdPrefix>
   </PropertyGroup>
 
 </Project>

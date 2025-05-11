@@ -19,13 +19,23 @@ class TaskActivityDispatcher : WorkItemDispatcher<TaskActivityWorkItem>
         this.taskExecutor = taskExecutor;
     }
 
-    public override int MaxWorkItems => this.service.MaxConcurrentTaskActivityWorkItems;
+    public override int MaxWorkItems
+    {
+        get
+        {
+            return this.service.MaxConcurrentTaskActivityWorkItems;
+        }
+    }
 
-    public override Task AbandonWorkItemAsync(TaskActivityWorkItem workItem) =>
-        this.service.AbandonTaskActivityWorkItemAsync(workItem);
+    public override Task AbandonWorkItemAsync(TaskActivityWorkItem workItem)
+    {
+        return this.service.AbandonTaskActivityWorkItemAsync(workItem);
+    }
 
-    public override Task<TaskActivityWorkItem?> FetchWorkItemAsync(TimeSpan timeout, CancellationToken cancellationToken) =>
-        this.service.LockNextTaskActivityWorkItem(timeout, cancellationToken);
+    public override Task<TaskActivityWorkItem?> FetchWorkItemAsync(TimeSpan timeout, CancellationToken cancellationToken)
+    {
+        return this.service.LockNextTaskActivityWorkItem(timeout, cancellationToken);
+    }
 
     protected override async Task ExecuteWorkItemAsync(TaskActivityWorkItem workItem)
     {
@@ -45,14 +55,24 @@ class TaskActivityDispatcher : WorkItemDispatcher<TaskActivityWorkItem>
         await this.service.CompleteTaskActivityWorkItemAsync(workItem, responseMessage);
     }
 
-    public override int GetDelayInSecondsOnFetchException(Exception ex) =>
-        this.service.GetDelayInSecondsAfterOnFetchException(ex);
+    public override int GetDelayInSecondsOnFetchException(Exception ex)
+    {
+        return this.service.GetDelayInSecondsAfterOnFetchException(ex);
+    }
 
-    public override string GetWorkItemId(TaskActivityWorkItem workItem) => workItem.Id;
+    public override string GetWorkItemId(TaskActivityWorkItem workItem)
+    {
+        return workItem.Id;
+    }
 
     // No-op
-    public override Task ReleaseWorkItemAsync(TaskActivityWorkItem workItem) => Task.CompletedTask;
+    public override Task ReleaseWorkItemAsync(TaskActivityWorkItem workItem)
+    {
+        return Task.CompletedTask;
+    }
 
-    public override Task<TaskActivityWorkItem> RenewWorkItemAsync(TaskActivityWorkItem workItem) =>
-        this.service.RenewTaskActivityWorkItemLockAsync(workItem);
+    public override Task<TaskActivityWorkItem> RenewWorkItemAsync(TaskActivityWorkItem workItem)
+    {
+        return this.service.RenewTaskActivityWorkItemLockAsync(workItem);
+    }
 }

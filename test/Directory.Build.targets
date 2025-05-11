@@ -3,7 +3,7 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory)../, $(_DirectoryBuildTargetsFile)))/$(_DirectoryBuildTargetsFile)"
     Condition=" '$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory)../, $(_DirectoryBuildTargetsFile)))' != '' " />
 
-  <ItemGroup Condition="'$(IsTestProject)' == 'true'">
+  <ItemGroup Condition="'$(IsTestProject)' == 'true'">   
     <PackageReference Include="DotNext" Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))"/>
     <PackageReference Include="FluentAssertions" />
     <PackageReference Include="FluentAssertions.Analyzers">
@@ -23,6 +23,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <!-- Used to annotate PR with test failures: https://github.com/Tyrrrz/GitHubActionsTestLogger -->
+    <PackageReference Include="GitHubActionsTestLogger" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsTestProject)' == 'true'">

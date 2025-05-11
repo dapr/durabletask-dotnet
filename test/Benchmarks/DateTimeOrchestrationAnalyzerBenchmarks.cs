@@ -62,7 +62,8 @@ public static class DurableFunction{0}
 
         // initialize the state used by all benchmarks
         this.syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
-        this.references = [
+        this.references = new List<MetadataReference>
+        {
             // mscorlib
             MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
             // netstandard
@@ -75,7 +76,7 @@ public static class DurableFunction{0}
             MetadataReference.CreateFromFile(typeof(OrchestrationTriggerAttribute).Assembly.Location),
             // Microsoft.DurableTask.Abstractions
             MetadataReference.CreateFromFile(typeof(TaskOrchestrationContext).Assembly.Location),
-        ];
+        };
     }
 
     [Benchmark]
@@ -89,7 +90,7 @@ public static class DurableFunction{0}
     public async Task EmptyAnalyzer()
     {
         await this.CreateCSharpCompilation()
-            .WithAnalyzers([new CustomEmptyAnalyzer()])
+            .WithAnalyzers(ImmutableArray.Create<DiagnosticAnalyzer>(new CustomEmptyAnalyzer()))
             .GetAllDiagnosticsAsync();
     }
 
@@ -97,14 +98,14 @@ public static class DurableFunction{0}
     public async Task DateTimeOrchestrationAnalyzer()
     {
         await this.CreateCSharpCompilation()
-            .WithAnalyzers([new DateTimeOrchestrationAnalyzer()])
+            .WithAnalyzers(ImmutableArray.Create<DiagnosticAnalyzer>(new DateTimeOrchestrationAnalyzer()))
             .GetAllDiagnosticsAsync();
     }
 
     public CSharpCompilation CreateCSharpCompilation()
     {
         return CSharpCompilation
-            .Create("MyAssembly", [this.syntaxTree], this.references)
+            .Create("MyAssembly", new List<SyntaxTree> { this.syntaxTree }.AsReadOnly(), this.references)
             .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
     }
 
@@ -112,7 +113,13 @@ public static class DurableFunction{0}
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     class CustomEmptyAnalyzer : DiagnosticAnalyzer
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [];
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get
+            {
+                return ImmutableArray<DiagnosticDescriptor>.Empty;
+            }
+        }
 
         public override void Initialize(AnalysisContext context) { }
     }

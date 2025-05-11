@@ -68,7 +68,10 @@ public class DurableTaskBuilderExtensionsTests
     }
 
 #if NET6_0_OR_GREATER
-    static GrpcChannel GetChannel() => GrpcChannel.ForAddress("http://localhost:9001");
+    static GrpcChannel GetChannel()
+    {
+        return GrpcChannel.ForAddress("http://localhost:9001");
+    }
 #endif
 
 #if NETFRAMEWORK

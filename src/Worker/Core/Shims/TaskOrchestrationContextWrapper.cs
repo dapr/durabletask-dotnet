@@ -46,19 +46,49 @@ sealed partial class TaskOrchestrationContextWrapper : TaskOrchestrationContext
     }
 
     /// <inheritdoc/>
-    public override TaskName Name => this.invocationContext.Name;
+    public override TaskName Name
+    {
+        get
+        {
+            return this.invocationContext.Name;
+        }
+    }
 
     /// <inheritdoc/>
-    public override string InstanceId => this.innerContext.OrchestrationInstance.InstanceId;
+    public override string InstanceId
+    {
+        get
+        {
+            return this.innerContext.OrchestrationInstance.InstanceId;
+        }
+    }
 
     /// <inheritdoc/>
-    public override ParentOrchestrationInstance? Parent => this.invocationContext.Parent;
+    public override ParentOrchestrationInstance? Parent
+    {
+        get
+        {
+            return this.invocationContext.Parent;
+        }
+    }
 
     /// <inheritdoc/>
-    public override bool IsReplaying => this.innerContext.IsReplaying;
+    public override bool IsReplaying
+    {
+        get
+        {
+            return this.innerContext.IsReplaying;
+        }
+    }
 
     /// <inheritdoc/>
-    public override DateTime CurrentUtcDateTime => this.innerContext.CurrentUtcDateTime;
+    public override DateTime CurrentUtcDateTime
+    {
+        get
+        {
+            return this.innerContext.CurrentUtcDateTime;
+        }
+    }
 
     /// <inheritdoc/>
     public override TaskOrchestrationEntityFeature Entities
@@ -82,18 +112,39 @@ sealed partial class TaskOrchestrationContextWrapper : TaskOrchestrationContext
     }
 
     /// <inheritdoc/>
-    public override string Version => this.innerContext.Version;
+    public override string Version
+    {
+        get
+        {
+            return this.innerContext.Version;
+        }
+    }
 
     /// <summary>
     /// Gets the DataConverter to use for inputs, outputs, and entity states.
     /// </summary>
-    internal DataConverter DataConverter => this.invocationContext.Options.DataConverter;
+    internal DataConverter DataConverter
+    {
+        get
+        {
+            return this.invocationContext.Options.DataConverter;
+        }
+    }
 
     /// <inheritdoc/>
-    protected override ILoggerFactory LoggerFactory => this.invocationContext.LoggerFactory;
+    protected override ILoggerFactory LoggerFactory
+    {
+        get
+        {
+            return this.invocationContext.LoggerFactory;
+        }
+    }
 
     /// <inheritdoc/>
-    public override T GetInput<T>() => (T)this.deserializedInput!;
+    public override T GetInput<T>()
+    {
+        return (T)this.deserializedInput!;
+    }
 
     /// <inheritdoc/>
     public override async Task<T> CallActivityAsync<T>(
@@ -152,7 +203,10 @@ sealed partial class TaskOrchestrationContextWrapper : TaskOrchestrationContext
     {
         // TODO: Check to see if this orchestrator is defined
         static string? GetInstanceId(TaskOptions? options)
-            => options is SubOrchestrationOptions derived ? derived.InstanceId : null;
+        {
+            return options is SubOrchestrationOptions derived ? derived.InstanceId : null;
+        }
+
         string instanceId = GetInstanceId(options) ?? this.NewGuid().ToString("N");
 
         Check.NotEntity(this.invocationContext.Options.EnableEntitySupport, instanceId);

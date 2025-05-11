@@ -41,33 +41,48 @@ public sealed class TaskRetryOptions
     /// Returns a new <see cref="TaskRetryOptions" /> from the provided <see cref="RetryPolicy" />.
     /// </summary>
     /// <param name="policy">The policy to convert from.</param>
-    public static implicit operator TaskRetryOptions(RetryPolicy policy) => FromRetryPolicy(policy);
+    public static implicit operator TaskRetryOptions(RetryPolicy policy)
+    {
+        return FromRetryPolicy(policy);
+    }
 
     /// <summary>
     /// Returns a new <see cref="TaskRetryOptions" /> from the provided <see cref="AsyncRetryHandler" />.
     /// </summary>
     /// <param name="handler">The handler to convert from.</param>
-    public static implicit operator TaskRetryOptions(AsyncRetryHandler handler) => FromRetryHandler(handler);
+    public static implicit operator TaskRetryOptions(AsyncRetryHandler handler)
+    {
+        return FromRetryHandler(handler);
+    }
 
     /// <summary>
     /// Returns a new <see cref="TaskRetryOptions" /> from the provided <see cref="RetryHandler" />.
     /// </summary>
     /// <param name="handler">The handler to convert from.</param>
-    public static implicit operator TaskRetryOptions(RetryHandler handler) => FromRetryHandler(handler);
+    public static implicit operator TaskRetryOptions(RetryHandler handler)
+    {
+        return FromRetryHandler(handler);
+    }
 
     /// <summary>
     /// Returns a new <see cref="TaskRetryOptions" /> from the provided <see cref="RetryPolicy" />.
     /// </summary>
     /// <param name="policy">The policy to convert from.</param>
     /// <returns>A <see cref="TaskRetryOptions" /> built from the policy.</returns>
-    public static TaskRetryOptions FromRetryPolicy(RetryPolicy policy) => new(policy);
+    public static TaskRetryOptions FromRetryPolicy(RetryPolicy policy)
+    {
+        return new TaskRetryOptions(policy);
+    }
 
     /// <summary>
     /// Returns a new <see cref="TaskRetryOptions" /> from the provided <see cref="AsyncRetryHandler" />.
     /// </summary>
     /// <param name="handler">The handler to convert from.</param>
     /// <returns>A <see cref="TaskRetryOptions" /> built from the handler.</returns>
-    public static TaskRetryOptions FromRetryHandler(AsyncRetryHandler handler) => new(handler);
+    public static TaskRetryOptions FromRetryHandler(AsyncRetryHandler handler)
+    {
+        return new TaskRetryOptions(handler);
+    }
 
     /// <summary>
     /// Returns a new <see cref="TaskRetryOptions" /> from the provided <see cref="RetryHandler" />.

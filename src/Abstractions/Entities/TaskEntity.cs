@@ -88,7 +88,13 @@ public abstract class TaskEntity<TState> : ITaskEntity
     /// will only be attempted if entity-level dispatch does not succeed. Default is <c>false</c>. Dispatching to state
     /// follows the same rules as dispatching to this entity.
     /// </summary>
-    protected virtual bool AllowStateDispatch => false;
+    protected virtual bool AllowStateDispatch
+    {
+        get
+        {
+            return false;
+        }
+    }
 
     /// <summary>
     /// Gets or sets the state for this entity.

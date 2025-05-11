@@ -33,7 +33,10 @@ public abstract class TaskEntityOperation
     /// </summary>
     /// <typeparam name="T">The type to deserialize the input as.</typeparam>
     /// <returns>The deserialized input type.</returns>
-    public virtual T? GetInput<T>() => (T?)this.GetInput(typeof(T));
+    public virtual T? GetInput<T>()
+    {
+        return (T?)this.GetInput(typeof(T));
+    }
 
     /// <summary>
     /// Gets the input for this operation.

@@ -39,7 +39,13 @@ sealed partial class GrpcDurableTaskWorker
             this.internalOptions = this.worker.grpcOptions.Internal;
         }
 
-        ILogger Logger => this.worker.logger;
+        ILogger Logger
+        {
+            get
+            {
+                return this.worker.logger;
+            }
+        }
 
         public async Task ExecuteAsync(CancellationToken cancellation)
         {
@@ -183,7 +189,7 @@ sealed partial class GrpcDurableTaskWorker
                 ? ProtoUtils.ConvertHistoryEvent
                 : entityConversionState.ConvertFromProto;
 
-            IEnumerable<HistoryEvent> pastEvents = [];
+            IEnumerable<HistoryEvent> pastEvents = new List<HistoryEvent> { }.AsReadOnly();
             if (orchestratorRequest.RequiresHistoryStreaming)
             {
                 // Stream the remaining events from the remote service
@@ -592,7 +598,7 @@ sealed partial class GrpcDurableTaskWorker
                     // so we return a non-retriable error-OperationResult for each operation in the batch.
                     batchResult = new EntityBatchResult()
                     {
-                        Actions = [], // no actions
+                        Actions = new List<OperationAction> { }, // no actions
                         EntityState = batchRequest.EntityState, // state is unmodified
                         Results = Enumerable.Repeat(
                             new OperationResult()

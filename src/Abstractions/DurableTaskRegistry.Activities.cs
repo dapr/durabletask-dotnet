@@ -50,7 +50,9 @@ public sealed partial class DurableTaskRegistry
     /// <param name="type">The activity type.</param>
     /// <returns>The same registry, for call chaining.</returns>
     public DurableTaskRegistry AddActivity(Type type)
-        => this.AddActivity(type.GetTaskName(), type);
+    {
+        return this.AddActivity(type.GetTaskName(), type);
+    }
 
     /// <summary>
     /// Registers an activity factory, resolving the provided type with the service provider.
@@ -60,7 +62,9 @@ public sealed partial class DurableTaskRegistry
     /// <returns>The same registry, for call chaining.</returns>
     public DurableTaskRegistry AddActivity<TActivity>(TaskName name)
         where TActivity : class, ITaskActivity
-        => this.AddActivity(name, typeof(TActivity));
+    {
+        return this.AddActivity(name, typeof(TActivity));
+    }
 
     /// <summary>
     /// Registers an activity factory, resolving the provided type with the service provider. The TaskName used is
@@ -70,7 +74,9 @@ public sealed partial class DurableTaskRegistry
     /// <returns>The same registry, for call chaining.</returns>
     public DurableTaskRegistry AddActivity<TActivity>()
         where TActivity : class, ITaskActivity
-        => this.AddActivity(typeof(TActivity));
+    {
+        return this.AddActivity(typeof(TActivity));
+    }
 
     /// <summary>
     /// Registers an activity singleton.

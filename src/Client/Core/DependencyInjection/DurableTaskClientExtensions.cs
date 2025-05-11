@@ -54,7 +54,9 @@ public static class DurableTaskClientExtensions
         DateTimeOffset? createdTo,
         IEnumerable<OrchestrationRuntimeStatus>? statuses,
         CancellationToken cancellation = default)
-        => PurgeInstancesAsync(client, createdFrom, createdTo, statuses, null, cancellation);
+    {
+        return PurgeInstancesAsync(client, createdFrom, createdTo, statuses, null, cancellation);
+    }
 
     /// <summary>
     /// Purges orchestration instances metadata from the durable store.
@@ -75,7 +77,9 @@ public static class DurableTaskClientExtensions
         DateTimeOffset? createdTo,
         PurgeInstanceOptions? options,
         CancellationToken cancellation = default)
-        => PurgeInstancesAsync(client, createdFrom, createdTo, null, options, cancellation);
+    {
+        return PurgeInstancesAsync(client, createdFrom, createdTo, null, options, cancellation);
+    }
 
     /// <summary>
     /// Purges orchestration instances metadata from the durable store.
@@ -94,5 +98,7 @@ public static class DurableTaskClientExtensions
         DateTimeOffset? createdFrom,
         DateTimeOffset? createdTo,
         CancellationToken cancellation = default)
-        => PurgeInstancesAsync(client, createdFrom, createdTo, null, null, cancellation);
+    {
+        return PurgeInstancesAsync(client, createdFrom, createdTo, null, null, cancellation);
+    }
 }

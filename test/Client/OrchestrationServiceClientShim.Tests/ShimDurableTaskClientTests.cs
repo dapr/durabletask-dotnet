@@ -133,10 +133,11 @@ public class ShimDurableTaskClientTests
         // arrange
         DateTimeOffset utcNow = DateTimeOffset.UtcNow;
         List<Core.OrchestrationState> states =
-        [
-            CreateState("input", start: utcNow.AddMinutes(-1)),
-            CreateState(10, "output", utcNow.AddMinutes(-5)),
-        ];
+            new()
+            {
+                CreateState("input", start: utcNow.AddMinutes(-1)),
+                CreateState(10, "output", utcNow.AddMinutes(-5)),
+            };
 
         OrchestrationQueryResult queryResult = new(states, null);
         string instanceId = states.First().OrchestrationInstance.InstanceId;
@@ -285,8 +286,8 @@ public class ShimDurableTaskClientTests
         Core.OrchestrationState state2 = CreateState("input", start: start);
         state1.OrchestrationInstance = instance;
         this.orchestrationClient.SetupSequence(m => m.GetOrchestrationStateAsync(instance.InstanceId, false))
-            .ReturnsAsync([state1])
-            .ReturnsAsync([state2]);
+            .ReturnsAsync(new List<OrchestrationState> { state1 })
+            .ReturnsAsync(new List<OrchestrationState> { state2 });
 
         // act
         OrchestrationMetadata metadata = await this.client.WaitForInstanceStartAsync(
@@ -300,16 +301,22 @@ public class ShimDurableTaskClientTests
 
     [Fact]
     public Task ScheduleNewOrchestrationInstance_IdGenerated_NoInput()
-        => this.RunScheduleNewOrchestrationInstanceAsync("test", null, null);
+    {
+        return this.RunScheduleNewOrchestrationInstanceAsync("test", null, null);
+    }
 
     [Fact]
     public Task ScheduleNewOrchestrationInstance_IdProvided_InputProvided()
-        => this.RunScheduleNewOrchestrationInstanceAsync("test", "input", new() { InstanceId = "test-id" });
+    {
+        return this.RunScheduleNewOrchestrationInstanceAsync("test", "input", new() { InstanceId = "test-id" });
+    }
 
     [Fact]
     public Task ScheduleNewOrchestrationInstance_StartAt()
-        => this.RunScheduleNewOrchestrationInstanceAsync(
+    {
+        return this.RunScheduleNewOrchestrationInstanceAsync(
             "test", null, new() { StartAt = DateTimeOffset.UtcNow.AddHours(1) });
+    }
 
     [Fact]
     public async Task ScheduleNewOrchestrationInstance_IdProvided_TagsProvided()

@@ -45,5 +45,11 @@ public class ShimDurableTaskEntityOptions
     /// <summary>
     /// Gets the max signal delay time.
     /// </summary>
-    internal TimeSpan MaxSignalDelayTimeOrDefault => this.MaxSignalDelayTime ?? TimeSpan.FromDays(3);
+    internal TimeSpan MaxSignalDelayTimeOrDefault
+    {
+        get
+        {
+            return this.MaxSignalDelayTime ?? TimeSpan.FromDays(3);
+        }
+    }
 }

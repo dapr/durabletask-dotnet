@@ -23,13 +23,19 @@ sealed class JsonDataConverterShim : CoreJsonDataConverter
 
     /// <inheritdoc/>
     public override string Serialize(object value)
-        => this.innerConverter.Serialize(value);
+    {
+        return this.innerConverter.Serialize(value);
+    }
 
     /// <inheritdoc/>
     public override string Serialize(object value, bool formatted)
-        => this.Serialize(value);
+    {
+        return this.Serialize(value);
+    }
 
     /// <inheritdoc/>
     public override object Deserialize(string data, Type objectType)
-        => this.innerConverter.Deserialize(data, objectType);
+    {
+        return this.innerConverter.Deserialize(data, objectType);
+    }
 }

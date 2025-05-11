@@ -21,8 +21,11 @@ static class RetryPolicyExtensions
 
         // The legacy framework doesn't support Timeout.InfiniteTimeSpan so we have to convert that
         // to TimeSpan.MaxValue when encountered.
-        static TimeSpan ConvertInfiniteTimeSpans(TimeSpan timeout) =>
-            timeout == Timeout.InfiniteTimeSpan ? TimeSpan.MaxValue : timeout;
+        static TimeSpan ConvertInfiniteTimeSpans(TimeSpan timeout)
+        {
+            return timeout == Timeout.InfiniteTimeSpan ? TimeSpan.MaxValue : timeout;
+        }
+
         return new CoreRetryOptions(retry.FirstRetryInterval, retry.MaxNumberOfAttempts)
         {
             BackoffCoefficient = retry.BackoffCoefficient,

@@ -244,14 +244,19 @@ static class ProtoUtils
     /// <param name="dateTime">The date-time to convert.</param>
     /// <returns>The gRPC timestamp.</returns>
     internal static Timestamp? ToTimestamp(this DateTime? dateTime)
-        => dateTime.HasValue ? dateTime.Value.ToTimestamp() : null;
+    {
+        return dateTime.HasValue ? dateTime.Value.ToTimestamp() : null;
+    }
 
     /// <summary>
     /// Converts a <see cref="DateTimeOffset" /> to a gRPC <see cref="Timestamp" />.
     /// </summary>
     /// <param name="dateTime">The date-time to convert.</param>
     /// <returns>The gRPC timestamp.</returns>
-    internal static Timestamp ToTimestamp(this DateTimeOffset dateTime) => Timestamp.FromDateTimeOffset(dateTime);
+    internal static Timestamp ToTimestamp(this DateTimeOffset dateTime)
+    {
+        return Timestamp.FromDateTimeOffset(dateTime);
+    }
 
     /// <summary>
     /// Converts a <see cref="DateTimeOffset" /> to a gRPC <see cref="Timestamp" />.
@@ -259,7 +264,9 @@ static class ProtoUtils
     /// <param name="dateTime">The date-time to convert.</param>
     /// <returns>The gRPC timestamp.</returns>
     internal static Timestamp? ToTimestamp(this DateTimeOffset? dateTime)
-        => dateTime.HasValue ? dateTime.Value.ToTimestamp() : null;
+    {
+        return dateTime.HasValue ? dateTime.Value.ToTimestamp() : null;
+    }
 
     /// <summary>
     /// Constructs a <see cref="P.OrchestratorResponse" />.
@@ -437,7 +444,11 @@ static class ProtoUtils
     /// </summary>
     /// <param name="status">The status to convert.</param>
     /// <returns>The converted status.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("status")]
+#else
     [return: NotNullIfNotNull(nameof(status))]
+#endif
     internal static OrchestrationInstance? ToCore(this P.OrchestrationInstance? status)
     {
         if (status == null)
@@ -457,7 +468,11 @@ static class ProtoUtils
     /// </summary>
     /// <param name="failureDetails">The failure details to convert.</param>
     /// <returns>The converted failure details.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("failureDetails")]
+#else
     [return: NotNullIfNotNull(nameof(failureDetails))]
+#endif
     internal static TaskFailureDetails? ToTaskFailureDetails(this P.TaskFailureDetails? failureDetails)
     {
         if (failureDetails == null)
@@ -477,7 +492,11 @@ static class ProtoUtils
     /// </summary>
     /// <param name="e">The exception to convert.</param>
     /// <returns>The task failure details.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("e")]
+#else
     [return: NotNullIfNotNull(nameof(e))]
+#endif
     internal static P.TaskFailureDetails? ToTaskFailureDetails(this Exception? e)
     {
         if (e == null)
@@ -499,7 +518,11 @@ static class ProtoUtils
     /// </summary>
     /// <param name="entityBatchRequest">The entity batch request to convert.</param>
     /// <returns>The converted entity batch request.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("entityBatchRequest")]
+#else
     [return: NotNullIfNotNull(nameof(entityBatchRequest))]
+#endif
     internal static EntityBatchRequest? ToEntityBatchRequest(this P.EntityBatchRequest? entityBatchRequest)
     {
         if (entityBatchRequest == null)
@@ -530,7 +553,7 @@ static class ProtoUtils
         {
             EntityState = entityRequest.EntityState,
             InstanceId = entityRequest.InstanceId,
-            Operations = [], // operations are added to this collection below
+            Operations = new List<OperationRequest> { }, // operations are added to this collection below
         };
 
         operationInfos = new(entityRequest.OperationRequests.Count);
@@ -577,7 +600,11 @@ static class ProtoUtils
     /// </summary>
     /// <param name="operationRequest">The operation request to convert.</param>
     /// <returns>The converted operation request.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("operationRequest")]
+#else
     [return: NotNullIfNotNull(nameof(operationRequest))]
+#endif
     internal static OperationRequest? ToOperationRequest(this P.OperationRequest? operationRequest)
     {
         if (operationRequest == null)
@@ -598,7 +625,11 @@ static class ProtoUtils
     /// </summary>
     /// <param name="operationResult">The operation result to convert.</param>
     /// <returns>The converted operation result.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("operationResult")]
+#else
     [return: NotNullIfNotNull(nameof(operationResult))]
+#endif
     internal static OperationResult? ToOperationResult(this P.OperationResult? operationResult)
     {
         if (operationResult == null)
@@ -630,7 +661,11 @@ static class ProtoUtils
     /// </summary>
     /// <param name="operationResult">The operation result to convert.</param>
     /// <returns>The converted operation result.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("operationResult")]
+#else
     [return: NotNullIfNotNull(nameof(operationResult))]
+#endif
     internal static P.OperationResult? ToOperationResult(this OperationResult? operationResult)
     {
         if (operationResult == null)
@@ -665,7 +700,11 @@ static class ProtoUtils
     /// </summary>
     /// <param name="operationAction">The operation action to convert.</param>
     /// <returns>The converted operation action.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("operationAction")]
+#else
     [return: NotNullIfNotNull(nameof(operationAction))]
+#endif
     internal static OperationAction? ToOperationAction(this P.OperationAction? operationAction)
     {
         if (operationAction == null)
@@ -705,7 +744,11 @@ static class ProtoUtils
     /// </summary>
     /// <param name="operationAction">The operation action to convert.</param>
     /// <returns>The converted operation action.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("operationAction")]
+#else
     [return: NotNullIfNotNull(nameof(operationAction))]
+#endif
     internal static P.OperationAction? ToOperationAction(this OperationAction? operationAction)
     {
         if (operationAction == null)
@@ -749,7 +792,11 @@ static class ProtoUtils
     /// </summary>
     /// <param name="entityBatchResult">The operation result to convert.</param>
     /// <returns>The converted operation result.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("entityBatchResult")]
+#else
     [return: NotNullIfNotNull(nameof(entityBatchResult))]
+#endif
     internal static EntityBatchResult? ToEntityBatchResult(this P.EntityBatchResult? entityBatchResult)
     {
         if (entityBatchResult == null)
@@ -773,7 +820,11 @@ static class ProtoUtils
     /// <param name="completionToken">The completion token, or null for the older protocol.</param>
     /// <param name="operationInfos">Additional information about each operation, required by DTS.</param>
     /// <returns>The converted operation result.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("entityBatchResult")]
+#else
     [return: NotNullIfNotNull(nameof(entityBatchResult))]
+#endif
     internal static P.EntityBatchResult? ToEntityBatchResult(
         this EntityBatchResult? entityBatchResult,
         string? completionToken = null,
@@ -788,10 +839,14 @@ static class ProtoUtils
         {
             EntityState = entityBatchResult.EntityState,
             FailureDetails = entityBatchResult.FailureDetails.ToProtobuf(),
-            Actions = { entityBatchResult.Actions?.Select(a => a.ToOperationAction()) ?? [] },
-            Results = { entityBatchResult.Results?.Select(a => a.ToOperationResult()) ?? [] },
+            Actions = { entityBatchResult.Actions?.Select(a => a.ToOperationAction()) ??
+                        new List<P.OperationAction> { }.AsReadOnly()
+            },
+            Results = { entityBatchResult.Results?.Select(a => a.ToOperationResult()) ??
+                        new List<P.OperationResult> { }.AsReadOnly()
+            },
             CompletionToken = completionToken ?? string.Empty,
-            OperationInfos = { operationInfos ?? [] },
+            OperationInfos = { operationInfos ?? new List<P.OperationInfo> { }.AsReadOnly() },
         };
     }
 
@@ -800,7 +855,11 @@ static class ProtoUtils
     /// </summary>
     /// <param name="parameters">The DT.Core representation.</param>
     /// <returns>The gRPC representation.</returns>
+#if NET6_0
+    [return: NotNullIfNotNull("parameters")]
+#else
     [return: NotNullIfNotNull(nameof(parameters))]
+#endif
     internal static TaskOrchestrationEntityParameters? ToCore(this P.OrchestratorEntityParameters? parameters)
     {
         if (parameters == null)
@@ -970,12 +1029,24 @@ static class ProtoUtils
         /// <summary>
         /// Gets the orchestration instance of this history.
         /// </summary>
-        public OrchestrationInstance? CurrentInstance => this.instance;
+        public OrchestrationInstance? CurrentInstance
+        {
+            get
+            {
+                return this.instance;
+            }
+        }
 
         /// <summary>
         /// Gets the set of guids that have been used as entity request ids in this history.
         /// </summary>
-        public HashSet<string> EntityRequestIds => this.entityRequestIds ??= new();
+        public HashSet<string> EntityRequestIds
+        {
+            get
+            {
+                return this.entityRequestIds ??= new();
+            }
+        }
 
         /// <summary>
         /// Records the orchestration instance, which may be needed for some conversions.

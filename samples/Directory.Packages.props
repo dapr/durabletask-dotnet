@@ -13,6 +13,9 @@
     <PackageVersion Include="Microsoft.DurableTask.Client.Grpc" Version="1.5.0" />
     <PackageVersion Include="Microsoft.DurableTask.Generators" Version="1.0.0-preview.1" />
     <PackageVersion Include="Microsoft.DurableTask.Worker.Grpc" Version="1.5.0" />
+
+    <!-- Used to annotate PR with test failures: https://github.com/Tyrrrz/GitHubActionsTestLogger -->
+    <PackageReference Include="GitHubActionsTestLogger" />
   </ItemGroup>
 
 </Project>

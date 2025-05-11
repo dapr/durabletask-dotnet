@@ -100,15 +100,29 @@ public static class DurableTaskSchedulerClientExtensions
     /// Configuration class that sets up gRPC channels for client options
     /// using the provided Durable Task Scheduler options.
     /// </summary>
-    /// <param name="schedulerOptions">Monitor for accessing the current scheduler options configuration.</param>
-    class ConfigureGrpcChannel(IOptionsMonitor<DurableTaskSchedulerClientOptions> schedulerOptions) :
+    class ConfigureGrpcChannel :
         IConfigureNamedOptions<GrpcDurableTaskClientOptions>
     {
+        IOptionsMonitor<DurableTaskSchedulerClientOptions> _schedulerOptions;
+
+        /// <summary>
+        /// Configuration class that sets up gRPC channels for client options
+        /// using the provided Durable Task Scheduler options.
+        /// </summary>
+        /// <param name="schedulerOptions">Monitor for accessing the current scheduler options configuration.</param>
+        public ConfigureGrpcChannel(IOptionsMonitor<DurableTaskSchedulerClientOptions> schedulerOptions)
+        {
+            this._schedulerOptions = schedulerOptions;
+        }
+
         /// <summary>
         /// Configures the default named options instance.
         /// </summary>
         /// <param name="options">The options instance to configure.</param>
-        public void Configure(GrpcDurableTaskClientOptions options) => this.Configure(Options.DefaultName, options);
+        public void Configure(GrpcDurableTaskClientOptions options)
+        {
+            this.Configure(Options.DefaultName, options);
+        }
 
         /// <summary>
         /// Configures a named options instance.
@@ -117,7 +131,7 @@ public static class DurableTaskSchedulerClientExtensions
         /// <param name="options">The options instance to configure.</param>
         public void Configure(string? name, GrpcDurableTaskClientOptions options)
         {
-            DurableTaskSchedulerClientOptions source = schedulerOptions.Get(name ?? Options.DefaultName);
+            DurableTaskSchedulerClientOptions source = this._schedulerOptions.Get(name ?? Options.DefaultName);
             options.Channel = source.CreateChannel();
         }
     }

@@ -41,7 +41,10 @@ public class PageableIntegrationTests : IntegrationTestBase
     {
         int pageSize = input?.PageSize ?? 3;
         Page<string> CreatePage(string? next)
-            => new (Enumerable.Range(0, pageSize).Select(x => $"item_{x}").ToList(), next);
+        {
+            return new(Enumerable.Range(0, pageSize).Select(x => $"item_{x}").ToList(), next);
+        }
+
         Page<string>? page = input?.Continuation switch
         {
             null => CreatePage("1"),
@@ -64,5 +67,21 @@ public class PageableIntegrationTests : IntegrationTestBase
         return await pageable.CountAsync();
     }
 
-    record PageRequest(string? Continuation, int? PageSize = null);
+    record PageRequest
+    {
+        public PageRequest(string? Continuation, int? PageSize = null)
+        {
+            this.Continuation = Continuation;
+            this.PageSize = PageSize;
+        }
+
+        public string? Continuation { get; init; }
+        public int? PageSize { get; init; }
+
+        public void Deconstruct(out string? Continuation, out int? PageSize)
+        {
+            Continuation = this.Continuation;
+            PageSize = this.PageSize;
+        }
+    }
 }

@@ -13,15 +13,21 @@ public static partial class CSharpAnalyzerVerifier<TAnalyzer>
 {
     /// <inheritdoc cref="AnalyzerVerifier{TAnalyzer, TTest, TVerifier}.Diagnostic()"/>
     public static DiagnosticResult Diagnostic()
-        => CSharpAnalyzerVerifier<TAnalyzer, DefaultVerifier>.Diagnostic();
+    {
+        return CSharpAnalyzerVerifier<TAnalyzer, DefaultVerifier>.Diagnostic();
+    }
 
     /// <inheritdoc cref="AnalyzerVerifier{TAnalyzer, TTest, TVerifier}.Diagnostic(string)"/>
     public static DiagnosticResult Diagnostic(string diagnosticId)
-        => CSharpAnalyzerVerifier<TAnalyzer, DefaultVerifier>.Diagnostic(diagnosticId);
+    {
+        return CSharpAnalyzerVerifier<TAnalyzer, DefaultVerifier>.Diagnostic(diagnosticId);
+    }
 
     /// <inheritdoc cref="AnalyzerVerifier{TAnalyzer, TTest, TVerifier}.Diagnostic(DiagnosticDescriptor)"/>
     public static DiagnosticResult Diagnostic(DiagnosticDescriptor descriptor)
-        => CSharpAnalyzerVerifier<TAnalyzer, DefaultVerifier>.Diagnostic(descriptor);
+    {
+        return CSharpAnalyzerVerifier<TAnalyzer, DefaultVerifier>.Diagnostic(descriptor);
+    }
 
     /// <inheritdoc cref="AnalyzerVerifier{TAnalyzer, TTest, TVerifier}.VerifyAnalyzerAsync(string, DiagnosticResult[])"/>
     public static async Task VerifyAnalyzerAsync(string source, params DiagnosticResult[] expected)

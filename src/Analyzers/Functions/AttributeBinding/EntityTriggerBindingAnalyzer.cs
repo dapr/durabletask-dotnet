@@ -30,7 +30,8 @@ public sealed class EntityTriggerBindingAnalyzer : MatchingAttributeBindingAnaly
             isEnabledByDefault: true);
 
     /// <inheritdoc/>
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [Rule];
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+        new ImmutableArray<DiagnosticDescriptor> { Rule };
 
     /// <inheritdoc/>
     protected override ExpectedBinding GetExpectedBinding(KnownTypeSymbols knownTypeSymbols)

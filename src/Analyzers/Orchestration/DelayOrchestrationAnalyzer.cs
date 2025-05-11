@@ -32,7 +32,8 @@ public class DelayOrchestrationAnalyzer : OrchestrationAnalyzer<DelayOrchestrati
         isEnabledByDefault: true);
 
     /// <inheritdoc/>
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [Rule];
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+        new ImmutableArray<DiagnosticDescriptor> { Rule };
 
     /// <summary>
     /// Visitor that inspects the method body for Task.Delay or Thread.Sleep calls.

@@ -35,7 +35,13 @@ public class IntegrationTestBase : IClassFixture<GrpcSidecarFixture>, IDisposabl
     /// Gets a <see cref="CancellationToken"/> that triggers after a default test timeout period.
     /// The actual timeout value is increased if a debugger is attached to the test process.
     /// </summary>
-    public CancellationToken TimeoutToken => this.testTimeoutSource.Token;
+    public CancellationToken TimeoutToken
+    {
+        get
+        {
+            return this.testTimeoutSource.Token;
+        }
+    }
 
     void IDisposable.Dispose()
     {
@@ -93,7 +99,7 @@ public class IntegrationTestBase : IClassFixture<GrpcSidecarFixture>, IDisposabl
     protected IReadOnlyCollection<LogEntry> GetLogs(string category)
     {
         this.logProvider.TryGetLogs(category, out IReadOnlyCollection<LogEntry> logs);
-        return logs ?? [];
+        return logs ?? new List<LogEntry> { }.AsReadOnly();
     }
 
     protected static bool MatchLog(

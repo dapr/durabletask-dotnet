@@ -46,5 +46,8 @@ public abstract class DataConverter
     /// Returns a deserialized object or <c>null</c> if the input is null.
     /// </returns>
     [return: NotNullIfNotNull("data")]
-    public virtual T? Deserialize<T>(string? data) => (T?)(this.Deserialize(data, typeof(T)) ?? default);
+    public virtual T? Deserialize<T>(string? data)
+    {
+        return (T?)(this.Deserialize(data, typeof(T)) ?? default);
+    }
 }

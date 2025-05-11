@@ -14,9 +14,17 @@ namespace Microsoft.DurableTask.Grpc.Tests;
 /// Integration tests that are designed to exercise the error handling and retry functionality
 /// of the Durable Task SDK.
 /// </summary>
-public class OrchestrationErrorHandling(ITestOutputHelper output, GrpcSidecarFixture sidecarFixture) :
-    IntegrationTestBase(output, sidecarFixture)
+public class OrchestrationErrorHandling :
+    IntegrationTestBase
 {
+    /// <summary>
+    /// Integration tests that are designed to exercise the error handling and retry functionality
+    /// of the Durable Task SDK.
+    /// </summary>
+    public OrchestrationErrorHandling(ITestOutputHelper output, GrpcSidecarFixture sidecarFixture) : base(output, sidecarFixture)
+    {
+    }
+
     /// <summary>
     /// Tests the behavior and output of an unhandled exception that originates from an activity.
     /// </summary>
@@ -29,11 +37,15 @@ public class OrchestrationErrorHandling(ITestOutputHelper output, GrpcSidecarFix
         TaskName activityName = "FaultyActivity";
 
         // Use local function definitions to simplify the validation of the call stacks
-        async Task MyOrchestrationImpl(TaskOrchestrationContext ctx) =>
+        async Task MyOrchestrationImpl(TaskOrchestrationContext ctx)
+        {
             await ctx.CallActivityAsync(activityName);
+        }
 
-        void MyActivityImpl(TaskActivityContext ctx) =>
+        void MyActivityImpl(TaskActivityContext ctx)
+        {
             throw new InvalidOperationException(errorMessage, new CustomException("Inner!"));
+        }
 
         await using HostTestLifetime server = await this.StartWorkerAsync(b =>
         {

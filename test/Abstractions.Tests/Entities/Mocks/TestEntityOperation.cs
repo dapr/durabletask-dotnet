@@ -33,7 +33,13 @@ public class TestEntityOperation : TaskEntityOperation
 
     public override TaskEntityState State { get; }
 
-    public override bool HasInput => this.input.HasValue;
+    public override bool HasInput
+    {
+        get
+        {
+            return this.input.HasValue;
+        }
+    }
 
     public override object? GetInput(Type inputType)
     {

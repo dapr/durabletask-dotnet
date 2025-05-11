@@ -29,21 +29,30 @@ public record TaskOptions
     /// </summary>
     /// <param name="policy">The policy to convert from.</param>
     /// <returns>A <see cref="TaskOptions" /> built from the policy.</returns>
-    public static TaskOptions FromRetryPolicy(RetryPolicy policy) => new(policy);
+    public static TaskOptions FromRetryPolicy(RetryPolicy policy)
+    {
+        return new TaskOptions(policy);
+    }
 
     /// <summary>
     /// Returns a new <see cref="TaskOptions" /> from the provided <see cref="AsyncRetryHandler" />.
     /// </summary>
     /// <param name="handler">The handler to convert from.</param>
     /// <returns>A <see cref="TaskOptions" /> built from the handler.</returns>
-    public static TaskOptions FromRetryHandler(AsyncRetryHandler handler) => new(handler);
+    public static TaskOptions FromRetryHandler(AsyncRetryHandler handler)
+    {
+        return new TaskOptions(handler);
+    }
 
     /// <summary>
     /// Returns a new <see cref="TaskOptions" /> from the provided <see cref="RetryHandler" />.
     /// </summary>
     /// <param name="handler">The handler to convert from.</param>
     /// <returns>A <see cref="TaskOptions" /> built from the handler.</returns>
-    public static TaskOptions FromRetryHandler(RetryHandler handler) => new(handler);
+    public static TaskOptions FromRetryHandler(RetryHandler handler)
+    {
+        return new TaskOptions(handler);
+    }
 
     /// <summary>
     /// Returns a new <see cref="SubOrchestrationOptions" /> with the provided instance ID. This can be used when
@@ -51,7 +60,10 @@ public record TaskOptions
     /// </summary>
     /// <param name="instanceId">The instance ID to use.</param>
     /// <returns>A new <see cref="SubOrchestrationOptions" />.</returns>
-    public SubOrchestrationOptions WithInstanceId(string instanceId) => new(this, instanceId);
+    public SubOrchestrationOptions WithInstanceId(string instanceId)
+    {
+        return new SubOrchestrationOptions(this, instanceId);
+    }
 }
 
 /// <summary>
@@ -95,17 +107,43 @@ public record SubOrchestrationOptions : TaskOptions
 /// <summary>
 /// Options for submitting new orchestrations via the client.
 /// </summary>
-/// <param name="InstanceId">
-/// The unique ID of the orchestration instance to schedule. If not specified, a new GUID value is used.
-/// </param>
-/// <param name="StartAt">
-/// The time when the orchestration instance should start executing. If not specified or if a date-time in the past
-/// is specified, the orchestration instance will be scheduled immediately.
-/// </param>
-public record StartOrchestrationOptions(string? InstanceId = null, DateTimeOffset? StartAt = null)
+public record StartOrchestrationOptions
 {
+    /// <summary>
+    /// Options for submitting new orchestrations via the client.
+    /// </summary>
+    /// <param name="InstanceId">
+    /// The unique ID of the orchestration instance to schedule. If not specified, a new GUID value is used.
+    /// </param>
+    /// <param name="StartAt">
+    /// The time when the orchestration instance should start executing. If not specified or if a date-time in the past
+    /// is specified, the orchestration instance will be scheduled immediately.
+    /// </param>
+    public StartOrchestrationOptions(string? InstanceId = null, DateTimeOffset? StartAt = null)
+    {
+        this.InstanceId = InstanceId;
+        this.StartAt = StartAt;
+    }
+
     /// <summary>
     /// Gets the tags to associate with the orchestration instance.
     /// </summary>
     public IReadOnlyDictionary<string, string> Tags { get; init; } = ImmutableDictionary.Create<string, string>();
+
+    /// <summary>
+    /// The unique ID of the orchestration instance to schedule. If not specified, a new GUID value is used.
+    /// </summary>
+    public string? InstanceId { get; init; }
+
+    /// <summary>
+    /// The time when the orchestration instance should start executing. If not specified or if a date-time in the past
+    /// is specified, the orchestration instance will be scheduled immediately.
+    /// </summary>
+    public DateTimeOffset? StartAt { get; init; }
+
+    public void Deconstruct(out string? InstanceId, out DateTimeOffset? StartAt)
+    {
+        InstanceId = this.InstanceId;
+        StartAt = this.StartAt;
+    }
 }

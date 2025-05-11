@@ -50,13 +50,19 @@ public readonly struct TaskName : IEquatable<TaskName>
     /// Implicitly converts a <see cref="TaskName"/> into a <see cref="string"/> of the <see cref="Name"/> property value.
     /// </summary>
     /// <param name="value">The <see cref="TaskName"/> to be converted into a string.</param>
-    public static implicit operator string(TaskName value) => value.Name;
+    public static implicit operator string(TaskName value)
+    {
+        return value.Name;
+    }
 
     /// <summary>
     /// Implicitly converts a <see cref="string"/> into a <see cref="TaskName"/> value.
     /// </summary>
     /// <param name="value">The string to convert into a <see cref="TaskName"/>.</param>
-    public static implicit operator TaskName(string value) => string.IsNullOrEmpty(value) ? default : new(value);
+    public static implicit operator TaskName(string value)
+    {
+        return string.IsNullOrEmpty(value) ? default : new(value);
+    }
 
     /// <summary>
     /// Compares two <see cref="TaskName"/> objects for equality.

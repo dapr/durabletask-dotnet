@@ -64,7 +64,9 @@ public static class DurableTaskWorkerBuilderExtensions
     /// <returns>The original builder, for call chaining.</returns>
     public static IDurableTaskWorkerBuilder UseBuildTarget<TTarget>(this IDurableTaskWorkerBuilder builder)
         where TTarget : DurableTaskWorker
-        => builder.UseBuildTarget(typeof(TTarget));
+    {
+        return builder.UseBuildTarget(typeof(TTarget));
+    }
 
     /// <summary>
     /// Sets the build target for this builder. This is the hosted service which will ultimately be ran on host

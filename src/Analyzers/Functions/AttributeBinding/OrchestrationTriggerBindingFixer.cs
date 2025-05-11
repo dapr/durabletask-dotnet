@@ -16,8 +16,14 @@ namespace Microsoft.DurableTask.Analyzers.Functions.AttributeBinding;
 public sealed class OrchestrationTriggerBindingFixer : MatchingAttributeBindingFixer
 {
     /// <inheritdoc/>
-    public override ImmutableArray<string> FixableDiagnosticIds => [OrchestrationTriggerBindingAnalyzer.DiagnosticId];
-
+    public override ImmutableArray<string> FixableDiagnosticIds =>
+        new ImmutableArray<string> { OrchestrationTriggerBindingAnalyzer.DiagnosticId };
     /// <inheritdoc/>
-    public override string ExpectedType => "TaskOrchestrationContext";
+    public override string ExpectedType
+    {
+        get
+        {
+            return "TaskOrchestrationContext";
+        }
+    }
 }
