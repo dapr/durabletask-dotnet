@@ -86,11 +86,12 @@ jobs:
 #        run: dotnet build --configuration Release --framework ${{ matrix.framework }} /p:GITHUB_ACTIONS=false
         
       - name: Test
+        id: tests
         continue-on-error: true # proceed if tests fail to allow for the report generation in main or next step failure in PR
         run: dotnet test ${{ matrix.path }} --configuration Release --logger "trx;LogFilePrefix=${{ matrix.prefix }}" --logger "GitHubActions;report-warnings=false" --results-directory "${{ github.workspace }}/TestResults" --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:GITHUB_ACTIONS=false
       
       - name: Check test failure in PR
-        if: github.event_name == 'pull_request' && steps.Test.outcome != 'success'
+        if: github.event_name == 'pull_request' && steps.tests.outcome != 'success'
         run: exit 1
         
       - name: Upload test coverage
