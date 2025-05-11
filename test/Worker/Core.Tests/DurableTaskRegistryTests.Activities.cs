@@ -124,44 +124,57 @@ public partial class DurableTaskRegistryTests
 
     [Fact]
     public void AddActivity_Func1_Success()
-        => RunAddActivityTest(
-            r => r.AddActivityFunc(
-                nameof(TestActivity), (TaskActivityContext ctx, string input) => Task.FromResult(input)));
+    {
+        RunAddActivityTest(r => r.AddActivityFunc(
+            nameof(TestActivity), (TaskActivityContext ctx, string input) => Task.FromResult(input)));
+    }
 
     [Fact]
     public void AddActivity_Func2_Success()
-        => RunAddActivityTest(
-            r => r.AddActivityFunc(nameof(TestActivity), (TaskActivityContext ctx, string input) => input));
+    {
+        RunAddActivityTest(r =>
+            r.AddActivityFunc(nameof(TestActivity), (TaskActivityContext ctx, string input) => input));
+    }
 
     [Fact]
     public void AddActivity_Func3_Success()
-        => RunAddActivityTest(
-            r => r.AddActivityFunc(nameof(TestActivity), (TaskActivityContext ctx, string input) => Task.CompletedTask));
+    {
+        RunAddActivityTest(r =>
+            r.AddActivityFunc(nameof(TestActivity), (TaskActivityContext ctx, string input) => Task.CompletedTask));
+    }
 
     [Fact]
     public void AddActivity_Func4_Success()
-        => RunAddActivityTest(
-            r => r.AddActivityFunc(nameof(TestActivity), (TaskActivityContext ctx) => Task.FromResult(string.Empty)));
+    {
+        RunAddActivityTest(r =>
+            r.AddActivityFunc(nameof(TestActivity), (TaskActivityContext ctx) => Task.FromResult(string.Empty)));
+    }
 
     [Fact]
     public void AddActivity_Func5_Success()
-        => RunAddActivityTest(
-            r => r.AddActivityFunc(nameof(TestActivity), (TaskActivityContext ctx) => Task.CompletedTask));
+    {
+        RunAddActivityTest(r =>
+            r.AddActivityFunc(nameof(TestActivity), (TaskActivityContext ctx) => Task.CompletedTask));
+    }
 
     [Fact]
     public void AddActivity_Func6_Success()
-        => RunAddActivityTest(
-            r => r.AddActivityFunc(nameof(TestActivity), (TaskActivityContext ctx) => string.Empty));
+    {
+        RunAddActivityTest(r => r.AddActivityFunc(nameof(TestActivity), (TaskActivityContext ctx) => string.Empty));
+    }
 
     [Fact]
     public void AddActivity_Action1_Success()
-        => RunAddActivityTest(
-            r => r.AddActivityFunc(nameof(TestActivity), (TaskActivityContext ctx, string input) => { }));
+    {
+        RunAddActivityTest(r =>
+            r.AddActivityFunc(nameof(TestActivity), (TaskActivityContext ctx, string input) => { }));
+    }
 
     [Fact]
     public void AddActivity_Action2_Success()
-        => RunAddActivityTest(
-            r => r.AddActivityFunc(nameof(TestActivity), (TaskActivityContext ctx) => { }));
+    {
+        RunAddActivityTest(r => r.AddActivityFunc(nameof(TestActivity), (TaskActivityContext ctx) => { }));
+    }
 
     static ITaskActivity RunAddActivityTest(Action<DurableTaskRegistry> callback)
     {

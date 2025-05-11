@@ -39,7 +39,7 @@ public class MatchingInputOutputTypeActivityAnalyzer : DiagnosticAnalyzer
         InputArgumentTypeMismatchMessageFormat,
         AnalyzersCategories.Activity,
         DiagnosticSeverity.Warning,
-        customTags: [WellKnownDiagnosticTags.CompilationEnd],
+        customTags: new string[] {WellKnownDiagnosticTags.CompilationEnd},
         isEnabledByDefault: true);
 
     static readonly DiagnosticDescriptor OutputArgumentTypeMismatchRule = new(
@@ -48,11 +48,12 @@ public class MatchingInputOutputTypeActivityAnalyzer : DiagnosticAnalyzer
         OutputArgumentTypeMismatchMessageFormat,
         AnalyzersCategories.Activity,
         DiagnosticSeverity.Warning,
-        customTags: [WellKnownDiagnosticTags.CompilationEnd],
+        customTags: new string[] {WellKnownDiagnosticTags.CompilationEnd},
         isEnabledByDefault: true);
 
     /// <inheritdoc/>
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [InputArgumentTypeMismatchRule, OutputArgumentTypeMismatchRule];
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+        new ImmutableArray<DiagnosticDescriptor> { InputArgumentTypeMismatchRule, OutputArgumentTypeMismatchRule };
 
     /// <inheritdoc/>
     public override void Initialize(AnalysisContext context)

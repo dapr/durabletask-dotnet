@@ -23,30 +23,72 @@ public sealed partial class KnownTypeSymbols
     /// <summary>
     /// Gets an OrchestrationTriggerAttribute type symbol.
     /// </summary>
-    public INamedTypeSymbol? FunctionOrchestrationAttribute => this.GetOrResolveFullyQualifiedType("Microsoft.Azure.Functions.Worker.OrchestrationTriggerAttribute", ref this.functionOrchestrationAttribute);
+    public INamedTypeSymbol? FunctionOrchestrationAttribute
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Microsoft.Azure.Functions.Worker.OrchestrationTriggerAttribute",
+                ref this.functionOrchestrationAttribute);
+        }
+    }
 
     /// <summary>
     /// Gets a FunctionNameAttribute type symbol.
     /// </summary>
-    public INamedTypeSymbol? FunctionNameAttribute => this.GetOrResolveFullyQualifiedType("Microsoft.Azure.Functions.Worker.FunctionAttribute", ref this.functionNameAttribute);
+    public INamedTypeSymbol? FunctionNameAttribute
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Microsoft.Azure.Functions.Worker.FunctionAttribute",
+                ref this.functionNameAttribute);
+        }
+    }
 
     /// <summary>
     /// Gets a DurableClientAttribute type symbol.
     /// </summary>
-    public INamedTypeSymbol? DurableClientAttribute => this.GetOrResolveFullyQualifiedType("Microsoft.Azure.Functions.Worker.DurableClientAttribute", ref this.durableClientAttribute);
+    public INamedTypeSymbol? DurableClientAttribute
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Microsoft.Azure.Functions.Worker.DurableClientAttribute",
+                ref this.durableClientAttribute);
+        }
+    }
 
     /// <summary>
     /// Gets an ActivityTriggerAttribute type symbol.
     /// </summary>
-    public INamedTypeSymbol? ActivityTriggerAttribute => this.GetOrResolveFullyQualifiedType("Microsoft.Azure.Functions.Worker.ActivityTriggerAttribute", ref this.activityTriggerAttribute);
+    public INamedTypeSymbol? ActivityTriggerAttribute
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Microsoft.Azure.Functions.Worker.ActivityTriggerAttribute",
+                ref this.activityTriggerAttribute);
+        }
+    }
 
     /// <summary>
     /// Gets an EntityTriggerAttribute type symbol.
     /// </summary>
-    public INamedTypeSymbol? EntityTriggerAttribute => this.GetOrResolveFullyQualifiedType("Microsoft.Azure.Functions.Worker.EntityTriggerAttribute", ref this.entityTriggerAttribute);
+    public INamedTypeSymbol? EntityTriggerAttribute
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Microsoft.Azure.Functions.Worker.EntityTriggerAttribute",
+                ref this.entityTriggerAttribute);
+        }
+    }
 
     /// <summary>
     /// Gets a TaskEntityDispatcher type symbol.
     /// </summary>
-    public INamedTypeSymbol? TaskEntityDispatcher => this.GetOrResolveFullyQualifiedType("Microsoft.Azure.Functions.Worker.TaskEntityDispatcher", ref this.taskEntityDispatcher);
+    public INamedTypeSymbol? TaskEntityDispatcher
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Microsoft.Azure.Functions.Worker.TaskEntityDispatcher",
+                ref this.taskEntityDispatcher);
+        }
+    }
 }

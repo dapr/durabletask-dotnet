@@ -20,7 +20,9 @@ public static class DurableTaskClientBuilderExtensions
     /// <param name="builder">The builder to configure.</param>
     /// <returns>The original builder, for call chaining.</returns>
     public static IDurableTaskClientBuilder UseGrpc(this IDurableTaskClientBuilder builder)
-        => builder.UseGrpc(opt => { });
+    {
+        return builder.UseGrpc(opt => { });
+    }
 
     /// <summary>
     /// Configures the <see cref="IDurableTaskClientBuilder" /> to be a gRPC client.
@@ -32,7 +34,9 @@ public static class DurableTaskClientBuilderExtensions
     /// <param name="address">The address of the Durable Task sidecar endpoint.</param>
     /// <returns>The original builder, for call chaining.</returns>
     public static IDurableTaskClientBuilder UseGrpc(this IDurableTaskClientBuilder builder, string address)
-        => builder.UseGrpc(opt => opt.Address = address);
+    {
+        return builder.UseGrpc(opt => opt.Address = address);
+    }
 
     /// <summary>
     /// Configures the <see cref="IDurableTaskClientBuilder" /> to be a gRPC client.
@@ -44,7 +48,9 @@ public static class DurableTaskClientBuilderExtensions
     /// <param name="channel">The channel for the Durable Task sidecar endpoint.</param>
     /// <returns>The original builder, for call chaining.</returns>
     public static IDurableTaskClientBuilder UseGrpc(this IDurableTaskClientBuilder builder, GrpcChannel channel)
-        => builder.UseGrpc(opt => opt.Channel = channel);
+    {
+        return builder.UseGrpc(opt => opt.Channel = channel);
+    }
 
     /// <summary>
     /// Configures the <see cref="IDurableTaskClientBuilder" /> to be a gRPC client.

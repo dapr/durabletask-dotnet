@@ -33,7 +33,8 @@ class OtherBindingsOrchestrationAnalyzer : OrchestrationAnalyzer<OtherBindingsOr
         isEnabledByDefault: true);
 
     /// <inheritdoc/>
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [Rule];
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+        new ImmutableArray<DiagnosticDescriptor> { Rule };
 
     /// <summary>
     /// Visitor that inspects Durable Functions' method signatures for parameters binding other than OrchestrationTrigger.

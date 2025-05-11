@@ -26,7 +26,13 @@ abstract class WorkItemDispatcher<T> where T : class
         this.name = $"{this.GetType().Name}-{Interlocked.Increment(ref nextDispatcherId)}";
     }
 
-    public virtual int MaxWorkItems => 10;
+    public virtual int MaxWorkItems
+    {
+        get
+        {
+            return 10;
+        }
+    }
 
     public abstract Task<T?> FetchWorkItemAsync(TimeSpan timeout, CancellationToken cancellationToken);
 

@@ -7,9 +7,27 @@ namespace Microsoft.DurableTask.Analyzers.Tests.Functions.AttributeBinding;
 
 public class OrchestrationTriggerBindingAnalyzerTests : MatchingAttributeBindingSpecificationTests<OrchestrationTriggerBindingAnalyzer, OrchestrationTriggerBindingFixer>
 {
-    protected override string ExpectedDiagnosticId => OrchestrationTriggerBindingAnalyzer.DiagnosticId;
+    protected override string ExpectedDiagnosticId
+    {
+        get
+        {
+            return OrchestrationTriggerBindingAnalyzer.DiagnosticId;
+        }
+    }
 
-    protected override string ExpectedAttribute => "[OrchestrationTrigger]";
+    protected override string ExpectedAttribute
+    {
+        get
+        {
+            return "[OrchestrationTrigger]";
+        }
+    }
 
-    protected override string ExpectedType => "TaskOrchestrationContext";
+    protected override string ExpectedType
+    {
+        get
+        {
+            return "TaskOrchestrationContext";
+        }
+    }
 }

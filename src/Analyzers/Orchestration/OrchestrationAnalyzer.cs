@@ -201,7 +201,10 @@ public abstract class OrchestrationVisitor
     /// Initializes a visitor concrete implementation instance and returns whether the analysis should continue.
     /// </summary>
     /// <returns>True if the analyzer can continue; false otherwise.</returns>
-    public virtual bool Initialize() => true;
+    public virtual bool Initialize()
+    {
+        return true;
+    }
 
     /// <summary>
     /// Visits a Durable Function orchestration.

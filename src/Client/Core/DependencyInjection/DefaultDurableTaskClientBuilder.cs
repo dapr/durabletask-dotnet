@@ -39,7 +39,10 @@ public class DefaultDurableTaskClientBuilder : IDurableTaskClientBuilder
     /// <inheritdoc/>
     public Type? BuildTarget
     {
-        get => this.buildTarget;
+        get
+        {
+            return this.buildTarget;
+        }
         set
         {
             if (!IsValidBuildTarget(value))

@@ -246,8 +246,14 @@ public class DurableTaskGrpcClientIntegrationTests : IntegrationTestBase
 
     class DateTimeToleranceComparer : IEqualityComparer<DateTimeOffset>
     {
-        public bool Equals(DateTimeOffset x, DateTimeOffset y) => (x - y).Duration() < TimeSpan.FromMilliseconds(100);
+        public bool Equals(DateTimeOffset x, DateTimeOffset y)
+        {
+            return (x - y).Duration() < TimeSpan.FromMilliseconds(100);
+        }
 
-        public int GetHashCode([DisallowNull] DateTimeOffset obj) => obj.GetHashCode();
+        public int GetHashCode([DisallowNull] DateTimeOffset obj)
+        {
+            return obj.GetHashCode();
+        }
     }
 }

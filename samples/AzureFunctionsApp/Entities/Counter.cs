@@ -45,9 +45,15 @@ public class Counter : TaskEntity<int>
         return this.State += input;
     }
 
-    public int Get() => this.State;
+    public int Get()
+    {
+        return this.State;
+    }
 
-    public void Reset() => this.State = 0;
+    public void Reset()
+    {
+        this.State = 0;
+    }
 
     [Function("Counter")]
     public Task DispatchAsync([EntityTrigger] TaskEntityDispatcher dispatcher)
@@ -80,11 +86,20 @@ public class StateCounter
 {
     public int Value { get; set; }
 
-    public int Add(int input) => this.Value += input;
+    public int Add(int input)
+    {
+        return this.Value += input;
+    }
 
-    public int Get() => this.Value;
+    public int Get()
+    {
+        return this.Value;
+    }
 
-    public void Reset() => this.Value = 0;
+    public void Reset()
+    {
+        this.Value = 0;
+    }
 
     [Function("Counter_State")]
     public static Task DispatchAsync([EntityTrigger] TaskEntityDispatcher dispatcher)

@@ -30,11 +30,10 @@ void Method([OrchestrationTrigger] TaskOrchestrationContext context)
     {|#2:Environment.ExpandEnvironmentVariables(""PATH"")|};
 }
 ");
-        string[] methods = [
-            "Environment.GetEnvironmentVariable(string)",
-            "Environment.GetEnvironmentVariables()",
+        string[] methods = {
+            "Environment.GetEnvironmentVariable(string)", "Environment.GetEnvironmentVariables()",
             "Environment.ExpandEnvironmentVariables(string)",
-        ];
+        };
 
         DiagnosticResult[] expected = methods.Select(
             (method, i) => BuildDiagnostic().WithLocation(i).WithArguments("Method", method, "Run")).ToArray();

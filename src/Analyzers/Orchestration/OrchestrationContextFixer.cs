@@ -65,7 +65,10 @@ public readonly struct OrchestrationCodeFixContext
 public abstract class OrchestrationContextFixer : CodeFixProvider
 {
     /// <inheritdoc/>
-    public override FixAllProvider? GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
+    public override FixAllProvider? GetFixAllProvider()
+    {
+        return WellKnownFixAllProviders.BatchFixer;
+    }
 
     /// <inheritdoc/>
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

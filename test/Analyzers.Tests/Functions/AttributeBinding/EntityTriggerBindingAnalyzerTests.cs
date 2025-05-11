@@ -7,9 +7,27 @@ namespace Microsoft.DurableTask.Analyzers.Tests.Functions.AttributeBinding;
 
 public class EntityTriggerBindingAnalyzerTests : MatchingAttributeBindingSpecificationTests<EntityTriggerBindingAnalyzer, EntityTriggerBindingFixer>
 {
-    protected override string ExpectedDiagnosticId => EntityTriggerBindingAnalyzer.DiagnosticId;
+    protected override string ExpectedDiagnosticId
+    {
+        get
+        {
+            return EntityTriggerBindingAnalyzer.DiagnosticId;
+        }
+    }
 
-    protected override string ExpectedAttribute => "[EntityTrigger]";
+    protected override string ExpectedAttribute
+    {
+        get
+        {
+            return "[EntityTrigger]";
+        }
+    }
 
-    protected override string ExpectedType => "TaskEntityDispatcher";
+    protected override string ExpectedType
+    {
+        get
+        {
+            return "TaskEntityDispatcher";
+        }
+    }
 }

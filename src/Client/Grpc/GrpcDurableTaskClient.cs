@@ -58,10 +58,23 @@ public sealed class GrpcDurableTaskClient : DurableTaskClient
     }
 
     /// <inheritdoc/>
-    public override DurableEntityClient Entities => this.entityClient
-        ?? throw new NotSupportedException($"Durable entities are disabled because {nameof(DurableTaskClientOptions)}.{nameof(DurableTaskClientOptions.EnableEntitySupport)}=false");
+    public override DurableEntityClient Entities
+    {
+        get
+        {
+            return this.entityClient
+                   ?? throw new NotSupportedException(
+                       $"Durable entities are disabled because {nameof(DurableTaskClientOptions)}.{nameof(DurableTaskClientOptions.EnableEntitySupport)}=false");
+        }
+    }
 
-    DataConverter DataConverter => this.options.DataConverter;
+    DataConverter DataConverter
+    {
+        get
+        {
+            return this.options.DataConverter;
+        }
+    }
 
     /// <inheritdoc/>
     public override ValueTask DisposeAsync()

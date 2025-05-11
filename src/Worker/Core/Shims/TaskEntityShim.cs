@@ -113,11 +113,20 @@ class TaskEntityShim : DTCore.Entities.TaskEntity
         }
 
         /// <inheritdoc />
-        public override bool HasState => this.value != null;
+        public override bool HasState
+        {
+            get
+            {
+                return this.value != null;
+            }
+        }
 
         public string? CurrentState
         {
-            get => this.value;
+            get
+            {
+                return this.value;
+            }
             set
             {
                 if (this.value != value)
@@ -178,11 +187,29 @@ class TaskEntityShim : DTCore.Entities.TaskEntity
             this.operationActions = new List<OperationAction>();
         }
 
-        public List<OperationAction> Actions => this.operationActions;
+        public List<OperationAction> Actions
+        {
+            get
+            {
+                return this.operationActions;
+            }
+        }
 
-        public int CurrentPosition => this.operationActions.Count;
+        public int CurrentPosition
+        {
+            get
+            {
+                return this.operationActions.Count;
+            }
+        }
 
-        public override EntityInstanceId Id => this.entityInstanceId;
+        public override EntityInstanceId Id
+        {
+            get
+            {
+                return this.entityInstanceId;
+            }
+        }
 
         public void Commit()
         {
@@ -242,13 +269,38 @@ class TaskEntityShim : DTCore.Entities.TaskEntity
             this.taskEntityShim = taskEntityShim;
         }
 
-        public override string Name => this.name!; // name is always set before user code can access this property
+        public override string Name
+        {
+            get
+            {
+                return this.name!;
+                // name is always set before user code can access this property
+            }
+        }
 
-        public override TaskEntityContext Context => this.taskEntityShim.context;
+        public override TaskEntityContext Context
+        {
+            get
+            {
+                return this.taskEntityShim.context;
+            }
+        }
 
-        public override TaskEntityState State => this.taskEntityShim.state;
+        public override TaskEntityState State
+        {
+            get
+            {
+                return this.taskEntityShim.state;
+            }
+        }
 
-        public override bool HasInput => this.input != null;
+        public override bool HasInput
+        {
+            get
+            {
+                return this.input != null;
+            }
+        }
 
         public override object? GetInput(Type inputType)
         {

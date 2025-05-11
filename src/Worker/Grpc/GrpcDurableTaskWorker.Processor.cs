@@ -39,7 +39,13 @@ sealed partial class GrpcDurableTaskWorker
             this.internalOptions = this.worker.grpcOptions.Internal;
         }
 
-        ILogger Logger => this.worker.logger;
+        ILogger Logger
+        {
+            get
+            {
+                return this.worker.logger;
+            }
+        }
 
         public async Task ExecuteAsync(CancellationToken cancellation)
         {

@@ -39,8 +39,14 @@ class ScheduleConfiguration
     /// </summary>
     public string OrchestrationName
     {
-        get => this.orchestrationName;
-        set => this.orchestrationName = Check.NotNullOrEmpty(value, nameof(this.OrchestrationName));
+        get
+        {
+            return this.orchestrationName;
+        }
+        set
+        {
+            this.orchestrationName = Check.NotNullOrEmpty(value, nameof(this.OrchestrationName));
+        }
     }
 
     /// <summary>
@@ -73,7 +79,10 @@ class ScheduleConfiguration
     /// </summary>
     public TimeSpan Interval
     {
-        get => this.interval;
+        get
+        {
+            return this.interval;
+        }
         set
         {
             if (value <= TimeSpan.Zero)

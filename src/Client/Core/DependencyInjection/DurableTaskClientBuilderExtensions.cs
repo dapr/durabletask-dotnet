@@ -66,7 +66,9 @@ public static class DurableTaskBuilderExtensions
     /// <returns>The original builder, for call chaining.</returns>
     public static IDurableTaskClientBuilder UseBuildTarget<TTarget>(this IDurableTaskClientBuilder builder)
         where TTarget : DurableTaskClient
-        => builder.UseBuildTarget(typeof(TTarget));
+    {
+        return builder.UseBuildTarget(typeof(TTarget));
+    }
 
     /// <summary>
     /// Sets the build target for this builder. Additionally populates default options values for the provided

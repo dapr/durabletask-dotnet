@@ -23,13 +23,23 @@ class TaskOrchestrationDispatcher : WorkItemDispatcher<TaskOrchestrationWorkItem
         this.taskExecutor = taskExecutor;
     }
 
-    public override int MaxWorkItems => this.service.MaxConcurrentTaskOrchestrationWorkItems;
+    public override int MaxWorkItems
+    {
+        get
+        {
+            return this.service.MaxConcurrentTaskOrchestrationWorkItems;
+        }
+    }
 
-    public override Task AbandonWorkItemAsync(TaskOrchestrationWorkItem workItem) =>
-        this.service.AbandonTaskOrchestrationWorkItemAsync(workItem);
+    public override Task AbandonWorkItemAsync(TaskOrchestrationWorkItem workItem)
+    {
+        return this.service.AbandonTaskOrchestrationWorkItemAsync(workItem);
+    }
 
-    public override Task<TaskOrchestrationWorkItem?> FetchWorkItemAsync(TimeSpan timeout, CancellationToken cancellationToken) =>
-        this.service.LockNextTaskOrchestrationWorkItemAsync(timeout, cancellationToken);
+    public override Task<TaskOrchestrationWorkItem?> FetchWorkItemAsync(TimeSpan timeout, CancellationToken cancellationToken)
+    {
+        return this.service.LockNextTaskOrchestrationWorkItemAsync(timeout, cancellationToken);
+    }
 
     protected override async Task ExecuteWorkItemAsync(TaskOrchestrationWorkItem workItem)
     {
@@ -125,7 +135,10 @@ class TaskOrchestrationDispatcher : WorkItemDispatcher<TaskOrchestrationWorkItem
     static IEnumerable<TaskMessage> FilterAndSortMessages(TaskOrchestrationWorkItem workItem)
     {
         // Group messages by their instance ID
-        static string GetGroupingKey(TaskMessage msg) => msg.OrchestrationInstance.InstanceId;
+        static string GetGroupingKey(TaskMessage msg)
+        {
+            return msg.OrchestrationInstance.InstanceId;
+        }
 
         // Within a group, put messages with a non-null execution ID first
         static int GetSortOrderWithinGroup(TaskMessage msg)
@@ -417,13 +430,20 @@ class TaskOrchestrationDispatcher : WorkItemDispatcher<TaskOrchestrationWorkItem
         }
     }
 
-    public override int GetDelayInSecondsOnFetchException(Exception ex) =>
-        this.service.GetDelayInSecondsAfterOnFetchException(ex);
+    public override int GetDelayInSecondsOnFetchException(Exception ex)
+    {
+        return this.service.GetDelayInSecondsAfterOnFetchException(ex);
+    }
 
-    public override string GetWorkItemId(TaskOrchestrationWorkItem workItem) => workItem.InstanceId;
+    public override string GetWorkItemId(TaskOrchestrationWorkItem workItem)
+    {
+        return workItem.InstanceId;
+    }
 
-    public override Task ReleaseWorkItemAsync(TaskOrchestrationWorkItem workItem) =>
-        this.service.ReleaseTaskOrchestrationWorkItemAsync(workItem);
+    public override Task ReleaseWorkItemAsync(TaskOrchestrationWorkItem workItem)
+    {
+        return this.service.ReleaseTaskOrchestrationWorkItemAsync(workItem);
+    }
 
     public override async Task<TaskOrchestrationWorkItem> RenewWorkItemAsync(TaskOrchestrationWorkItem workItem)
     {

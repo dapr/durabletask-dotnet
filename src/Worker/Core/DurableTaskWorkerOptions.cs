@@ -65,7 +65,10 @@ public class DurableTaskWorkerOptions
     /// </remarks>
     public DataConverter DataConverter
     {
-        get => this.dataConverter;
+        get
+        {
+            return this.dataConverter;
+        }
         set
         {
             if (value is null)

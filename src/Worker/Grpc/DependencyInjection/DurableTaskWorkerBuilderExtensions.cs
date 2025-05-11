@@ -20,7 +20,9 @@ public static class DurableTaskWorkerBuilderExtensions
     /// <b>Note:</b> only 1 instance of gRPC worker is supported per sidecar.
     /// </remarks>
     public static IDurableTaskWorkerBuilder UseGrpc(this IDurableTaskWorkerBuilder builder)
-        => builder.UseGrpc(opt => { });
+    {
+        return builder.UseGrpc(opt => { });
+    }
 
     /// <summary>
     /// Configures the <see cref="IDurableTaskWorkerBuilder" /> to be a gRPC client.
@@ -29,7 +31,9 @@ public static class DurableTaskWorkerBuilderExtensions
     /// <param name="channel">The channel for the Durable Task sidecar endpoint.</param>
     /// <returns>The original builder, for call chaining.</returns>
     public static IDurableTaskWorkerBuilder UseGrpc(this IDurableTaskWorkerBuilder builder, GrpcChannel channel)
-        => builder.UseGrpc(opt => opt.Channel = channel);
+    {
+        return builder.UseGrpc(opt => opt.Channel = channel);
+    }
 
     /// <summary>
     /// Configures the <see cref="IDurableTaskWorkerBuilder" /> to use the gRPC worker.
@@ -41,7 +45,9 @@ public static class DurableTaskWorkerBuilderExtensions
     /// <b>Note:</b> only 1 instance of gRPC worker is supported per sidecar.
     /// </remarks>
     public static IDurableTaskWorkerBuilder UseGrpc(this IDurableTaskWorkerBuilder builder, string address)
-        => builder.UseGrpc(opt => opt.Address = address);
+    {
+        return builder.UseGrpc(opt => opt.Address = address);
+    }
 
     /// <summary>
     /// Configures the <see cref="IDurableTaskWorkerBuilder" /> to use the gRPC worker.

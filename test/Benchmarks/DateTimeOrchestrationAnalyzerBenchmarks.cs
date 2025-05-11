@@ -112,7 +112,13 @@ public static class DurableFunction{0}
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     class CustomEmptyAnalyzer : DiagnosticAnalyzer
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [];
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get
+            {
+                return [];
+            }
+        }
 
         public override void Initialize(AnalysisContext context) { }
     }

@@ -21,7 +21,10 @@ public abstract class MatchingAttributeBindingFixer : CodeFixProvider
     public abstract string ExpectedType { get; }
 
     /// <inheritdoc/>
-    public override FixAllProvider? GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
+    public override FixAllProvider? GetFixAllProvider()
+    {
+        return WellKnownFixAllProviders.BatchFixer;
+    }
 
     /// <inheritdoc/>
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)

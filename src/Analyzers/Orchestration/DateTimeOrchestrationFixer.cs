@@ -21,7 +21,8 @@ namespace Microsoft.DurableTask.Analyzers.Orchestration;
 public sealed class DateTimeOrchestrationFixer : OrchestrationContextFixer
 {
     /// <inheritdoc/>
-    public override ImmutableArray<string> FixableDiagnosticIds => [DateTimeOrchestrationAnalyzer.DiagnosticId];
+    public override ImmutableArray<string> FixableDiagnosticIds =>
+        new ImmutableArray<string> { DateTimeOrchestrationAnalyzer.DiagnosticId };
 
     /// <inheritdoc/>
     protected override void RegisterCodeFixes(CodeFixContext context, OrchestrationCodeFixContext orchestrationContext)

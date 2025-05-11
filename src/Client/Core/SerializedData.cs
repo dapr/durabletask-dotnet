@@ -42,7 +42,10 @@ public sealed class SerializedData
     /// </summary>
     /// <typeparam name="T">The type to deserialize into.</typeparam>
     /// <returns>The deserialized type.</returns>
-    public T ReadAs<T>() => this.Converter.Deserialize<T>(this.Value);
+    public T ReadAs<T>()
+    {
+        return this.Converter.Deserialize<T>(this.Value);
+    }
 
     /// <summary>
     /// Creates a new instance of <see cref="SerializedData"/> from the specified data.

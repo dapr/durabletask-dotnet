@@ -24,7 +24,9 @@ public static class DurableTaskClientBuilderExtensions
     /// <param name="builder">The builder to configure.</param>
     /// <returns>The original builder, for call chaining.</returns>
     public static IDurableTaskClientBuilder UseOrchestrationService(this IDurableTaskClientBuilder builder)
-        => builder.UseOrchestrationService(opt => { });
+    {
+        return builder.UseOrchestrationService(opt => { });
+    }
 
     /// <summary>
     /// Configures the <see cref="IDurableTaskClientBuilder" /> to be a client backed by a
@@ -38,10 +40,12 @@ public static class DurableTaskClientBuilderExtensions
     /// <returns>The original builder, for call chaining.</returns>
     public static IDurableTaskClientBuilder UseOrchestrationService(
         this IDurableTaskClientBuilder builder, IOrchestrationServiceClient client)
-        => builder.UseOrchestrationService(opt =>
+    {
+        return builder.UseOrchestrationService(opt =>
         {
             opt.Client = client;
         });
+    }
 
     /// <summary>Configures the <see cref="IDurableTaskClientBuilder" /> to be a client backed by a
     /// <see cref="IOrchestrationServiceClient" />.

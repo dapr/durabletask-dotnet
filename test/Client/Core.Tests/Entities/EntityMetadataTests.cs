@@ -137,7 +137,11 @@ public class EntityMetadataTests
             this.Number = Number;
         }
 
-        public static State GetRandom() => new(Random.Shared.Next(0, 100));
+        public static State GetRandom()
+        {
+            return new State(Random.Shared.Next(0, 100));
+        }
+
         public int Number { get; init; }
 
         public void Deconstruct(out int Number)

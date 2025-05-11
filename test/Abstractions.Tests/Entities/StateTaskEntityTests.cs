@@ -172,11 +172,17 @@ public class StateTaskEntityTests
         operation.State.GetState(typeof(TestState)).Should().BeOfType<TestState>().Which.Value.Should().Be(0);
     }
 
-    static TestState State(int value) => new() { Value = value };
+    static TestState State(int value)
+    {
+        return new TestState { Value = value };
+    }
 
     class NullStateEntity : TestEntity
     {
-        protected override TestState InitializeState(TaskEntityOperation entityOperation) => null!;
+        protected override TestState InitializeState(TaskEntityOperation entityOperation)
+        {
+            return null!;
+        }
     }
 
     class TestEntity : TaskEntity<TestState>
@@ -188,9 +194,18 @@ public class StateTaskEntityTests
             this.allowStateDispatch = allowStateDispatch;
         }
 
-        protected override bool AllowStateDispatch => this.allowStateDispatch;
+        protected override bool AllowStateDispatch
+        {
+            get
+            {
+                return this.allowStateDispatch;
+            }
+        }
 
-        public int Precedence() => this.State!.Precedence() * 2;
+        public int Precedence()
+        {
+            return this.State!.Precedence() * 2;
+        }
     }
 
 #pragma warning disable CA1822 // Mark members as static
@@ -199,32 +214,70 @@ public class StateTaskEntityTests
     {
         public int Value { get; set; }
 
-        public static string StaticMethod() => throw new NotImplementedException();
+        public static string StaticMethod()
+        {
+            throw new NotImplementedException();
+        }
 
-        public void Delete() => this.Value = 0;
+        public void Delete()
+        {
+            this.Value = 0;
+        }
 
-        public int Precedence() => 10;
+        public int Precedence()
+        {
+            return 10;
+        }
 
-        public int Add0(int value) => this.Add(value, default);
+        public int Add0(int value)
+        {
+            return this.Add(value, default);
+        }
 
-        public int Add1(int value, TaskEntityContext context) => this.Add(value, context);
+        public int Add1(int value, TaskEntityContext context)
+        {
+            return this.Add(value, context);
+        }
 
-        public int Get0() => this.Get(default);
+        public int Get0()
+        {
+            return this.Get(default);
+        }
 
-        public int Get1(TaskEntityContext context) => this.Get(context);
+        public int Get1(TaskEntityContext context)
+        {
+            return this.Get(context);
+        }
 
-        public int AmbiguousMatch(TaskEntityContext context) => this.Value;
+        public int AmbiguousMatch(TaskEntityContext context)
+        {
+            return this.Value;
+        }
 
-        public int AmbiguousMatch(TaskEntityOperation operation) => this.Value;
+        public int AmbiguousMatch(TaskEntityOperation operation)
+        {
+            return this.Value;
+        }
 
-        public int AmbiguousArgs0(int value, object other) => this.Add0(value);
+        public int AmbiguousArgs0(int value, object other)
+        {
+            return this.Add0(value);
+        }
 
-        public int AmbiguousArgs1(int value, TaskEntityContext context, TaskEntityContext context2) => this.Add0(value);
+        public int AmbiguousArgs1(int value, TaskEntityContext context, TaskEntityContext context2)
+        {
+            return this.Add0(value);
+        }
 
         public int AmbiguousArgs2(int value, TaskEntityOperation operation, TaskEntityOperation operation2)
-            => this.Add0(value);
+        {
+            return this.Add0(value);
+        }
 
-        public string DefaultValue(string toReturn = "default") => toReturn;
+        public string DefaultValue(string toReturn = "default")
+        {
+            return toReturn;
+        }
 
         public Task TaskOp(bool sync)
         {

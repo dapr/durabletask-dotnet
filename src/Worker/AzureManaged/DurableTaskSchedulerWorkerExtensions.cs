@@ -121,7 +121,10 @@ public static class DurableTaskSchedulerWorkerExtensions
         /// Configures the default named options instance.
         /// </summary>
         /// <param name="options">The options instance to configure.</param>
-        public void Configure(GrpcDurableTaskWorkerOptions options) => this.Configure(Options.DefaultName, options);
+        public void Configure(GrpcDurableTaskWorkerOptions options)
+        {
+            this.Configure(Options.DefaultName, options);
+        }
 
         /// <summary>
         /// Configures a named options instance.

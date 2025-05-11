@@ -29,7 +29,13 @@ class AsyncManualResetEvent
         return winner == waitTask;
     }
 
-    public bool IsSignaled => this.tcs.Task.IsCompleted;
+    public bool IsSignaled
+    {
+        get
+        {
+            return this.tcs.Task.IsCompleted;
+        }
+    }
 
     /// <summary>
     /// Puts the event in the signaled state, unblocking any waiting threads.

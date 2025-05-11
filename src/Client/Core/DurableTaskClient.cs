@@ -48,23 +48,34 @@ public abstract class DurableTaskClient : IOrchestrationSubmitter, IAsyncDisposa
     /// <remarks>
     /// Not all clients support durable entities. Refer to a specific client implementation for verifying support.
     /// </remarks>
-    public virtual DurableEntityClient Entities =>
-        throw new NotSupportedException($"{this.GetType()} does not support durable entities.");
+    public virtual DurableEntityClient Entities
+    {
+        get
+        {
+            throw new NotSupportedException($"{this.GetType()} does not support durable entities.");
+        }
+    }
 
     /// <inheritdoc cref="ScheduleNewOrchestrationInstanceAsync(TaskName, object, StartOrchestrationOptions, CancellationToken)"/>
     public virtual Task<string> ScheduleNewOrchestrationInstanceAsync(
         TaskName orchestratorName, CancellationToken cancellation)
-        => this.ScheduleNewOrchestrationInstanceAsync(orchestratorName, null, null, cancellation);
+    {
+        return this.ScheduleNewOrchestrationInstanceAsync(orchestratorName, null, null, cancellation);
+    }
 
     /// <inheritdoc cref="ScheduleNewOrchestrationInstanceAsync(TaskName, object, StartOrchestrationOptions, CancellationToken)"/>
     public virtual Task<string> ScheduleNewOrchestrationInstanceAsync(
         TaskName orchestratorName, object? input, CancellationToken cancellation)
-        => this.ScheduleNewOrchestrationInstanceAsync(orchestratorName, input, null, cancellation);
+    {
+        return this.ScheduleNewOrchestrationInstanceAsync(orchestratorName, input, null, cancellation);
+    }
 
     /// <inheritdoc cref="ScheduleNewOrchestrationInstanceAsync(TaskName, object, StartOrchestrationOptions, CancellationToken)"/>
     public virtual Task<string> ScheduleNewOrchestrationInstanceAsync(
         TaskName orchestratorName, StartOrchestrationOptions options, CancellationToken cancellation = default)
-        => this.ScheduleNewOrchestrationInstanceAsync(orchestratorName, null, options, cancellation);
+    {
+        return this.ScheduleNewOrchestrationInstanceAsync(orchestratorName, null, options, cancellation);
+    }
 
     /// <summary>
     /// Schedules a new orchestration instance for execution.
@@ -115,7 +126,9 @@ public abstract class DurableTaskClient : IOrchestrationSubmitter, IAsyncDisposa
     /// <inheritdoc cref="RaiseEventAsync(string, string, object, CancellationToken)"/>
     public virtual Task RaiseEventAsync(
         string instanceId, string eventName, CancellationToken cancellation)
-        => this.RaiseEventAsync(instanceId, eventName, null, cancellation);
+    {
+        return this.RaiseEventAsync(instanceId, eventName, null, cancellation);
+    }
 
     /// <summary>
     /// Sends an event notification message to a waiting orchestration instance.
@@ -154,7 +167,9 @@ public abstract class DurableTaskClient : IOrchestrationSubmitter, IAsyncDisposa
     /// <inheritdoc cref="WaitForInstanceStartAsync(string, bool, CancellationToken)"/>
     public virtual Task<OrchestrationMetadata> WaitForInstanceStartAsync(
         string instanceId, CancellationToken cancellation)
-        => this.WaitForInstanceStartAsync(instanceId, false, cancellation);
+    {
+        return this.WaitForInstanceStartAsync(instanceId, false, cancellation);
+    }
 
     /// <summary>
     /// Waits for an orchestration to start running and returns a <see cref="OrchestrationMetadata"/>
@@ -185,7 +200,9 @@ public abstract class DurableTaskClient : IOrchestrationSubmitter, IAsyncDisposa
     /// <inheritdoc cref="WaitForInstanceCompletionAsync(string, bool, CancellationToken)"/>
     public virtual Task<OrchestrationMetadata> WaitForInstanceCompletionAsync(
         string instanceId, CancellationToken cancellation)
-        => this.WaitForInstanceCompletionAsync(instanceId, false, cancellation);
+    {
+        return this.WaitForInstanceCompletionAsync(instanceId, false, cancellation);
+    }
 
     /// <summary>
     /// Waits for an orchestration to complete and returns a <see cref="OrchestrationMetadata"/>
@@ -211,7 +228,9 @@ public abstract class DurableTaskClient : IOrchestrationSubmitter, IAsyncDisposa
 
     /// <inheritdoc cref="TerminateInstanceAsync(string, TerminateInstanceOptions, CancellationToken)"/>
     public virtual Task TerminateInstanceAsync(string instanceId, CancellationToken cancellation)
-        => this.TerminateInstanceAsync(instanceId, null, cancellation);
+    {
+        return this.TerminateInstanceAsync(instanceId, null, cancellation);
+    }
 
     /// <inheritdoc cref="TerminateInstanceAsync(string, TerminateInstanceOptions, CancellationToken)"/>
     public virtual Task TerminateInstanceAsync(string instanceId, object? output, CancellationToken cancellation = default)
@@ -253,11 +272,15 @@ public abstract class DurableTaskClient : IOrchestrationSubmitter, IAsyncDisposa
     /// </param>
     /// <returns>A task that completes when the terminate message is enqueued.</returns>
     public virtual Task TerminateInstanceAsync(string instanceId, TerminateInstanceOptions? options = null, CancellationToken cancellation = default)
-        => throw new NotSupportedException($"{this.GetType()} does not support orchestration termination.");
+    {
+        throw new NotSupportedException($"{this.GetType()} does not support orchestration termination.");
+    }
 
     /// <inheritdoc cref="SuspendInstanceAsync(string, string, CancellationToken)"/>
     public virtual Task SuspendInstanceAsync(string instanceId, CancellationToken cancellation)
-        => this.SuspendInstanceAsync(instanceId, null, cancellation);
+    {
+        return this.SuspendInstanceAsync(instanceId, null, cancellation);
+    }
 
     /// <summary>
     /// Suspends an orchestration instance, halting processing of it until
@@ -275,7 +298,9 @@ public abstract class DurableTaskClient : IOrchestrationSubmitter, IAsyncDisposa
 
     /// <inheritdoc cref="ResumeInstanceAsync(string, string, CancellationToken)"/>
     public virtual Task ResumeInstanceAsync(string instanceId, CancellationToken cancellation)
-        => this.ResumeInstanceAsync(instanceId, null, cancellation);
+    {
+        return this.ResumeInstanceAsync(instanceId, null, cancellation);
+    }
 
     /// <summary>
     /// Resumes an orchestration instance that was suspended via <see cref="SuspendInstanceAsync(string, string, CancellationToken)" />.
@@ -293,7 +318,9 @@ public abstract class DurableTaskClient : IOrchestrationSubmitter, IAsyncDisposa
     /// <inheritdoc cref="GetInstanceAsync(string, bool, CancellationToken)"/>
     public virtual Task<OrchestrationMetadata?> GetInstanceAsync(
         string instanceId, CancellationToken cancellation)
-        => this.GetInstanceAsync(instanceId, false, cancellation);
+    {
+        return this.GetInstanceAsync(instanceId, false, cancellation);
+    }
 
     /// <summary>
     /// Fetches orchestration instance metadata from the configured durable store.
@@ -307,13 +334,17 @@ public abstract class DurableTaskClient : IOrchestrationSubmitter, IAsyncDisposa
     /// <inheritdoc cref="WaitForInstanceStartAsync(string, bool, CancellationToken)"/>
     public virtual Task<OrchestrationMetadata?> GetInstanceAsync(
         string instanceId, bool getInputsAndOutputs = false, CancellationToken cancellation = default)
-        => this.GetInstancesAsync(instanceId, getInputsAndOutputs, cancellation);
+    {
+        return this.GetInstancesAsync(instanceId, getInputsAndOutputs, cancellation);
+    }
 
     /// <inheritdoc cref="GetInstancesAsync(string, bool, CancellationToken)"/>
     [EditorBrowsable(EditorBrowsableState.Never)] // use GetInstanceAsync
     public virtual Task<OrchestrationMetadata?> GetInstancesAsync(
         string instanceId, CancellationToken cancellation)
-        => this.GetInstancesAsync(instanceId, false, cancellation);
+    {
+        return this.GetInstancesAsync(instanceId, false, cancellation);
+    }
 
     /// <summary>
     /// Fetches orchestration instance metadata from the configured durable store.
@@ -338,7 +369,9 @@ public abstract class DurableTaskClient : IOrchestrationSubmitter, IAsyncDisposa
 
     /// <inheritdoc cref="PurgeInstanceAsync(string, PurgeInstanceOptions, CancellationToken)"/>
     public virtual Task<PurgeResult> PurgeInstanceAsync(string instanceId, CancellationToken cancellation)
-        => this.PurgeInstanceAsync(instanceId, null, cancellation);
+    {
+        return this.PurgeInstanceAsync(instanceId, null, cancellation);
+    }
 
     /// <summary>
     /// Purges orchestration instance metadata from the durable store.
@@ -378,7 +411,9 @@ public abstract class DurableTaskClient : IOrchestrationSubmitter, IAsyncDisposa
 
     /// <inheritdoc cref="PurgeAllInstancesAsync(PurgeInstancesFilter, PurgeInstanceOptions, CancellationToken)"/>
     public virtual Task<PurgeResult> PurgeAllInstancesAsync(PurgeInstancesFilter filter, CancellationToken cancellation)
-        => this.PurgeAllInstancesAsync(filter, null, cancellation);
+    {
+        return this.PurgeAllInstancesAsync(filter, null, cancellation);
+    }
 
     /// <summary>
     /// Purges orchestration instances metadata from the durable store.

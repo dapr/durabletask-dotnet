@@ -312,7 +312,9 @@ static class EntityConversions
     }
 
     static string EncodeEventName(DateTime? scheduledTime)
-        => scheduledTime.HasValue ? $"op@{scheduledTime.Value:o}" : "op";
+    {
+        return scheduledTime.HasValue ? $"op@{scheduledTime.Value:o}" : "op";
+    }
 
     static DTCore.History.HistoryEvent CreateEventRaisedOrSentEvent(
         int eventId,
@@ -424,7 +426,13 @@ static class EntityConversions
         public FailureDetails? FailureDetails { get; set; }
 
         [IgnoreDataMember]
-        public bool IsErrorResult => this.ErrorMessage != null;
+        public bool IsErrorResult
+        {
+            get
+            {
+                return this.ErrorMessage != null;
+            }
+        }
     }
 
     /// <summary>

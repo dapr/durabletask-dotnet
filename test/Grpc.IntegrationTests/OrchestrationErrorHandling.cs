@@ -37,11 +37,15 @@ public class OrchestrationErrorHandling :
         TaskName activityName = "FaultyActivity";
 
         // Use local function definitions to simplify the validation of the call stacks
-        async Task MyOrchestrationImpl(TaskOrchestrationContext ctx) =>
+        async Task MyOrchestrationImpl(TaskOrchestrationContext ctx)
+        {
             await ctx.CallActivityAsync(activityName);
+        }
 
-        void MyActivityImpl(TaskActivityContext ctx) =>
+        void MyActivityImpl(TaskActivityContext ctx)
+        {
             throw new InvalidOperationException(errorMessage, new CustomException("Inner!"));
+        }
 
         await using HostTestLifetime server = await this.StartWorkerAsync(b =>
         {

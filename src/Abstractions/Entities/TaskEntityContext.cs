@@ -20,7 +20,9 @@ public abstract class TaskEntityContext
     /// <param name="operationName">The operation name.</param>
     /// <param name="options">The options to signal with.</param>
     public virtual void SignalEntity(EntityInstanceId id, string operationName, SignalEntityOptions options)
-        => this.SignalEntity(id, operationName, null, options);
+    {
+        this.SignalEntity(id, operationName, null, options);
+    }
 
     /// <summary>
     /// Signals an entity operation.
@@ -42,7 +44,9 @@ public abstract class TaskEntityContext
     /// <param name="options">The options for starting the orchestration.</param>
     /// <returns>The instance id for the new orchestration.</returns>
     public virtual string ScheduleNewOrchestration(TaskName name, StartOrchestrationOptions options)
-        => this.ScheduleNewOrchestration(name, null, options);
+    {
+        return this.ScheduleNewOrchestration(name, null, options);
+    }
 
     /// <summary>
     /// Starts an orchestration.

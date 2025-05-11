@@ -280,7 +280,10 @@ public class Dependency{
 }
 ");
 
-        void configureTest(VerifyCS.Test test) => test.TestState.Sources.Add(codeInAnotherSyntaxTree);
+        void configureTest(VerifyCS.Test test)
+        {
+            test.TestState.Sources.Add(codeInAnotherSyntaxTree);
+        }
 
         DiagnosticResult expected = BuildDiagnostic().WithLocation(0).WithArguments("Method", "System.DateTime.Now", "MyOrchestrator");
 

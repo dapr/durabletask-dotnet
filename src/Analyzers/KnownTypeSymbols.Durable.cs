@@ -22,25 +22,60 @@ public sealed partial class KnownTypeSymbols
     /// <summary>
     /// Gets an ITaskOrchestrator type symbol.
     /// </summary>
-    public INamedTypeSymbol? TaskOrchestratorInterface => this.GetOrResolveFullyQualifiedType("Microsoft.DurableTask.ITaskOrchestrator", ref this.taskOrchestratorInterface);
+    public INamedTypeSymbol? TaskOrchestratorInterface
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Microsoft.DurableTask.ITaskOrchestrator",
+                ref this.taskOrchestratorInterface);
+        }
+    }
 
     /// <summary>
     /// Gets a TaskActivity&lt;TInput,TOutput&gt; type symbol.
     /// </summary>
-    public INamedTypeSymbol? TaskActivityBase => this.GetOrResolveFullyQualifiedType("Microsoft.DurableTask.TaskActivity`2", ref this.taskActivityBase);
+    public INamedTypeSymbol? TaskActivityBase
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Microsoft.DurableTask.TaskActivity`2",
+                ref this.taskActivityBase);
+        }
+    }
 
     /// <summary>
     /// Gets a DurableTaskRegistry type symbol.
     /// </summary>
-    public INamedTypeSymbol? DurableTaskRegistry => this.GetOrResolveFullyQualifiedType("Microsoft.DurableTask.DurableTaskRegistry", ref this.durableTaskRegistry);
+    public INamedTypeSymbol? DurableTaskRegistry
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Microsoft.DurableTask.DurableTaskRegistry",
+                ref this.durableTaskRegistry);
+        }
+    }
 
     /// <summary>
     /// Gets a TaskOrchestrationContext type symbol.
     /// </summary>
-    public INamedTypeSymbol? TaskOrchestrationContext => this.GetOrResolveFullyQualifiedType("Microsoft.DurableTask.TaskOrchestrationContext", ref this.taskOrchestrationContext);
+    public INamedTypeSymbol? TaskOrchestrationContext
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Microsoft.DurableTask.TaskOrchestrationContext",
+                ref this.taskOrchestrationContext);
+        }
+    }
 
     /// <summary>
     /// Gets a DurableTaskClient type symbol.
     /// </summary>
-    public INamedTypeSymbol? DurableTaskClient => this.GetOrResolveFullyQualifiedType("Microsoft.DurableTask.Client.DurableTaskClient", ref this.durableTaskClient);
+    public INamedTypeSymbol? DurableTaskClient
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType("Microsoft.DurableTask.Client.DurableTaskClient",
+                ref this.durableTaskClient);
+        }
+    }
 }

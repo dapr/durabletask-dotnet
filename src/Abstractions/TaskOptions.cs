@@ -29,21 +29,30 @@ public record TaskOptions
     /// </summary>
     /// <param name="policy">The policy to convert from.</param>
     /// <returns>A <see cref="TaskOptions" /> built from the policy.</returns>
-    public static TaskOptions FromRetryPolicy(RetryPolicy policy) => new(policy);
+    public static TaskOptions FromRetryPolicy(RetryPolicy policy)
+    {
+        return new TaskOptions(policy);
+    }
 
     /// <summary>
     /// Returns a new <see cref="TaskOptions" /> from the provided <see cref="AsyncRetryHandler" />.
     /// </summary>
     /// <param name="handler">The handler to convert from.</param>
     /// <returns>A <see cref="TaskOptions" /> built from the handler.</returns>
-    public static TaskOptions FromRetryHandler(AsyncRetryHandler handler) => new(handler);
+    public static TaskOptions FromRetryHandler(AsyncRetryHandler handler)
+    {
+        return new TaskOptions(handler);
+    }
 
     /// <summary>
     /// Returns a new <see cref="TaskOptions" /> from the provided <see cref="RetryHandler" />.
     /// </summary>
     /// <param name="handler">The handler to convert from.</param>
     /// <returns>A <see cref="TaskOptions" /> built from the handler.</returns>
-    public static TaskOptions FromRetryHandler(RetryHandler handler) => new(handler);
+    public static TaskOptions FromRetryHandler(RetryHandler handler)
+    {
+        return new TaskOptions(handler);
+    }
 
     /// <summary>
     /// Returns a new <see cref="SubOrchestrationOptions" /> with the provided instance ID. This can be used when
@@ -51,7 +60,10 @@ public record TaskOptions
     /// </summary>
     /// <param name="instanceId">The instance ID to use.</param>
     /// <returns>A new <see cref="SubOrchestrationOptions" />.</returns>
-    public SubOrchestrationOptions WithInstanceId(string instanceId) => new(this, instanceId);
+    public SubOrchestrationOptions WithInstanceId(string instanceId)
+    {
+        return new SubOrchestrationOptions(this, instanceId);
+    }
 }
 
 /// <summary>

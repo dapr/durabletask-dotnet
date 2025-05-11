@@ -39,7 +39,10 @@ public class DurableTaskClientOptions
     /// </remarks>
     public DataConverter DataConverter
     {
-        get => this.dataConverter;
+        get
+        {
+            return this.dataConverter;
+        }
         set
         {
             if (value is null)
@@ -61,7 +64,10 @@ public class DurableTaskClientOptions
     /// </summary>
     public bool EnableEntitySupport
     {
-        get => this.enableEntitySupport;
+        get
+        {
+            return this.enableEntitySupport;
+        }
         set
         {
             this.enableEntitySupport = value;

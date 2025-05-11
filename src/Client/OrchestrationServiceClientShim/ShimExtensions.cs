@@ -118,7 +118,9 @@ static class ShimExtensions
     /// <param name="entityId">The entity ID to convert.</param>
     /// <returns>The converted entity instance ID.</returns>
     public static EntityInstanceId ConvertFromCore(this EntityId entityId)
-        => new(entityId.Name, entityId.Key);
+    {
+        return new(entityId.Name, entityId.Key);
+    }
 
     /// <summary>
     /// Convert <see cref="EntityInstanceId" /> to <see cref="EntityId" />.
@@ -126,5 +128,7 @@ static class ShimExtensions
     /// <param name="entityId">The entity instance ID to convert.</param>
     /// <returns>The converted entity ID.</returns>
     public static EntityId ConvertToCore(this EntityInstanceId entityId)
-        => new(entityId.Name, entityId.Key);
+    {
+        return new(entityId.Name, entityId.Key);
+    }
 }

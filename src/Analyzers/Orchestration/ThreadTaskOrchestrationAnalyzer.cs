@@ -32,7 +32,10 @@ public sealed class ThreadTaskOrchestrationAnalyzer : OrchestrationAnalyzer<Thre
         isEnabledByDefault: true);
 
     /// <inheritdoc/>
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [Rule];
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+    {
+        get => new ImmutableArray<DiagnosticDescriptor>() { Rule };
+    }
 
     /// <summary>
     /// Visitor that inspects the orchestration methods for non-deterministic <see cref="Thread"/>/<see cref="Task"/> operations.

@@ -79,9 +79,21 @@ public class DurableTaskBuilderWorkerExtensionsTests
             this.Options = options.Value;
         }
 
-        public new string Name => base.Name;
+        public new string Name
+        {
+            get
+            {
+                return base.Name;
+            }
+        }
 
-        public new IDurableTaskFactory Factory => base.Factory;
+        public new IDurableTaskFactory Factory
+        {
+            get
+            {
+                return base.Factory;
+            }
+        }
 
         public DurableTaskWorkerOptions Options { get; }
 

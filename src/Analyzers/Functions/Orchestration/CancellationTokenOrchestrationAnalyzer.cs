@@ -21,8 +21,12 @@ public class CancellationTokenOrchestrationAnalyzer : OrchestrationAnalyzer<Canc
     /// </summary>
     public const string DiagnosticId = "DURABLE0007";
 
-    static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.CancellationTokenOrchestrationAnalyzerTitle), Resources.ResourceManager, typeof(Resources));
-    static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(Resources.CancellationTokenOrchestrationAnalyzerMessageFormat), Resources.ResourceManager, typeof(Resources));
+    static readonly LocalizableString Title = new LocalizableResourceString(
+        nameof(Resources.CancellationTokenOrchestrationAnalyzerTitle), Resources.ResourceManager, typeof(Resources));
+
+    static readonly LocalizableString MessageFormat = new LocalizableResourceString(
+        nameof(Resources.CancellationTokenOrchestrationAnalyzerMessageFormat), Resources.ResourceManager,
+        typeof(Resources));
 
     static readonly DiagnosticDescriptor Rule = new(
         DiagnosticId,
@@ -33,7 +37,8 @@ public class CancellationTokenOrchestrationAnalyzer : OrchestrationAnalyzer<Canc
         isEnabledByDefault: true);
 
     /// <inheritdoc/>
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [Rule];
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+        new ImmutableArray<DiagnosticDescriptor> { Rule };
 
     /// <summary>
     /// Visitor that inspects Durable Functions's method signatures for CancellationToken parameters.

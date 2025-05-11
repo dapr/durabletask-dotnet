@@ -244,14 +244,19 @@ static class ProtoUtils
     /// <param name="dateTime">The date-time to convert.</param>
     /// <returns>The gRPC timestamp.</returns>
     internal static Timestamp? ToTimestamp(this DateTime? dateTime)
-        => dateTime.HasValue ? dateTime.Value.ToTimestamp() : null;
+    {
+        return dateTime.HasValue ? dateTime.Value.ToTimestamp() : null;
+    }
 
     /// <summary>
     /// Converts a <see cref="DateTimeOffset" /> to a gRPC <see cref="Timestamp" />.
     /// </summary>
     /// <param name="dateTime">The date-time to convert.</param>
     /// <returns>The gRPC timestamp.</returns>
-    internal static Timestamp ToTimestamp(this DateTimeOffset dateTime) => Timestamp.FromDateTimeOffset(dateTime);
+    internal static Timestamp ToTimestamp(this DateTimeOffset dateTime)
+    {
+        return Timestamp.FromDateTimeOffset(dateTime);
+    }
 
     /// <summary>
     /// Converts a <see cref="DateTimeOffset" /> to a gRPC <see cref="Timestamp" />.
@@ -259,7 +264,9 @@ static class ProtoUtils
     /// <param name="dateTime">The date-time to convert.</param>
     /// <returns>The gRPC timestamp.</returns>
     internal static Timestamp? ToTimestamp(this DateTimeOffset? dateTime)
-        => dateTime.HasValue ? dateTime.Value.ToTimestamp() : null;
+    {
+        return dateTime.HasValue ? dateTime.Value.ToTimestamp() : null;
+    }
 
     /// <summary>
     /// Constructs a <see cref="P.OrchestratorResponse" />.
@@ -974,12 +981,24 @@ static class ProtoUtils
         /// <summary>
         /// Gets the orchestration instance of this history.
         /// </summary>
-        public OrchestrationInstance? CurrentInstance => this.instance;
+        public OrchestrationInstance? CurrentInstance
+        {
+            get
+            {
+                return this.instance;
+            }
+        }
 
         /// <summary>
         /// Gets the set of guids that have been used as entity request ids in this history.
         /// </summary>
-        public HashSet<string> EntityRequestIds => this.entityRequestIds ??= new();
+        public HashSet<string> EntityRequestIds
+        {
+            get
+            {
+                return this.entityRequestIds ??= new();
+            }
+        }
 
         /// <summary>
         /// Records the orchestration instance, which may be needed for some conversions.

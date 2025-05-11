@@ -164,17 +164,53 @@ public class SampleUnitTests
             this.context = functionContext;
         }
 
-        public override Stream Body => new MemoryStream();
+        public override Stream Body
+        {
+            get
+            {
+                return new MemoryStream();
+            }
+        }
 
-        public override HttpHeadersCollection Headers => new();
+        public override HttpHeadersCollection Headers
+        {
+            get
+            {
+                return new();
+            }
+        }
 
-        public override IReadOnlyCollection<IHttpCookie> Cookies => new List<IHttpCookie>();
+        public override IReadOnlyCollection<IHttpCookie> Cookies
+        {
+            get
+            {
+                return new List<IHttpCookie>();
+            }
+        }
 
-        public override Uri Url => new("http://localhost:8888/myUrl");
+        public override Uri Url
+        {
+            get
+            {
+                return new("http://localhost:8888/myUrl");
+            }
+        }
 
-        public override IEnumerable<ClaimsIdentity> Identities => Enumerable.Empty<ClaimsIdentity>();
+        public override IEnumerable<ClaimsIdentity> Identities
+        {
+            get
+            {
+                return Enumerable.Empty<ClaimsIdentity>();
+            }
+        }
 
-        public override string Method => "POST";
+        public override string Method
+        {
+            get
+            {
+                return "POST";
+            }
+        }
 
         public override HttpResponseData CreateResponse()
         {
@@ -192,7 +228,13 @@ public class SampleUnitTests
         public override HttpStatusCode StatusCode { get; set; }
         public override HttpHeadersCollection Headers { get; set; } = new();
 
-        public override HttpCookies Cookies => throw new NotImplementedException();
+        public override HttpCookies Cookies
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public override Stream Body { get; set; } = new MemoryStream();
     }
@@ -202,7 +244,10 @@ public class SampleUnitTests
         // list of all logs emitted, for validation
         public IList<string> CapturedLogs {get; set;} = new List<string>();
 
-        public IDisposable BeginScope<TState>(TState state) => Mock.Of<IDisposable>();
+        public IDisposable BeginScope<TState>(TState state)
+        {
+            return Mock.Of<IDisposable>();
+        }
 
         public bool IsEnabled(LogLevel logLevel)
         {

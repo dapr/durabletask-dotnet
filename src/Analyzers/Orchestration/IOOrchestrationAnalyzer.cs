@@ -33,7 +33,8 @@ public sealed class IOOrchestrationAnalyzer : OrchestrationAnalyzer<IOOrchestrat
         isEnabledByDefault: true);
 
     /// <inheritdoc/>
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [Rule];
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+        new ImmutableArray<DiagnosticDescriptor> { Rule };
 
     /// <summary>
     /// Visitor that inspects the method body for I/O operations by searching for specific types.

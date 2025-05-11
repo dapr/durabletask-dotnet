@@ -55,7 +55,13 @@ class DefaultDurableTaskClientProvider : IDurableTaskClientProvider
         /// <summary>
         /// Gets the client name.
         /// </summary>
-        public string Name => this.Client.Name;
+        public string Name
+        {
+            get
+            {
+                return this.Client.Name;
+            }
+        }
 
         /// <summary>
         /// Gets the client.
@@ -63,6 +69,9 @@ class DefaultDurableTaskClientProvider : IDurableTaskClientProvider
         public DurableTaskClient Client { get; }
 
         /// <inheritdoc/>
-        public ValueTask DisposeAsync() => this.Client.DisposeAsync();
+        public ValueTask DisposeAsync()
+        {
+            return this.Client.DisposeAsync();
+        }
     }
 }

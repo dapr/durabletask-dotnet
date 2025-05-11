@@ -31,7 +31,9 @@ public record SignalEntityOptions
     /// <code>new CallEntityOptions { Signal = true };</code>
     /// </remarks>
     public static implicit operator SignalEntityOptions?(bool? value)
-        => value == true ? new() : null;
+    {
+        return value == true ? new() : null;
+    }
 
     /// <summary>
     /// Implicitly creates a <see cref="SignalEntityOptions"/> from a <see cref="DateTimeOffset"/>.
@@ -42,5 +44,7 @@ public record SignalEntityOptions
     /// <code>new CallEntityOptions { Signal = DateTimeOffset };</code>
     /// </remarks>
     public static implicit operator SignalEntityOptions(DateTimeOffset value)
-        => new() { SignalTime = value };
+    {
+        return new SignalEntityOptions { SignalTime = value };
+    }
 }

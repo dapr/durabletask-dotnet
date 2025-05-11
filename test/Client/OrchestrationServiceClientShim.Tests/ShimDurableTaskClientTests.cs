@@ -300,16 +300,22 @@ public class ShimDurableTaskClientTests
 
     [Fact]
     public Task ScheduleNewOrchestrationInstance_IdGenerated_NoInput()
-        => this.RunScheduleNewOrchestrationInstanceAsync("test", null, null);
+    {
+        return this.RunScheduleNewOrchestrationInstanceAsync("test", null, null);
+    }
 
     [Fact]
     public Task ScheduleNewOrchestrationInstance_IdProvided_InputProvided()
-        => this.RunScheduleNewOrchestrationInstanceAsync("test", "input", new() { InstanceId = "test-id" });
+    {
+        return this.RunScheduleNewOrchestrationInstanceAsync("test", "input", new() { InstanceId = "test-id" });
+    }
 
     [Fact]
     public Task ScheduleNewOrchestrationInstance_StartAt()
-        => this.RunScheduleNewOrchestrationInstanceAsync(
+    {
+        return this.RunScheduleNewOrchestrationInstanceAsync(
             "test", null, new() { StartAt = DateTimeOffset.UtcNow.AddHours(1) });
+    }
 
     [Fact]
     public async Task ScheduleNewOrchestrationInstance_IdProvided_TagsProvided()

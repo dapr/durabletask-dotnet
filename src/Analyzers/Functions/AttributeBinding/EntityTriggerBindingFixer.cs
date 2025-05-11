@@ -16,8 +16,15 @@ namespace Microsoft.DurableTask.Analyzers.Functions.AttributeBinding;
 public sealed class EntityTriggerBindingFixer : MatchingAttributeBindingFixer
 {
     /// <inheritdoc/>
-    public override ImmutableArray<string> FixableDiagnosticIds => [EntityTriggerBindingAnalyzer.DiagnosticId];
+    public override ImmutableArray<string> FixableDiagnosticIds =>
+        new ImmutableArray<string> { EntityTriggerBindingAnalyzer.DiagnosticId };
 
     /// <inheritdoc/>
-    public override string ExpectedType => "TaskEntityDispatcher";
+    public override string ExpectedType
+    {
+        get
+        {
+            return "TaskEntityDispatcher";
+        }
+    }
 }

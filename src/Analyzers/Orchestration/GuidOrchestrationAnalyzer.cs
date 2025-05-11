@@ -32,7 +32,8 @@ public sealed class GuidOrchestrationAnalyzer : OrchestrationAnalyzer<GuidOrches
         isEnabledByDefault: true);
 
     /// <inheritdoc/>
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [Rule];
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+        new ImmutableArray<DiagnosticDescriptor> { Rule };
 
     /// <summary>
     /// Visitor that inspects the method body for Guid.NewGuid() calls.

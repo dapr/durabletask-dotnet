@@ -31,9 +31,21 @@ class ShimDurableEntityClient : DurableEntityClient
         this.options = Check.NotNull(options);
     }
 
-    EntityBackendQueries Queries => this.options.Entities.Queries!;
+    EntityBackendQueries Queries
+    {
+        get
+        {
+            return this.options.Entities.Queries!;
+        }
+    }
 
-    DataConverter Converter => this.options.DataConverter;
+    DataConverter Converter
+    {
+        get
+        {
+            return this.options.DataConverter;
+        }
+    }
 
     /// <inheritdoc/>
     public override async Task<CleanEntityStorageResult> CleanEntityStorageAsync(
@@ -61,23 +73,31 @@ class ShimDurableEntityClient : DurableEntityClient
 
     /// <inheritdoc/>
     public override AsyncPageable<EntityMetadata> GetAllEntitiesAsync(EntityQuery? filter = null)
-        => this.GetAllEntitiesAsync(this.Convert, filter);
+    {
+        return this.GetAllEntitiesAsync(this.Convert, filter);
+    }
 
     /// <inheritdoc/>
     public override AsyncPageable<EntityMetadata<T>> GetAllEntitiesAsync<T>(EntityQuery? filter = null)
-        => this.GetAllEntitiesAsync(this.Convert<T>, filter);
+    {
+        return this.GetAllEntitiesAsync(this.Convert<T>, filter);
+    }
 
     /// <inheritdoc/>
     public override async Task<EntityMetadata?> GetEntityAsync(
         EntityInstanceId id, bool includeState = true, CancellationToken cancellation = default)
-        => this.Convert(await this.Queries.GetEntityAsync(
+    {
+        return this.Convert(await this.Queries.GetEntityAsync(
             id.ConvertToCore(), includeState, false, cancellation));
+    }
 
     /// <inheritdoc/>
     public override async Task<EntityMetadata<T>?> GetEntityAsync<T>(
         EntityInstanceId id, bool includeState = true, CancellationToken cancellation = default)
-        => this.Convert<T>(await this.Queries.GetEntityAsync(
+    {
+        return this.Convert<T>(await this.Queries.GetEntityAsync(
             id.ConvertToCore(), includeState, false, cancellation));
+    }
 
     /// <inheritdoc/>
     public override async Task SignalEntityAsync(

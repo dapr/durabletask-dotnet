@@ -34,7 +34,8 @@ public sealed class EnvironmentOrchestrationAnalyzer : OrchestrationAnalyzer<Env
         isEnabledByDefault: true);
 
     /// <inheritdoc/>
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [Rule];
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+        new ImmutableArray<DiagnosticDescriptor> { Rule };
 
     /// <summary>
     /// Visitor that inspects the method body for retrievals of Environment Variables through the <see cref="System.Environment" /> type.

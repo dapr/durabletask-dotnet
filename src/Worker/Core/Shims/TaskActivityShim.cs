@@ -65,7 +65,10 @@ class TaskActivityShim : TaskActivity
 
     /// <inheritdoc/>
     /// <remarks>Not used/called.</remarks>
-    public override string Run(TaskContext context, string input) => throw new NotImplementedException();
+    public override string Run(TaskContext context, string input)
+    {
+        throw new NotImplementedException();
+    }
 
     static string? StripArrayCharacters(string? input)
     {
@@ -89,8 +92,20 @@ class TaskActivityShim : TaskActivity
             this.name = name;
         }
 
-        public override TaskName Name => this.name;
+        public override TaskName Name
+        {
+            get
+            {
+                return this.name;
+            }
+        }
 
-        public override string InstanceId => this.innerContext.OrchestrationInstance.InstanceId;
+        public override string InstanceId
+        {
+            get
+            {
+                return this.innerContext.OrchestrationInstance.InstanceId;
+            }
+        }
     }
 }

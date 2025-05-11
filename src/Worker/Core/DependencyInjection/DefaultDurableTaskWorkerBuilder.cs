@@ -34,7 +34,10 @@ public class DefaultDurableTaskWorkerBuilder : IDurableTaskWorkerBuilder
     /// <inheritdoc/>
     public Type? BuildTarget
     {
-        get => this.buildTarget;
+        get
+        {
+            return this.buildTarget;
+        }
         set
         {
             if (value is not null)

@@ -48,7 +48,9 @@ public partial class DurableTaskRegistry
     /// <param name="type">The orchestrator type.</param>
     /// <returns>The same registry, for call chaining.</returns>
     public DurableTaskRegistry AddOrchestrator(Type type)
-        => this.AddOrchestrator(type.GetTaskName(), type);
+    {
+        return this.AddOrchestrator(type.GetTaskName(), type);
+    }
 
     /// <summary>
     /// Registers an orchestrator factory.
@@ -58,7 +60,9 @@ public partial class DurableTaskRegistry
     /// <returns>The same registry, for call chaining.</returns>
     public DurableTaskRegistry AddOrchestrator<TOrchestrator>(TaskName name)
         where TOrchestrator : class, ITaskOrchestrator
-        => this.AddOrchestrator(name, typeof(TOrchestrator));
+    {
+        return this.AddOrchestrator(name, typeof(TOrchestrator));
+    }
 
     /// <summary>
     /// Registers an orchestrator factory. The TaskName used is derived from the provided type information.
@@ -67,7 +71,9 @@ public partial class DurableTaskRegistry
     /// <returns>The same registry, for call chaining.</returns>
     public DurableTaskRegistry AddOrchestrator<TOrchestrator>()
         where TOrchestrator : class, ITaskOrchestrator
-        => this.AddOrchestrator(typeof(TOrchestrator));
+    {
+        return this.AddOrchestrator(typeof(TOrchestrator));
+    }
 
     /// <summary>
     /// Registers an orchestrator singleton.

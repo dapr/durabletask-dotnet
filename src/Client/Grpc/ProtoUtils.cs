@@ -17,7 +17,8 @@ static class ProtoUtils
     /// <param name="status">The orchestration status.</param>
     /// <returns>A <see cref="P.OrchestrationStatus" />.</returns>
     internal static P.OrchestrationStatus ToGrpcStatus(this OrchestrationRuntimeStatus status)
-        => status switch
+    {
+        return status switch
         {
             OrchestrationRuntimeStatus.Canceled => P.OrchestrationStatus.Canceled,
             OrchestrationRuntimeStatus.Completed => P.OrchestrationStatus.Completed,
@@ -29,5 +30,6 @@ static class ProtoUtils
             OrchestrationRuntimeStatus.Suspended => P.OrchestrationStatus.Suspended,
             _ => throw new ArgumentOutOfRangeException(nameof(status), "Unexpected value"),
         };
+    }
 #pragma warning restore 0618 // Referencing Obsolete member.
 }

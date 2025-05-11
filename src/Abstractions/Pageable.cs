@@ -53,7 +53,9 @@ public static class Pageable
 
         public override IAsyncEnumerable<Page<T>> AsPages(
             string? continuationToken = default, int? pageSizeHint = default)
-            => this.AsPagesCore(continuationToken, pageSizeHint);
+        {
+            return this.AsPagesCore(continuationToken, pageSizeHint);
+        }
 
         async IAsyncEnumerable<Page<T>> AsPagesCore(
             string? continuationToken = default,

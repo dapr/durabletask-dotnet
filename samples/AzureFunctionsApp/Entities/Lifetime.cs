@@ -32,7 +32,13 @@ public class Lifetime : TaskEntity<MyState>
     /// Stated differently: if this is <c>true</c> and there is no matching method for a given operation on the entity
     /// type, then the operation will attempt to find a matching method on <typeparamref name="TState"/> instead.
     /// </summary>
-    protected override bool AllowStateDispatch => base.AllowStateDispatch;
+    protected override bool AllowStateDispatch
+    {
+        get
+        {
+            return base.AllowStateDispatch;
+        }
+    }
 
     // NOTE: when using TaskEntity<TState>, you cannot use "RunAsync" as the entity trigger name as this conflicts
     // with the base class method 'RunAsync'.
@@ -43,7 +49,10 @@ public class Lifetime : TaskEntity<MyState>
         return dispatcher.DispatchAsync(this);
     }
 
-    public MyState Get() => this.State;
+    public MyState Get()
+    {
+        return this.State;
+    }
 
     public void Init() { } // no op just to initialize this entity.
 

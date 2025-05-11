@@ -99,7 +99,13 @@ public sealed class OrchestrationMetadata
     /// Gets a value indicating whether the orchestration instance was running at the time this object was fetched.
     /// </summary>
     /// <value><c>true</c> if the orchestration was in a running state; <c>false</c> otherwise.</value>
-    public bool IsRunning => this.RuntimeStatus == OrchestrationRuntimeStatus.Running;
+    public bool IsRunning
+    {
+        get
+        {
+            return this.RuntimeStatus == OrchestrationRuntimeStatus.Running;
+        }
+    }
 
     /// <summary>
     /// Gets a value indicating whether the orchestration instance was completed at the time this object was fetched.
@@ -110,13 +116,24 @@ public sealed class OrchestrationMetadata
     /// or <see cref="OrchestrationRuntimeStatus.Terminated"/>.
     /// </remarks>
     /// <value><c>true</c> if the orchestration was in a terminal state; <c>false</c> otherwise.</value>
-    public bool IsCompleted =>
-        this.RuntimeStatus == OrchestrationRuntimeStatus.Completed ||
-        this.RuntimeStatus == OrchestrationRuntimeStatus.Failed ||
-        this.RuntimeStatus == OrchestrationRuntimeStatus.Terminated;
+    public bool IsCompleted
+    {
+        get
+        {
+            return this.RuntimeStatus == OrchestrationRuntimeStatus.Completed ||
+                   this.RuntimeStatus == OrchestrationRuntimeStatus.Failed ||
+                   this.RuntimeStatus == OrchestrationRuntimeStatus.Terminated;
+        }
+    }
 
     [MemberNotNullWhen(true, nameof(DataConverter))]
-    bool RequestedInputsAndOutputs => this.DataConverter is not null;
+    bool RequestedInputsAndOutputs
+    {
+        get
+        {
+            return this.DataConverter is not null;
+        }
+    }
 
     /// <summary>
     /// Deserializes the orchestration's input into an object of the specified type.

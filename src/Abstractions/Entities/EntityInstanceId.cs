@@ -60,7 +60,10 @@ public readonly record struct EntityInstanceId
     }
 
     /// <inheritdoc/>
-    public override string ToString() => $"@{this.Name}@{this.Key}";
+    public override string ToString()
+    {
+        return $"@{this.Name}@{this.Key}";
+    }
 
     /// <summary>
     /// We override the default json conversion so we can use a more compact string representation for entity instance ids.

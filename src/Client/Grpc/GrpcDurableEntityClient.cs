@@ -72,20 +72,28 @@ class GrpcDurableEntityClient : DurableEntityClient
     /// <inheritdoc/>
     public override Task<EntityMetadata?> GetEntityAsync(
         EntityInstanceId id, bool includeState = false, CancellationToken cancellation = default)
-        => this.GetEntityCoreAsync(id, includeState, (e, s) => this.ToEntityMetadata(e, s), cancellation);
+    {
+        return this.GetEntityCoreAsync(id, includeState, (e, s) => this.ToEntityMetadata(e, s), cancellation);
+    }
 
     /// <inheritdoc/>
     public override Task<EntityMetadata<TState>?> GetEntityAsync<TState>(
         EntityInstanceId id, bool includeState = false, CancellationToken cancellation = default)
-        => this.GetEntityCoreAsync(id, includeState, (e, s) => this.ToEntityMetadata<TState>(e, s), cancellation);
+    {
+        return this.GetEntityCoreAsync(id, includeState, (e, s) => this.ToEntityMetadata<TState>(e, s), cancellation);
+    }
 
     /// <inheritdoc/>
     public override AsyncPageable<EntityMetadata> GetAllEntitiesAsync(EntityQuery? filter = null)
-        => this.GetAllEntitiesCoreAsync(filter, (x, s) => this.ToEntityMetadata(x, s));
+    {
+        return this.GetAllEntitiesCoreAsync(filter, (x, s) => this.ToEntityMetadata(x, s));
+    }
 
     /// <inheritdoc/>
     public override AsyncPageable<EntityMetadata<TState>> GetAllEntitiesAsync<TState>(EntityQuery? filter = null)
-        => this.GetAllEntitiesCoreAsync(filter, (x, s) => this.ToEntityMetadata<TState>(x, s));
+    {
+        return this.GetAllEntitiesCoreAsync(filter, (x, s) => this.ToEntityMetadata<TState>(x, s));
+    }
 
     /// <inheritdoc/>
     public override async Task<CleanEntityStorageResult> CleanEntityStorageAsync(

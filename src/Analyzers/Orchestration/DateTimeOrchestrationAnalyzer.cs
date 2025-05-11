@@ -32,7 +32,8 @@ public sealed class DateTimeOrchestrationAnalyzer : OrchestrationAnalyzer<DateTi
         isEnabledByDefault: true);
 
     /// <inheritdoc/>
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => [Rule];
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+        new ImmutableArray<DiagnosticDescriptor> { Rule };
 
     /// <summary>
     /// Visitor that inspects the method body for DateTime properties.

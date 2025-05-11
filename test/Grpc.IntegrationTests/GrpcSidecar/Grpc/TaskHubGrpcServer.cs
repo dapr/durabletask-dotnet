@@ -107,7 +107,10 @@ public class TaskHubGrpcServer : P.TaskHubSidecarService.TaskHubSidecarServiceBa
         }
     }
 
-    public override Task<Empty> Hello(Empty request, ServerCallContext context) => Task.FromResult(new Empty());
+    public override Task<Empty> Hello(Empty request, ServerCallContext context)
+    {
+        return Task.FromResult(new Empty());
+    }
 
     public override Task<P.CreateTaskHubResponse> CreateTaskHub(P.CreateTaskHubRequest request, ServerCallContext context)
     {
@@ -598,7 +601,13 @@ public class TaskHubGrpcServer : P.TaskHubSidecarService.TaskHubSidecarServiceBa
         readonly AsyncManualResetEvent isConnectedEvent = new(isSignaled: false);
 
         /// <inheritdoc />
-        public string WaitReason => "Waiting for a client to connect";
+        public string WaitReason
+        {
+            get
+            {
+                return "Waiting for a client to connect";
+            }
+        }
 
         /// <summary>
         /// Blocks the caller until the <see cref="Set"/> method is called, which means a client is connected.
@@ -616,11 +625,17 @@ public class TaskHubGrpcServer : P.TaskHubSidecarService.TaskHubSidecarServiceBa
         /// Returns <c>true</c> if the current thread transitioned the event to the "signaled" state;
         /// otherwise <c>false</c>, meaning some other thread already called <see cref="Set"/> on this signal.
         /// </returns>
-        public bool Set() => this.isConnectedEvent.Set();
+        public bool Set()
+        {
+            return this.isConnectedEvent.Set();
+        }
 
         /// <summary>
         /// Causes the dispatchers to stop fetching new work-items.
         /// </summary>
-        public void Reset() => this.isConnectedEvent.Reset();
+        public void Reset()
+        {
+            this.isConnectedEvent.Reset();
+        }
     }
 }

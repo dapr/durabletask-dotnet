@@ -27,52 +27,113 @@ public sealed partial class KnownTypeSymbols
     /// <summary>
     /// Gets a Guid type symbol.
     /// </summary>
-    public INamedTypeSymbol? GuidType => this.GetOrResolveFullyQualifiedType(typeof(Guid).FullName, ref this.guid);
+    public INamedTypeSymbol? GuidType
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType(typeof(Guid).FullName, ref this.guid);
+        }
+    }
 
     /// <summary>
     /// Gets a Thread type symbol.
     /// </summary>
-    public INamedTypeSymbol? Thread => this.GetOrResolveFullyQualifiedType(typeof(Thread).FullName, ref this.thread);
+    public INamedTypeSymbol? Thread
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType(typeof(Thread).FullName, ref this.thread);
+        }
+    }
 
     /// <summary>
     /// Gets a Task type symbol.
     /// </summary>
-    public INamedTypeSymbol? Task => this.GetOrResolveFullyQualifiedType(typeof(Task).FullName, ref this.task);
+    public INamedTypeSymbol? Task
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType(typeof(Task).FullName, ref this.task);
+        }
+    }
 
     /// <summary>
     /// Gets a Task&lt;T&gt; type symbol.
     /// </summary>
-    public INamedTypeSymbol? TaskT => this.GetOrResolveFullyQualifiedType(typeof(Task<>).FullName, ref this.taskT);
+    public INamedTypeSymbol? TaskT
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType(typeof(Task<>).FullName, ref this.taskT);
+        }
+    }
 
     /// <summary>
     /// Gets a TaskFactory type symbol.
     /// </summary>
-    public INamedTypeSymbol? TaskFactory => this.GetOrResolveFullyQualifiedType(typeof(TaskFactory).FullName, ref this.taskFactory);
+    public INamedTypeSymbol? TaskFactory
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType(typeof(TaskFactory).FullName, ref this.taskFactory);
+        }
+    }
 
     /// <summary>
     /// Gets a TaskFactory&lt;T&gt; type symbol.
     /// </summary>
-    public INamedTypeSymbol? TaskFactoryT => this.GetOrResolveFullyQualifiedType(typeof(TaskFactory<>).FullName, ref this.taskFactoryT);
+    public INamedTypeSymbol? TaskFactoryT
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType(typeof(TaskFactory<>).FullName, ref this.taskFactoryT);
+        }
+    }
 
     /// <summary>
     /// Gets a TaskContinuationOptions type symbol.
     /// </summary>
-    public INamedTypeSymbol? TaskContinuationOptions => this.GetOrResolveFullyQualifiedType(typeof(TaskContinuationOptions).FullName, ref this.taskContinuationOptions);
+    public INamedTypeSymbol? TaskContinuationOptions
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType(typeof(TaskContinuationOptions).FullName,
+                ref this.taskContinuationOptions);
+        }
+    }
 
     /// <summary>
     /// Gets a CancellationToken type symbol.
     /// </summary>
-    public INamedTypeSymbol? CancellationToken => this.GetOrResolveFullyQualifiedType(typeof(CancellationToken).FullName, ref this.cancellationToken);
+    public INamedTypeSymbol? CancellationToken
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType(typeof(CancellationToken).FullName, ref this.cancellationToken);
+        }
+    }
 
 #pragma warning disable RS1035 // Environment Variables are not supposed to be used in Analyzers, but here we just reference the API, never using it.
     /// <summary>
     /// Gets an Environment type symbol.
     /// </summary>
-    public INamedTypeSymbol? Environment => this.GetOrResolveFullyQualifiedType(typeof(Environment).FullName, ref this.environment);
+    public INamedTypeSymbol? Environment
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType(typeof(Environment).FullName, ref this.environment);
+        }
+    }
 #pragma warning restore RS1035
 
     /// <summary>
     /// Gets an HttpClient type symbol.
     /// </summary>
-    public INamedTypeSymbol? HttpClient => this.GetOrResolveFullyQualifiedType(typeof(HttpClient).FullName, ref this.httpClient);
+    public INamedTypeSymbol? HttpClient
+    {
+        get
+        {
+            return this.GetOrResolveFullyQualifiedType(typeof(HttpClient).FullName, ref this.httpClient);
+        }
+    }
 }

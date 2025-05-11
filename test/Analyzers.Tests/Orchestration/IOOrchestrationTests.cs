@@ -42,14 +42,11 @@ void Method([OrchestrationTrigger] TaskOrchestrationContext context)
     var sql1 = {|#9:new SqlConnection()|};
 }
 ");
-        string[] types = [
-            "HttpClient",
-            "BlobServiceClient", "BlobContainerClient", "BlobClient",
-            "QueueServiceClient", "QueueClient",
-            "TableServiceClient", "TableClient",
-            "CosmosClient",
-            "SqlConnection",
-        ];
+        string[] types = new[]
+        {
+            "HttpClient", "BlobServiceClient", "BlobContainerClient", "BlobClient", "QueueServiceClient",
+            "QueueClient", "TableServiceClient", "TableClient", "CosmosClient", "SqlConnection",
+        };
 
         DiagnosticResult[] expected = types.Select(
             (type, i) => BuildDiagnostic().WithLocation(i).WithArguments("Method", type, "Run")).ToArray();

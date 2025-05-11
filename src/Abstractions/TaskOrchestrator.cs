@@ -116,10 +116,22 @@ public interface ITaskOrchestrator
 public abstract class TaskOrchestrator<TInput, TOutput> : ITaskOrchestrator
 {
     /// <inheritdoc/>
-    Type ITaskOrchestrator.InputType => typeof(TInput);
+    Type ITaskOrchestrator.InputType
+    {
+        get
+        {
+            return typeof(TInput);
+        }
+    }
 
     /// <inheritdoc/>
-    Type ITaskOrchestrator.OutputType => typeof(TOutput);
+    Type ITaskOrchestrator.OutputType
+    {
+        get
+        {
+            return typeof(TOutput);
+        }
+    }
 
     /// <inheritdoc/>
     async Task<object?> ITaskOrchestrator.RunAsync(TaskOrchestrationContext context, object? input)

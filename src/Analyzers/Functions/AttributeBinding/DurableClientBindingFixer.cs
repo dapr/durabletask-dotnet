@@ -16,8 +16,15 @@ namespace Microsoft.DurableTask.Analyzers.Functions.AttributeBinding;
 public sealed class DurableClientBindingFixer : MatchingAttributeBindingFixer
 {
     /// <inheritdoc/>
-    public override ImmutableArray<string> FixableDiagnosticIds => [DurableClientBindingAnalyzer.DiagnosticId];
+    public override ImmutableArray<string> FixableDiagnosticIds =>
+        new ImmutableArray<string> { DurableClientBindingAnalyzer.DiagnosticId };
 
     /// <inheritdoc/>
-    public override string ExpectedType => "DurableTaskClient";
+    public override string ExpectedType
+    {
+        get
+        {
+            return "DurableTaskClient";
+        }
+    }
 }

@@ -21,7 +21,9 @@ namespace Microsoft.DurableTask.Analyzers.Orchestration;
 public sealed class GuidOrchestrationFixer : OrchestrationContextFixer
 {
     /// <inheritdoc/>
-    public override ImmutableArray<string> FixableDiagnosticIds => [GuidOrchestrationAnalyzer.DiagnosticId];
+    public override ImmutableArray<string> FixableDiagnosticIds => new ImmutableArray<string>{
+        GuidOrchestrationAnalyzer.DiagnosticId
+    };
 
     /// <inheritdoc/>
     protected override void RegisterCodeFixes(CodeFixContext context, OrchestrationCodeFixContext orchestrationContext)

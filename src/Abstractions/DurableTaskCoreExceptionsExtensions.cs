@@ -18,7 +18,9 @@ static class DurableTaskCoreExceptionsExtensions
     /// FailureDetails; otherwise, null is returned.
     /// </returns>
     internal static TaskFailureDetails? ToTaskFailureDetails(this global::DurableTask.Core.Exceptions.TaskFailedException taskFailedException)
-        => taskFailedException.FailureDetails.ToTaskFailureDetails();
+    {
+        return taskFailedException.FailureDetails.ToTaskFailureDetails();
+    }
 
     /// <summary>
     /// Converts <paramref name="subOrchestrationFailedException"/> to a <see cref="TaskFailureDetails"/> instance.
@@ -29,7 +31,10 @@ static class DurableTaskCoreExceptionsExtensions
     /// A <see cref="TaskFailureDetails"/> instance if <paramref name="subOrchestrationFailedException"/> contains
     /// FailureDetails; otherwise, null is returned.
     /// </returns>
-    internal static TaskFailureDetails? ToTaskFailureDetails(this global::DurableTask.Core.Exceptions.SubOrchestrationFailedException subOrchestrationFailedException) => subOrchestrationFailedException.FailureDetails.ToTaskFailureDetails();
+    internal static TaskFailureDetails? ToTaskFailureDetails(this global::DurableTask.Core.Exceptions.SubOrchestrationFailedException subOrchestrationFailedException)
+    {
+        return subOrchestrationFailedException.FailureDetails.ToTaskFailureDetails();
+    }
 
     /// <summary>
     /// Converts <paramref name="failureDetails"/> to a <see cref="TaskFailureDetails"/> instance.

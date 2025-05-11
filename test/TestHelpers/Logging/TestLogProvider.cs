@@ -60,13 +60,25 @@ public sealed class TestLogProvider : ILoggerProvider
             this.entries = new List<LogEntry>();
         }
 
-        public IReadOnlyCollection<LogEntry> GetLogs() => this.entries.AsReadOnly();
+        public IReadOnlyCollection<LogEntry> GetLogs()
+        {
+            return this.entries.AsReadOnly();
+        }
 
-        public void ClearLogs() => this.entries.Clear();
+        public void ClearLogs()
+        {
+            this.entries.Clear();
+        }
 
-        IDisposable ILogger.BeginScope<TState>(TState state) => null!;
+        IDisposable ILogger.BeginScope<TState>(TState state)
+        {
+            return null!;
+        }
 
-        bool ILogger.IsEnabled(LogLevel logLevel) => true;
+        bool ILogger.IsEnabled(LogLevel logLevel)
+        {
+            return true;
+        }
 
         void ILogger.Log<TState>(
             LogLevel level,

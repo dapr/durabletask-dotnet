@@ -7,9 +7,27 @@ namespace Microsoft.DurableTask.Analyzers.Tests.Functions.AttributeBinding;
 
 public class DurableClientBindingAnalyzerTests : MatchingAttributeBindingSpecificationTests<DurableClientBindingAnalyzer, DurableClientBindingFixer>
 {
-    protected override string ExpectedDiagnosticId => DurableClientBindingAnalyzer.DiagnosticId;
+    protected override string ExpectedDiagnosticId
+    {
+        get
+        {
+            return DurableClientBindingAnalyzer.DiagnosticId;
+        }
+    }
 
-    protected override string ExpectedAttribute => "[DurableClient]";
+    protected override string ExpectedAttribute
+    {
+        get
+        {
+            return "[DurableClient]";
+        }
+    }
 
-    protected override string ExpectedType => "DurableTaskClient";
+    protected override string ExpectedType
+    {
+        get
+        {
+            return "DurableTaskClient";
+        }
+    }
 }

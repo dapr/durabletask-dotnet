@@ -77,7 +77,9 @@ public sealed class TaskFailedException : Exception
     /// </returns>
     [Obsolete("Use the FailureDetails property and its IsCausedBy<T>() method")]
     public bool IsCausedByException<T>() where T : Exception
-        => this.FailureDetails.ErrorType == typeof(T).FullName;
+    {
+        return this.FailureDetails.ErrorType == typeof(T).FullName;
+    }
 
     static string GetExceptionMessage(string taskName, int taskId, TaskFailureDetails? details, Exception? cause)
     {

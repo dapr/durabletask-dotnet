@@ -74,14 +74,35 @@ class ShimDurableTaskClient : DurableTaskClient
         }
     }
 
-    DataConverter DataConverter => this.options.DataConverter;
+    DataConverter DataConverter
+    {
+        get
+        {
+            return this.options.DataConverter;
+        }
+    }
 
-    IOrchestrationServiceClient Client => this.options.Client!;
+    IOrchestrationServiceClient Client
+    {
+        get
+        {
+            return this.options.Client!;
+        }
+    }
 
-    IOrchestrationServicePurgeClient PurgeClient => this.CastClient<IOrchestrationServicePurgeClient>();
+    IOrchestrationServicePurgeClient PurgeClient
+    {
+        get
+        {
+            return this.CastClient<IOrchestrationServicePurgeClient>();
+        }
+    }
 
     /// <inheritdoc/>
-    public override ValueTask DisposeAsync() => default;
+    public override ValueTask DisposeAsync()
+    {
+        return default;
+    }
 
     /// <inheritdoc/>
     public override async Task<OrchestrationMetadata?> GetInstancesAsync(
@@ -197,12 +218,16 @@ class ShimDurableTaskClient : DurableTaskClient
     /// <inheritdoc/>
     public override Task SuspendInstanceAsync(
         string instanceId, string? reason = null, CancellationToken cancellation = default)
-        => this.SendInstanceMessageAsync(instanceId, new ExecutionSuspendedEvent(-1, reason), cancellation);
+    {
+        return this.SendInstanceMessageAsync(instanceId, new ExecutionSuspendedEvent(-1, reason), cancellation);
+    }
 
     /// <inheritdoc/>
     public override Task ResumeInstanceAsync(
         string instanceId, string? reason = null, CancellationToken cancellation = default)
-        => this.SendInstanceMessageAsync(instanceId, new ExecutionResumedEvent(-1, reason), cancellation);
+    {
+        return this.SendInstanceMessageAsync(instanceId, new ExecutionResumedEvent(-1, reason), cancellation);
+    }
 
     /// <inheritdoc/>
     public override Task TerminateInstanceAsync(
