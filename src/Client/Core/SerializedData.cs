@@ -23,7 +23,12 @@ public sealed class SerializedData
     /// <param name="converter">The data converter.</param>
     public SerializedData(string data, DataConverter? converter = null)
     {
-        this.Value = Check.NotNull(data);
+        if (data is null)
+        {
+            throw new ArgumentNullException(nameof(data));
+        }
+
+        this.Value = data;
         this.Converter = converter ?? JsonDataConverter.Default;
     }
 

@@ -49,7 +49,12 @@ class DefaultDurableTaskClientProvider : IDurableTaskClientProvider
         /// <param name="client">The client.</param>
         public ClientContainer(DurableTaskClient client)
         {
-            this.Client = Check.NotNull(client);
+            if (client is null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
+            this.Client = client;
         }
 
         /// <summary>

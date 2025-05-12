@@ -30,7 +30,10 @@ public static class DurableTaskClientExtensions
         PurgeInstanceOptions? options,
         CancellationToken cancellation = default)
     {
-        Check.NotNull(client);
+        if (client is null)
+        {
+            throw new ArgumentNullException(nameof(client));
+        }
         PurgeInstancesFilter filter = new(createdFrom, createdTo, statuses);
         return client.PurgeAllInstancesAsync(filter, options, cancellation);
     }
