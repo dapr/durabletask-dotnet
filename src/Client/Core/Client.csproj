@@ -5,6 +5,7 @@
 
 The client is responsible for interacting with orchestrations from outside the worker.</PackageDescription>
     <EnableStyleCop>true</EnableStyleCop>
+    <PackageId>Dapr.DurableTask.Client</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
