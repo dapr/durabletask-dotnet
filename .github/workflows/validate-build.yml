@@ -14,44 +14,49 @@ on:
       - release-*
     paths-ignore: [ '**.md' ]
 
-env:
-  NUPKG_OUTDIR: bin/Release/nugets
-
 jobs:
   build:
     needs: ['test']
     runs-on: ubuntu-latest
+    env:
+      NUPKG_OUTDIR: bin/Release/nugets
     strategy:
       matrix:
-        project:
-          - ./src/Client/Grpc/Client.Grpc.csproj
-          - ./src/Worker/Grpc/Worker.Grpc.csproj
+        name:
+          - client
+          - worker
+        include:
+          - name: client
+            project-path: ./src/Client/Grpc/Client.Grpc.csproj
+          - name: worker
+            project-path: ./src/Worker/Grpc/Worker.Grpc.csproj
     steps:
-    - uses: actions/checkout@v3
-      
-    - name: Parse release version
-      run: python ./.github/scripts/get_release_version.py
-      
-    - name: Setup ${{ matrix.display-name }}
-      uses: actions/setup-dotnet@v3
-      with:
+      - uses: actions/checkout@v3
+
+      - name: Parse release version
+        run: python ./.github/scripts/get_release_version.py
+
+      - name: Setup ${{ matrix.display-name }}
+        uses: actions/setup-dotnet@v3
+        with:
           dotnet-version: 6.0.x
           dotnet-quality: 'ga' # Prefer a GA release, but use RC if not available
 
-    - name: Restore dependencies
-      run: dotnet restore ${{ matrix.project }}
+      - name: Restore dependencies
+        run: dotnet restore ${{ matrix.project-path }}
 
-    - name: Build
-      run: dotnet build ${{ matrix.project }} --configuration Release --no-restore -p:FileVersionRevision=$env:GITHUB_RUN_NUMBER
+      - name: Build
+        run: dotnet build ${{ matrix.project-path }} --configuration Release --no-restore -p:FileVersionRevision=$env:GITHUB_RUN_NUMBER
 
-    - name: Pack
-      run: dotnet pack ${{ matrix.project }} --configuration Release --no-build
+      - name: Pack
+        run: dotnet pack ${{ matrix.project-path }} --configuration Release --no-build
 
-    - name: Upload
-      uses: actions/upload-artifact@v4
-      with:
-        name: packages
-        path: ${{ env.NUPKG_OUTDIR }}
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages_${{ matrix.name }}
+          path: ${{ env.NUPKG_OUTDIR }}
+
   test:
     name: Test - .NET ${{ matrix.dotnet-version }} - ${{ matrix.projectName }}
     runs-on: ubuntu-latest
@@ -74,27 +79,27 @@ jobs:
             projectName: 'Worker.Grpc.Tests.csproj'
     steps:
       - uses: actions/checkout@v1
-        
+
       - name: Setup ${{ matrix.display-name }}
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ matrix.install-version }}
           dotnet-quality: 'ga' # Prefer a GA release, but use RC if not available
-        
+
       - name: Test
         id: tests
         continue-on-error: true # proceed if tests fail to allow for the report generation in main or next step failure in PR
         run: dotnet test ${{ matrix.path }} --configuration Release --logger "trx;LogFilePrefix=${{ matrix.prefix }}" --logger "GitHubActions;report-warnings=false" --results-directory "${{ github.workspace }}/TestResults" --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:GITHUB_ACTIONS=false
-      
+
       - name: Check test failure in PR
         if: github.event_name == 'pull_request' && steps.tests.outcome != 'success'
         run: exit 1
-        
+
       - name: Upload test coverage
         uses: codecov/codecov-action@v1
         with:
           flags: ${{ matrix.framework }}
-          
+
       - name: Parse Trx files
         uses: NasAmin/trx-parser@v0.2.0
         id: trx-parser
@@ -108,11 +113,16 @@ jobs:
     needs: ['build', 'test']
     runs-on: ubuntu-latest
     if: startswith(github.ref, 'refs/tags/v') && !(endsWith(github.ref, '-rc') || endsWith(github.ref, '-dev') || endsWith(github.ref, '-prerelease'))
+    strategy:
+      matrix:
+        name:
+          - client
+          - worker
     steps:
       - name: Download release artifacts
         uses: actions/download-artifact@v4
         with:
-          name: packages
+          name: packages_${{ matrix.name }}
           path: packages
       - name: List packages (for sanity checks)
         run: ls -R
