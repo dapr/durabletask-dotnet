@@ -13,7 +13,9 @@
     <RepositoryUrl>https://github.com/dapr/durabletask-dotnet</RepositoryUrl>
     <PackageLicenseExpression>MIT OR Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
-    <PackageTags>Durable Task Orchestration Workflow Activity Reliable DTFx Dapr</PackageTags>
+    <PackageTags>Durable Task Workflow Activity Dapr</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <PackageOutputPath>$(RepoRoot)bin\$(Configuration)\nugets</PackageOutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
