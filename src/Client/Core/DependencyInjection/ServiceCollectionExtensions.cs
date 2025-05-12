@@ -20,7 +20,11 @@ public static class ServiceCollectionExtensions
     /// <returns>The builder used to configured the <see cref="DurableTaskClient"/>.</returns>
     public static IDurableTaskClientBuilder AddDurableTaskClient(this IServiceCollection services, string? name = null)
     {
-        Check.NotNull(services);
+        if (services is null)
+        {
+            throw new ArgumentNullException(nameof(services));
+        }
+        
         IDurableTaskClientBuilder builder = GetBuilder(services, name ?? Options.DefaultName, out bool added);
         ConditionalConfigureBuilder(services, builder, added);
         return builder;

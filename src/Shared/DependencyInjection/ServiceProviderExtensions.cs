@@ -22,7 +22,11 @@ static class ServiceProviderExtensions
         this IServiceProvider serviceProvider, string? name = null)
         where TOptions : class
     {
-        Check.NotNull(serviceProvider);
+        if (serviceProvider is null)
+        {
+            throw new ArgumentNullException(nameof(serviceProvider));
+        }
+
         IOptionsMonitor<TOptions>? options = serviceProvider.GetRequiredService<IOptionsMonitor<TOptions>>();
         return options.Get(name);
     }

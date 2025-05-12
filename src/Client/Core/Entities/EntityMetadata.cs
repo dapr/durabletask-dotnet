@@ -41,7 +41,12 @@ public class EntityMetadata<TState>
     /// <param name="id">The ID of the entity.</param>
     public EntityMetadata(EntityInstanceId id)
     {
-        this.Id = Check.NotDefault(id);
+        if (id is null)
+        {
+            throw new ArgumentNullException(nameof(id));
+        }
+
+        this.Id = id;
     }
 
     /// <summary>
