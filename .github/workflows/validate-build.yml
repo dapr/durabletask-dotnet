@@ -87,6 +87,12 @@ jobs:
         with:
           dotnet-version: ${{ matrix.install-version }}
           dotnet-quality: 'ga' # Prefer a GA release, but use RC if not available
+          
+      - name: Setup .NET 6
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'
+          dotnet-quality: 'ga' # Prefer a GA release, but use RC if not available
 
       - name: Test
         id: tests
