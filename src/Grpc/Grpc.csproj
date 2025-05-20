@@ -13,7 +13,7 @@
     <PackageReference Include="Grpc.Core" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0' OR '$(TargetFramework)' == 'net9.0'">
     <PackageReference Include="Grpc.Net.Client" />
   </ItemGroup>
 

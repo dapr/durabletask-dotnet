@@ -36,12 +36,12 @@ jobs:
             project-path: ./src/Worker/Grpc/Worker.Grpc.csproj
           - dotnet-version: '8.0'
             display-name: '.NET 8.0'
-            framework: 'net8'
+            framework: 'net8.0'
             prefix: 'net8'
             install-version: '8.0.x'
           - dotnet-version: '9.0'
             display-name: '.NET 9.0'
-            framework: 'net9'
+            framework: 'net9.0'
             prefix: 'net9'
             install-version: '9.0.x'
           - project: 'Client'
@@ -66,7 +66,7 @@ jobs:
         run: dotnet restore ${{ matrix.project-path }}
 
       - name: Build
-        run: dotnet build ${{ matrix.project-path }} --configuration Release --no-restore -p:FileVersionRevision=$env:GITHUB_RUN_NUMBER
+        run: dotnet build ${{ matrix.project-path }} --framework ${{ matrix.framework }} --configuration Release --no-restore -p:FileVersionRevision=$env:GITHUB_RUN_NUMBER
 
       - name: Pack
         run: dotnet pack ${{ matrix.project-path }} --configuration Release --no-build
