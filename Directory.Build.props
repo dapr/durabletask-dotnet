@@ -9,7 +9,7 @@
 
   <!-- Assembly name and namespace -->
   <PropertyGroup Condition="!$(MSBuildProjectName.StartsWith('Microsoft.DurableTask'))">
-    <TopLevelNamespace Condition="'$(TopLevelNamespace)' == ''">Microsoft.DurableTask</TopLevelNamespace>
+    <TopLevelNamespace Condition="'$(TopLevelNamespace)' == ''">Dapr.DurableTask</TopLevelNamespace>
     <AssemblyName>$(TopLevelNamespace).$(MSBuildProjectName)</AssemblyName>
     <RootNamespace Condition="'$(RootNamespace)' == ''">$(AssemblyName)</RootNamespace>
   </PropertyGroup>
