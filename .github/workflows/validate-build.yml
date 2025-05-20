@@ -57,7 +57,7 @@ jobs:
         run: python .github/scripts/git_release_version.py
 
       - name: Setup ${{ matrix.display-name }}
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.install-version }}
           dotnet-quality: 'ga' # Prefer a GA release, but use RC if not available
@@ -106,7 +106,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Setup ${{ matrix.display-name }}
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.install-version }}
           dotnet-quality: 'ga' # Prefer a GA release, but use RC if not available
