@@ -110,11 +110,17 @@ jobs:
         with:
           dotnet-version: ${{ matrix.install-version }}
           dotnet-quality: 'ga' # Prefer a GA release, but use RC if not available
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ matrix.path }}
+
+      - name: Build
+        run: dotnet build ${{ matrix.path }} --framework ${{ matrix.framework }} --configuration Release --no-restore -p:FileVersionRevision=$env:GITHUB_RUN_NUMBER
           
       - name: Test
         id: tests
         continue-on-error: true # proceed if tests fail to allow for the report generation in main or next step failure in PR
-        run: dotnet test ${{ matrix.path }} --framework ${{ matrix.framework }} --configuration Release --logger "trx;LogFilePrefix=${{ matrix.prefix }}" --logger "GitHubActions;report-warnings=false" --results-directory "${{ github.workspace }}/TestResults" --verbosity detailed /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:GITHUB_ACTIONS=false
+        run: dotnet test ${{ matrix.path }} --framework ${{ matrix.framework }} --no-build --no-restore --configuration Release --logger "trx;LogFilePrefix=${{ matrix.prefix }}" --logger "GitHubActions;report-warnings=false" --results-directory "${{ github.workspace }}/TestResults" --verbosity detailed /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:GITHUB_ACTIONS=false
 
       - name: Check test failure in PR
         if: github.event_name == 'pull_request' && steps.tests.outcome != 'success'
