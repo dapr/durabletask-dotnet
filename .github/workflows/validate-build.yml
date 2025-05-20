@@ -24,6 +24,8 @@ jobs:
       NUPKG_OUTDIR: bin/Release/nugets
     strategy:
       matrix:
+        project: [ 'Client', 'Worker' ]
+        dotnet-version: [ '8.0', '9.0' ]
         name:
           - client
           - worker
@@ -32,6 +34,22 @@ jobs:
             project-path: ./src/Client/Grpc/Client.Grpc.csproj
           - name: worker
             project-path: ./src/Worker/Grpc/Worker.Grpc.csproj
+          - dotnet-version: '8.0'
+            display-name: '.NET 8.0'
+            framework: 'net8'
+            prefix: 'net8'
+            install-version: '8.0.x'
+          - dotnet-version: '9.0'
+            display-name: '.NET 9.0'
+            framework: 'net9'
+            prefix: 'net9'
+            install-version: '9.0.x'
+          - project: 'Client'
+            path: './test/Client/Grpc.Tests/Client.Grpc.Tests.csproj'
+            projectName: 'Client.Grpc.Tests.csproj'
+          - project: 'Worker'
+            path: './test/Worker/Grpc.Tests/Worker.Grpc.Tests.csproj'
+            projectName: 'Worker.Grpc.Tests.csproj'
     steps:
       - uses: actions/checkout@v3
 
@@ -41,7 +59,7 @@ jobs:
       - name: Setup ${{ matrix.display-name }}
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: ${{ matrix.install-version }}
           dotnet-quality: 'ga' # Prefer a GA release, but use RC if not available
 
       - name: Restore dependencies
@@ -66,13 +84,18 @@ jobs:
       fail-fast: false
       matrix:
         project: ['Client', 'Worker']
-        dotnet-version: ['8.0']
+        dotnet-version: ['8.0', '9.0']
         include:
           - dotnet-version: '8.0'
             display-name: '.NET 8.0'
             framework: 'net8'
             prefix: 'net8'
             install-version: '8.0.x'
+          - dotnet-version: '9.0'
+            display-name: '.NET 9.0'
+            framework: 'net9'
+            prefix: 'net9'
+            install-version: '9.0.x'
           - project: 'Client'
             path: './test/Client/Grpc.Tests/Client.Grpc.Tests.csproj'
             projectName: 'Client.Grpc.Tests.csproj'
