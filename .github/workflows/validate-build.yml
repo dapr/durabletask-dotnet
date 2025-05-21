@@ -30,10 +30,6 @@ jobs:
           - client
           - worker
         include:
-          - name: client
-            project-path: ./src/Client/Grpc/Client.Grpc.csproj
-          - name: worker
-            project-path: ./src/Worker/Grpc/Worker.Grpc.csproj
           - dotnet-version: '8.0'
             display-name: '.NET 8.0'
             framework: 'net8.0'
