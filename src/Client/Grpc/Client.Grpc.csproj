@@ -3,6 +3,7 @@
   <PropertyGroup>
     <PackageDescription>The gRPC client for the Durable Task Framework.</PackageDescription>
     <EnableStyleCop>true</EnableStyleCop>
+    <TargetFrameworks>net8;net9</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>

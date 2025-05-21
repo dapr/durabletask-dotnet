@@ -66,7 +66,7 @@ jobs:
           dotnet-quality: 'ga' # Prefer a GA release, but use RC if not available
 
       - name: Restore dependencies
-        run: dotnet restore ${{ matrix.path }} -p:TargetFramework ${{ matrix.framework }}
+        run: dotnet restore ${{ matrix.path }}
 
       - name: Build
         run: dotnet build ${{ matrix.path }} --framework ${{ matrix.framework }} --configuration Release --no-restore -p:FileVersionRevision=${{ github.run_number }}
