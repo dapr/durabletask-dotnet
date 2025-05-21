@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using DurableTask.Core.Serializing;
 using Dapr.DurableTask.Converters;
 
 namespace Dapr.DurableTask.Client;
