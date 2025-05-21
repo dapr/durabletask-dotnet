@@ -72,7 +72,7 @@ jobs:
         run: dotnet restore ${{ matrix.project-path }}
 
       - name: Build
-        run: dotnet build ${{ matrix.project-path }} --framework ${{ matrix.framework }} --configuration Release --no-restore -p:FileVersionRevision=${{ github.run_number }} --output /out
+        run: dotnet build ${{ matrix.project-path }} --framework ${{ matrix.framework }} --configuration Release --no-restore -p:FileVersionRevision=${{ github.run_number }}
 
       - name: Pack
         run: dotnet pack ${{ matrix.project-path }} --configuration Release --no-build
