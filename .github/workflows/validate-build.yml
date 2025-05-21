@@ -68,10 +68,10 @@ jobs:
         run: dotnet restore ${{ matrix.path }}
 
       - name: Build
-        run: dotnet build ${{ matrix.path }} --framework ${{ matrix.framework }} --configuration Release --no-restore -p:FileVersionRevision=${{ github.run_number }} --output ./out
+        run: dotnet build ${{ matrix.path }} --framework ${{ matrix.framework }} --configuration Release --no-restore -p:FileVersionRevision=${{ github.run_number }} --output ${{ env.NUPKG_OUTDIR }}
 
       - name: Pack
-        run: dotnet pack ${{ matrix.path }} --configuration Release --no-build --output ./out
+        run: dotnet pack ${{ matrix.path }} --configuration Release --no-build --output ${{ env.NUPKG_OUTDIR }}
 
       - name: Upload
         uses: actions/upload-artifact@v4
