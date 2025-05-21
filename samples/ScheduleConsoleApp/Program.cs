@@ -1,11 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 using Microsoft.DurableTask;
-using Dapr.DurableTask.Client;
-using Dapr.DurableTask.Client.AzureManaged;
 using Dapr.DurableTask.ScheduledTasks;
-using Dapr.DurableTask.Worker;
-using Dapr.DurableTask.Worker.AzureManaged;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

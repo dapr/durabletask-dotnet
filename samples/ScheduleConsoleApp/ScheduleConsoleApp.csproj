@@ -14,8 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Client\AzureManaged\Client.AzureManaged.csproj" />
-    <ProjectReference Include="..\..\src\Worker\AzureManaged\Worker.AzureManaged.csproj" />
     <ProjectReference Include="..\..\src\ScheduledTasks\ScheduledTasks.csproj" />
   </ItemGroup>
 </Project>
