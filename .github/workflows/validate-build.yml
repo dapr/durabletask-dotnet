@@ -65,13 +65,13 @@ jobs:
           dotnet-quality: 'ga' # Prefer a GA release, but use RC if not available
 
       - name: Restore dependencies
-        run: dotnet restore ${{ matrix.project-path }}
+        run: dotnet restore ${{ matrix.path }}
 
       - name: Build
-        run: dotnet build ${{ matrix.project-path }} --framework ${{ matrix.framework }} --configuration Release --no-restore -p:FileVersionRevision=${{ github.run_number }} --output ./out
+        run: dotnet build ${{ matrix.path }} --framework ${{ matrix.framework }} --configuration Release --no-restore -p:FileVersionRevision=${{ github.run_number }} --output ./out
 
       - name: Pack
-        run: dotnet pack ${{ matrix.project-path }} --configuration Release --no-build --output ./out
+        run: dotnet pack ${{ matrix.path }} --configuration Release --no-build --output ./out
 
       - name: Upload
         uses: actions/upload-artifact@v4
