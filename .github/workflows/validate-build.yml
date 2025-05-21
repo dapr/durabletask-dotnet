@@ -69,7 +69,7 @@ jobs:
         run: dotnet restore ${{ matrix.path }}
 
       - name: Build
-        run: dotnet build ${{ matrix.path }} --framework ${{ matrix.prefix }} --configuration Release --no-restore -p:FileVersionRevision=${{ github.run_number }} --output ${{ env.BUILD_OUTDIR }}/${{ dotnet-version }}
+        run: dotnet build ${{ matrix.path }} --framework ${{ matrix.prefix }} --configuration Release --no-restore -p:FileVersionRevision=${{ github.run_number }} --output ${{ env.BUILD_OUTDIR }}/${{ matrix.dotnet-version }}
 
       - name: Pack
         run: dotnet pack ${{ matrix.path }} --configuration Release --no-build --include-symbols
