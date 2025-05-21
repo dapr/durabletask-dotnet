@@ -41,11 +41,11 @@ jobs:
             prefix: 'net9'
             install-version: '9.0.x'
           - project: 'Client'
-            path: './test/Client/Grpc.Tests/Client.Grpc.Tests.csproj'
-            projectName: 'Client.Grpc.Tests.csproj'
+            path: './src/Client/Grpc/Client.Grpc.csproj'
+            projectName: 'Client.Grpc.csproj'
           - project: 'Worker'
-            path: './test/Worker/Grpc.Tests/Worker.Grpc.Tests.csproj'
-            projectName: 'Worker.Grpc.Tests.csproj'
+            path: './src/Worker/Grpc/Worker.Grpc.csproj'
+            projectName: 'Worker.Grpc.csproj'
     steps:
       - uses: actions/checkout@v3
 
