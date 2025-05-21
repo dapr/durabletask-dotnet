@@ -1,1 +1,1 @@
-- Released first version Microsoft.DurableTask.Worker.AzureManaged - 1.5.0-preview.1
+- Released first version Dapr.DurableTask.Worker.AzureManaged - 1.5.0-preview.1

@@ -4,7 +4,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace Microsoft.DurableTask.Shared.AzureManaged.Tests;
+namespace Dapr.DurableTask.Shared.AzureManaged.Tests;
 
 public class DurableTaskSchedulerConnectionStringTests
 {

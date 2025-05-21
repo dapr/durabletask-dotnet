@@ -3,7 +3,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Microsoft.DurableTask.Worker.Grpc.Tests;
+namespace Dapr.DurableTask.Worker.Grpc.Tests;
 
 public class DurableTaskBuilderExtensionsTests
 {

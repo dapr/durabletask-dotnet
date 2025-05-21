@@ -7,9 +7,9 @@ using Azure.Identity;
 using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.DurableTask;
-using Microsoft.DurableTask.Client;
+using Dapr.DurableTask.Client;
 
-namespace Microsoft.DurableTask;
+namespace Dapr.DurableTask;
 
 /// <summary>
 /// Options for configuring the Durable Task Scheduler.

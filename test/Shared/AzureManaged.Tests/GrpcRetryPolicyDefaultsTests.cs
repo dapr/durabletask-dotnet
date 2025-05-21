@@ -6,7 +6,7 @@ using Grpc.Core;
 using Grpc.Net.Client.Configuration;
 using Xunit;
 
-namespace Microsoft.DurableTask.Tests;
+namespace Dapr.DurableTask.Tests;
 
 public class GrpcRetryPolicyDefaultsTests
 {

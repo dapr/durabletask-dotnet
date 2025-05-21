@@ -6,7 +6,7 @@ using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace Microsoft.DurableTask.Shared.AzureManaged.Tests;
+namespace Dapr.DurableTask.Shared.AzureManaged.Tests;
 
 public class AccessTokenCacheTests
 {

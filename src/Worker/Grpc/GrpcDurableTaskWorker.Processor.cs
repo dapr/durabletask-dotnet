@@ -6,16 +6,17 @@ using DurableTask.Core;
 using DurableTask.Core.Entities;
 using DurableTask.Core.Entities.OperationFormat;
 using DurableTask.Core.History;
-using Microsoft.DurableTask.Abstractions;
-using Microsoft.DurableTask.Entities;
-using Microsoft.DurableTask.Worker.Shims;
+using Dapr.DurableTask.Abstractions;
+using Dapr.DurableTask.Entities;
+using Dapr.DurableTask.Worker.Shims;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using static Microsoft.DurableTask.Protobuf.TaskHubSidecarService;
+using static Dapr.DurableTask.Protobuf.TaskHubSidecarService;
 using DTCore = DurableTask.Core;
-using P = Microsoft.DurableTask.Protobuf;
+using P = Dapr.DurableTask.Protobuf;
+using TaskName = Dapr.DurableTask.TaskName;
 
-namespace Microsoft.DurableTask.Worker.Grpc;
+namespace Dapr.DurableTask.Worker.Grpc;
 
 /// <summary>
 /// The gRPC Durable Task worker.

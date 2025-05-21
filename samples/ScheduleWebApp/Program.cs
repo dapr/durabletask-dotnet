@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 
 using System.Text.Json.Serialization;
-using Microsoft.DurableTask.Client;
-using Microsoft.DurableTask.Client.AzureManaged;
-using Microsoft.DurableTask.ScheduledTasks;
-using Microsoft.DurableTask.Worker;
-using Microsoft.DurableTask.Worker.AzureManaged;
+using Dapr.DurableTask.Client;
+using Dapr.DurableTask.Client.AzureManaged;
+using Dapr.DurableTask.ScheduledTasks;
+using Dapr.DurableTask.Worker;
+using Dapr.DurableTask.Worker.AzureManaged;
 using ScheduleWebApp.Orchestrations;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);

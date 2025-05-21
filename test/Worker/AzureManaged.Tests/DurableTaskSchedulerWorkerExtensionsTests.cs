@@ -4,13 +4,13 @@
 using Azure.Core;
 using Azure.Identity;
 using FluentAssertions;
-using Microsoft.DurableTask.Worker.Grpc;
+using Dapr.DurableTask.Worker.Grpc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
 
-namespace Microsoft.DurableTask.Worker.AzureManaged.Tests;
+namespace Dapr.DurableTask.Worker.AzureManaged.Tests;
 
 public class DurableTaskSchedulerWorkerExtensionsTests
 {

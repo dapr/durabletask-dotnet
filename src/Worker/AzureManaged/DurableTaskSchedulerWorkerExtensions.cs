@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 
 using Azure.Core;
-using Microsoft.DurableTask.Worker.Grpc;
-using Microsoft.DurableTask.Worker.Grpc.Internal;
+using Dapr.DurableTask.Worker.Grpc;
+using Dapr.DurableTask.Worker.Grpc.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.DurableTask.Worker.AzureManaged;
+namespace Dapr.DurableTask.Worker.AzureManaged;
 
 /// <summary>
 /// Extension methods for configuring Durable Task workers to use the Azure Durable Task Scheduler service.
