@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <PackageDescription>The gRPC worker for the Durable Task Framework.</PackageDescription>
-    <EnableStyleCop>true</EnableStyleCop>
+    <EnableStyleCop>true</EnableStyleCop> 
     <TargetFrameworks>net8;net9</TargetFrameworks>
+    <OutputPath>out\Release\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
