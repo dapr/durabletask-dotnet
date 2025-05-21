@@ -22,6 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NUPKG_OUTDIR: bin/Release/nugets
+      BUILD_OUTDIR: out/Release/
     strategy:
       matrix:
         project: [ 'Client', 'Worker' ]
@@ -65,13 +66,13 @@ jobs:
           dotnet-quality: 'ga' # Prefer a GA release, but use RC if not available
 
       - name: Restore dependencies
-        run: dotnet restore ${{ matrix.path }}
+        run: dotnet restore ${{ matrix.path }} -p:TargetFramework ${{ matrix.framework }}
 
       - name: Build
         run: dotnet build ${{ matrix.path }} --framework ${{ matrix.framework }} --configuration Release --no-restore -p:FileVersionRevision=${{ github.run_number }}
 
       - name: Pack
-        run: dotnet pack ${{ matrix.path }} --configuration Release --no-build
+        run: dotnet pack ${{ matrix.path }} --configuration Release --no-build --include-symbols
 
       - name: Upload
         uses: actions/upload-artifact@v4
