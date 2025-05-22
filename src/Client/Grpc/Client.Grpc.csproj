@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Core/Client.csproj" PrivateAssets="all" />
-    <ProjectReference Include="../../Grpc/Grpc.csproj" PrivateAssets="all"/>
+    <ProjectReference Include="../Core/Client.csproj" />
+    <ProjectReference Include="../../Grpc/Grpc.csproj" />
   </ItemGroup>
 
   <ItemGroup>
