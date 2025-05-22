@@ -36,11 +36,6 @@ jobs:
             framework: 'net8.0'
             prefix: 'net8'
             install-version: '8.0.x'
-#          - dotnet-version: '9.0'
-#            display-name: '.NET 9.0'
-#            framework: 'net9.0'
-#            prefix: 'net9'
-#            install-version: '9.0.x'
           - project: 'Client'
             path: './src/Client/Grpc/Client.Grpc.csproj'
             projectName: 'Client.Grpc.csproj'
@@ -58,12 +53,6 @@ jobs:
         with:
           dotnet-version: '8.0.x'
           dotnet-quality: 'ga' # Prefer a GA release, but use RC if not available
-
-#      - name: Setup .NET 9
-#        uses: actions/setup-dotnet@v4
-#        with:
-#          dotnet-version: '9.0.x'
-#          dotnet-quality: 'ga' # Prefer a GA release, but use RC if not available
 
       - name: Restore dependencies
         run: dotnet restore ${{ matrix.path }}
@@ -86,7 +75,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: ['Client', 'Worker']
+        project: ['Client', 'Worker', 'GrpcIntegration', 'ClientCore', 'WorkerCore', 'Abstractions' ]
         dotnet-version: [ '8.0' ]
         include:
           - dotnet-version: '8.0'
@@ -94,17 +83,24 @@ jobs:
             framework: 'net8.0'
             prefix: 'net8'
             install-version: '8.0.x'
-#          - dotnet-version: '9.0'
-#            display-name: '.NET 9.0'
-#            framework: 'net9.0'
-#            prefix: 'net9'
-#            install-version: '9.0.x'
           - project: 'Client'
             path: './test/Client/Grpc.Tests/Client.Grpc.Tests.csproj'
             projectName: 'Client.Grpc.Tests.csproj'
           - project: 'Worker'
             path: './test/Worker/Grpc.Tests/Worker.Grpc.Tests.csproj'
             projectName: 'Worker.Grpc.Tests.csproj'
+          - project: 'GrpcIntegration'
+            path: './test/Grpc.IntegrationTests/Grpc.IntegrationTests.csproj'
+            projectName: 'Grpc.IntegrationTests.csproj'
+          - project: 'ClientCore'
+            path: './test/Client/Core.Tests/Client.Tests.csproj'
+            projectName: 'Client.Tests.csproj'
+          - project: 'WorkerCore'
+            path: './test/Worker/Core.Tests/Worker.Tests.csproj'
+            projectName: 'Worker.Tests.csproj'
+          - project: 'Abstractions'
+            path: './test/Abstractions.Tests/Abstractions.Tests.csproj'
+            projectName: 'Abstractions.Tests.csproj'
     steps:
       - uses: actions/checkout@v1
 
