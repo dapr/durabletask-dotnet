@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - release-*
-      - dapr
     paths-ignore: [ '**.md' ]
     tags:
       - v*
@@ -13,7 +12,6 @@ on:
     branches:
       - main
       - release-*
-      - dapr
     paths-ignore: [ '**.md' ]
 
 jobs:
