@@ -27,9 +27,6 @@ jobs:
       matrix:
         project: [ 'Client', 'Worker' ]
         dotnet-version: [ '8.0' ]
-        name:
-          - client
-          - worker
         include:
           - dotnet-version: '8.0'
             display-name: '.NET 8.0'
@@ -39,9 +36,11 @@ jobs:
           - project: 'Client'
             path: './src/Client/Grpc/Client.Grpc.csproj'
             projectName: 'Client.Grpc.csproj'
+            name: 'client'
           - project: 'Worker'
             path: './src/Worker/Grpc/Worker.Grpc.csproj'
             projectName: 'Worker.Grpc.csproj'
+            name: 'worker'
     steps:
       - uses: actions/checkout@v3
 
