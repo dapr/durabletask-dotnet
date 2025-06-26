@@ -38,9 +38,6 @@ sealed partial class GrpcDurableTaskWorker
 
             try
             {
-                await client.HelloAsync(EmptyMessage, cancellationToken: cancellation); // Do we need this?
-                this.Logger.EstablishedWorkItemConnection();
-
                 var workerConcurrencyOptions = worker.workerOptions.Concurrency;
 
                 // Establish connection once and let gRPC handle reconnections
