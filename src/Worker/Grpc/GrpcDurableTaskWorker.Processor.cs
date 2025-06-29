@@ -66,7 +66,6 @@ partial class GrpcDurableTaskWorker
                         callOptions);
 
                     this.Logger.EstablishedWorkItemConnection();
-                    DateTime lastActivityTimestamp;
                     var lastActivityCheck = DateTime.UtcNow;
                     int workItemsProcessed = 0;
 
@@ -74,7 +73,7 @@ partial class GrpcDurableTaskWorker
                     await foreach (var workItem in stream.ResponseStream.ReadAllAsync(cancellation))
                     {
                         workItemsProcessed++;
-                        lastActivityTimestamp = DateTime.UtcNow;
+                        DateTime lastActivityTimestamp = DateTime.UtcNow;
                         this.Logger.ReceivedWorkItem(workItem.RequestCase.ToString(), lastActivityTimestamp);
 
                         // Each work item is processed in its own background task
