@@ -16,8 +16,8 @@ namespace Dapr.DurableTask.Worker.Grpc
         [LoggerMessage(EventId = 2, Level = LogLevel.Information, Message = "Durable Task gRPC worker has disconnected from gRPC server.")]
         public static partial void SidecarDisconnected(this ILogger logger);
 
-        [LoggerMessage(EventId = 3, Level = LogLevel.Information, Message = "The gRPC server for Durable Task gRPC worker is unavailable. Will continue retrying.")]
-        public static partial void SidecarUnavailable(this ILogger logger);
+        [LoggerMessage(EventId = 3, Level = LogLevel.Information, Message = "Sidecar unavailable after {connectionDuration}: {status} {statusCode} {message}")]
+        public static partial void SidecarUnavailableWithDetails(this ILogger logger, string connectionDuration, Status status, StatusCode statusCode, string message);
 
         [LoggerMessage(EventId = 4, Level = LogLevel.Information, Message = "Sidecar work-item streaming connection established.")]
         public static partial void EstablishedWorkItemConnection(this ILogger logger);
@@ -57,5 +57,53 @@ namespace Dapr.DurableTask.Worker.Grpc
 
         [LoggerMessage(EventId = 58, Level = LogLevel.Information, Message = "Abandoning orchestration. InstanceId = '{instanceId}'. Completion token = '{completionToken}'")]
         public static partial void AbandoningOrchestrationDueToVersioning(this ILogger logger, string instanceId, string completionToken);
+
+        [LoggerMessage(EventId = 59, Level = LogLevel.Debug, Message = "Cancellation requested. Message: '{message}'")]
+        public static partial void CancellationRequested(this ILogger logger, string message);
+
+        [LoggerMessage(EventId = 60, Level = LogLevel.Debug, Message = "Starting reconnection attempt #{attemptCount}")]
+        public static partial void StartingReconnectAttempt(this ILogger logger, int attemptCount);
+
+        [LoggerMessage(EventId = 61, Level = LogLevel.Debug, Message = "Task hub worker exited after {elapsedTimeMs} ms")]
+        public static partial void TaskHubWorkerExited(this ILogger logger, long elapsedTimeMs);
+
+        [LoggerMessage(EventId = 62, Level = LogLevel.Debug, Message = "Error in task hub worker, attempt #{reconnectionAttempts}: {exceptionType}: {exceptionMessage}")]
+        public static partial void TaskHubWorkerError(this ILogger logger, int reconnectionAttempts, string exceptionType, string exceptionMessage, Exception ex);
+
+        [LoggerMessage(EventId = 63, Level = LogLevel.Debug, Message = "Using provided gRPC channel with target '{target}'")]
+        public static partial void GrpcChannelTarget(this ILogger logger, string target);
+
+        [LoggerMessage(EventId = 64, Level = LogLevel.Debug, Message = "Using provided CallInvoker")]
+        public static partial void SelectGrpcCallInvoker(this ILogger logger);
+
+        [LoggerMessage(EventId = 65, Level = LogLevel.Debug, Message = "Creating new gRPC channel for address '{address}'")]
+        public static partial void CreatingGrpcChannelForAddress(this ILogger logger, string address);
+
+        [LoggerMessage(EventId = 66, Level = LogLevel.Debug, Message = "Shutting down gRPC channel for address '{address}'")]
+        public static partial void ShuttingDownGrpcChannel(this ILogger logger, string address);
+
+        [LoggerMessage(EventId = 67, Level = LogLevel.Debug, Message = "Configuring gRPC call with no deadline constraint")]
+        public static partial void ConfiguringGrpcCallOptions(this ILogger logger);
+
+        [LoggerMessage(EventId = 68, Level = LogLevel.Debug, Message = "Opening stream connection to get work items")]
+        public static partial void OpeningTaskStream(this ILogger logger);
+
+        [LoggerMessage(EventId = 69, Level = LogLevel.Debug, Message = "Received work item of type '{workItemType}' at '{lastActivityTimestamp}'")]
+        public static partial void ReceivedWorkItem(this ILogger logger, string workItemType, DateTime lastActivityTimestamp);
+
+        [LoggerMessage(EventId = 70, Level = LogLevel.Debug, Message = "Connection stats: Duration={connectionDuration}, LastActivity={timeSinceLastActivity}, WorkItemsProcessed={workItemsProcessed}")]
+        public static partial void ConnectionStats(this ILogger logger, string connectionDuration, string timeSinceLastActivity, int workItemsProcessed);
+
+        [LoggerMessage(EventId = 71, Level = LogLevel.Warning, Message = "Work item stream ended gracefully after {connectionDuration}. This is unusual but not necessarily an error.")]
+        public static partial void StreamEndedGracefully(this ILogger logger, string connectionDuration);
+
+        [LoggerMessage(EventId = 72, Level = LogLevel.Warning, Message = "gRPC call cancelled after {connectionDuration}: {status} {statusCode} {message}")]
+        public static partial void GrpcCallCancelled(this ILogger logger, string connectionDuration, Status status, StatusCode statusCode, string message);
+
+        [LoggerMessage(EventId = 73, Level = LogLevel.Warning, Message = "Unexpected error in gRPC worker after {connectionDuration}: {exceptionType}: {exceptionMessage}")]
+        public static partial void GrpcCallUnexpectedError(this ILogger logger, string connectionDuration, string exceptionType, string exceptionMessage, Exception ex);
+
+        [LoggerMessage(EventId = 74, Level = LogLevel.Debug, Message = "Waiting {delaySeconds} seconds before reconnection attempt #{reconnectAttempt}")]
+        public static partial void ReconnectionDelay(this ILogger logger, int delaySeconds, int reconnectAttempt);
     }
 }

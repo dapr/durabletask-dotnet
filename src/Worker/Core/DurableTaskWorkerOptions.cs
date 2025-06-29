@@ -128,7 +128,7 @@ public class DurableTaskWorkerOptions
     /// or entity) can be processed concurrently by the worker. It is recommended to set these values based on the
     /// expected workload and the resources available on the machine running the worker.
     /// </remarks>
-    public ConcurrencyOptions Concurrency { get; } = new();
+    public ConcurrencyOptions Concurrency { get; init; } = new();
 
     /// <summary>
     /// Gets or sets the versioning options for the Durable Task worker.
