@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Globalization;
 using System.Text;
 using Dapr.DurableTask.Abstractions;
 using Dapr.DurableTask.Entities;
@@ -19,12 +20,10 @@ namespace Dapr.DurableTask.Worker.Grpc;
 /// <summary>
 /// The gRPC Durable Task worker.
 /// </summary>
-sealed partial class GrpcDurableTaskWorker
+partial class GrpcDurableTaskWorker
 {
     class Processor(GrpcDurableTaskWorker worker, TaskHubSidecarServiceClient client)
     {
-        static readonly Google.Protobuf.WellKnownTypes.Empty EmptyMessage = new();
-
         readonly DurableTaskShimFactory shimFactory = new(worker.grpcOptions, worker.loggerFactory);
         readonly GrpcDurableTaskWorkerOptions.InternalOptions internalOptions = worker.grpcOptions.Internal;
 
@@ -32,51 +31,132 @@ sealed partial class GrpcDurableTaskWorker
 
         public async Task ExecuteAsync(CancellationToken cancellation)
         {
-            // Configure channel with appropriate retry policies and timeouts
-            var callOptions =
-                new CallOptions(cancellationToken: cancellation); // Potential set default deadline on this object
+            int reconnectAttempt = 0;
+            var connectionStartTime = DateTime.UtcNow;
 
-            try
+            while (!cancellation.IsCancellationRequested)
             {
-                var workerConcurrencyOptions = worker.workerOptions.Concurrency;
+                // Use the worker's CreateCallOptions method to ensure consistent settings
+                // This ensures no deadline is set for unlimited connection time
+                var callOptions = worker.CreateCallOptions(cancellation);
+                this.Logger.ConfiguringGrpcCallOptions();
 
-                // Establish connection once and let gRPC handle reconnections
-                using var stream = client.GetWorkItems(
-                    new P.GetWorkItemsRequest
-                    {
-                        MaxConcurrentActivityWorkItems = workerConcurrencyOptions.MaximumConcurrentActivityWorkItems,
-                        MaxConcurrentEntityWorkItems = workerConcurrencyOptions.MaximumConcurrentEntityWorkItems,
-                        MaxConcurrentOrchestrationWorkItems =
-                            workerConcurrencyOptions.MaximumConcurrentOrchestrationWorkItems,
-                        Capabilities = { P.WorkerCapability.HistoryStreaming, },
-                    },
-                    callOptions);
-
-                this.Logger.EstablishedWorkItemConnection();
-
-                // Process work items as they arrive
-                await foreach (var workItem in stream.ResponseStream.ReadAllAsync(cancellation))
+                try
                 {
-                    // Each work item is processed in its own background task
-                    await this.ProcessWorkItemAsync(workItem, cancellation);
+                    if (reconnectAttempt > 0)
+                    {
+                        this.Logger.StartingReconnectAttempt(reconnectAttempt);
+                    }
+
+                    connectionStartTime = DateTime.UtcNow;
+                    var workerConcurrencyOptions = worker.workerOptions.Concurrency;
+
+                    // Establish connection once and let gRPC handle reconnections
+                    this.Logger.OpeningTaskStream();
+                    using var stream = client.GetWorkItems(
+                        new P.GetWorkItemsRequest
+                        {
+                            MaxConcurrentActivityWorkItems =
+                                workerConcurrencyOptions.MaximumConcurrentActivityWorkItems,
+                            MaxConcurrentEntityWorkItems = workerConcurrencyOptions.MaximumConcurrentEntityWorkItems,
+                            MaxConcurrentOrchestrationWorkItems =
+                                workerConcurrencyOptions.MaximumConcurrentOrchestrationWorkItems,
+                            Capabilities = { P.WorkerCapability.HistoryStreaming, },
+                        },
+                        callOptions);
+
+                    this.Logger.EstablishedWorkItemConnection();
+                    DateTime lastActivityTimestamp;
+                    var lastActivityCheck = DateTime.UtcNow;
+                    int workItemsProcessed = 0;
+
+                    // Process work items as they arrive
+                    await foreach (var workItem in stream.ResponseStream.ReadAllAsync(cancellation))
+                    {
+                        workItemsProcessed++;
+                        lastActivityTimestamp = DateTime.UtcNow;
+                        this.Logger.ReceivedWorkItem(workItem.RequestCase.ToString(), lastActivityTimestamp);
+
+                        // Each work item is processed in its own background task
+                        await this.ProcessWorkItemAsync(workItem, cancellation);
+
+                        // Periodically log connection stats for long-running connections
+                        var timeSinceLastCheck = DateTime.UtcNow - lastActivityCheck;
+                        if (timeSinceLastCheck > TimeSpan.FromMinutes(5))
+                        {
+                            var now = DateTime.UtcNow;
+                            string connectionDuration =
+                                (now - connectionStartTime).ToString("hh:mm:ss", CultureInfo.InvariantCulture);
+                            string timeSinceLastActivity =
+                                (now - lastActivityTimestamp).ToString("hh:mm:ss", CultureInfo.InvariantCulture);
+                            this.Logger.ConnectionStats(connectionDuration, timeSinceLastActivity, workItemsProcessed);
+                            lastActivityCheck = DateTime.UtcNow;
+                        }
+                    }
+
+                    // Stream ended without error - this is unusual but not necessarily an error
+                    this.Logger.StreamEndedGracefully(
+                        (DateTime.UtcNow - connectionStartTime).ToString("hh:mm:ss", CultureInfo.InvariantCulture));
+
+                    // Reset reconnect attempt counter on clean exit
+                    reconnectAttempt = 0;
+
+                    // Brief pause before reconnecting
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellation);
+                }
+                catch (OperationCanceledException ex) when (cancellation.IsCancellationRequested)
+                {
+                    // Normal shutdown - exit peacefully
+                    this.Logger.CancellationRequested(ex.Message);
+                    throw;
+                }
+                catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable)
+                {
+                    // Attempt to reconnect with an exponential backoff
+                    reconnectAttempt++;
+                    string connectionDuration =
+                        (DateTime.UtcNow - connectionStartTime).ToString("hh:mm:ss", CultureInfo.InvariantCulture);
+
+                    this.Logger.SidecarUnavailableWithDetails(connectionDuration, ex.Status, ex.StatusCode, ex.Message);
+
+                    // Add a backoff delay that increase with reocnnect attempts
+                    int delaySeconds = Math.Min(30, (int)Math.Pow(2, Math.Min(reconnectAttempt, 5)));
+                    this.Logger.ReconnectionDelay(delaySeconds, reconnectAttempt + 1);
+
+                    await Task.Delay(TimeSpan.FromSeconds(delaySeconds), cancellation);
+                }
+                catch (RpcException ex) when (ex.StatusCode == StatusCode.Cancelled)
+                {
+                    reconnectAttempt++;
+                    string connectionDuration =
+                        (DateTime.UtcNow - connectionStartTime).ToString("hh:mm:ss", CultureInfo.InvariantCulture);
+
+                    this.Logger.GrpcCallCancelled(connectionDuration, ex.Status, ex.StatusCode, ex.Message);
+
+                    // Add a brief delay before reconnecting
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellation);
+                }
+                catch (Exception ex)
+                {
+                    reconnectAttempt++;
+                    string connectionDuration =
+                        (DateTime.UtcNow - connectionStartTime).ToString("hh:mm:ss", CultureInfo.InvariantCulture);
+
+                    this.Logger.GrpcCallUnexpectedError(connectionDuration, ex.GetType().Name, ex.Message, ex);
+
+                    // Add a brief delay before reconnecting
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellation);
+                }
+                finally
+                {
+                    if (cancellation.IsCancellationRequested)
+                    {
+                        this.Logger.CancellationRequested($"Cancellation handled at {nameof(this.ExecuteAsync)} in {nameof(Processor)}");
+                    }
                 }
             }
-            catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
-            {
-                // Normal shutdown - exit peacefully
-            }
-            catch (RpcException ex) when (ex.StatusCode == StatusCode.Unavailable)
-            {
-                // Let the host decide on retry/backoff
-                this.Logger.SidecarUnavailable();
-                throw;
-            }
-            catch (Exception ex)
-            {
-                // After logging, the host will decide on the restart policy
-                this.Logger.UnexpectedError(ex, string.Empty);
-                throw;
-            }
+
+            this.Logger.CancellationRequested($"Cancellation requested at {nameof(this.ExecuteAsync)} within {nameof(Processor)}");
         }
 
         static string GetActionsListForLogging(IReadOnlyList<P.OrchestratorAction> actions) => actions.Count switch
