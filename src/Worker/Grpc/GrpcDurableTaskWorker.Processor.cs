@@ -85,9 +85,9 @@ partial class GrpcDurableTaskWorker
                         {
                             var now = DateTime.UtcNow;
                             string connectionDuration =
-                                (now - connectionStartTime).ToString("hh:mm:ss", CultureInfo.InvariantCulture);
+                                (now - connectionStartTime).ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture);
                             string timeSinceLastActivity =
-                                (now - lastActivityTimestamp).ToString("hh:mm:ss", CultureInfo.InvariantCulture);
+                                (now - lastActivityTimestamp).ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture);
                             this.Logger.ConnectionStats(connectionDuration, timeSinceLastActivity, workItemsProcessed);
                             lastActivityCheck = DateTime.UtcNow;
                         }
@@ -95,7 +95,7 @@ partial class GrpcDurableTaskWorker
 
                     // Stream ended without error - this is unusual but not necessarily an error
                     this.Logger.StreamEndedGracefully(
-                        (DateTime.UtcNow - connectionStartTime).ToString("hh:mm:ss", CultureInfo.InvariantCulture));
+                        (DateTime.UtcNow - connectionStartTime).ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture));
 
                     // Reset reconnect attempt counter on clean exit
                     reconnectAttempt = 0;
@@ -114,7 +114,7 @@ partial class GrpcDurableTaskWorker
                     // Attempt to reconnect with an exponential backoff
                     reconnectAttempt++;
                     string connectionDuration =
-                        (DateTime.UtcNow - connectionStartTime).ToString("hh:mm:ss", CultureInfo.InvariantCulture);
+                        (DateTime.UtcNow - connectionStartTime).ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture);
 
                     this.Logger.SidecarUnavailableWithDetails(connectionDuration, ex.Status, ex.StatusCode, ex.Message);
 
@@ -128,7 +128,7 @@ partial class GrpcDurableTaskWorker
                 {
                     reconnectAttempt++;
                     string connectionDuration =
-                        (DateTime.UtcNow - connectionStartTime).ToString("hh:mm:ss", CultureInfo.InvariantCulture);
+                        (DateTime.UtcNow - connectionStartTime).ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture);
 
                     this.Logger.GrpcCallCancelled(connectionDuration, ex.Status, ex.StatusCode, ex.Message);
 
@@ -139,7 +139,7 @@ partial class GrpcDurableTaskWorker
                 {
                     reconnectAttempt++;
                     string connectionDuration =
-                        (DateTime.UtcNow - connectionStartTime).ToString("hh:mm:ss", CultureInfo.InvariantCulture);
+                        (DateTime.UtcNow - connectionStartTime).ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture);
 
                     this.Logger.GrpcCallUnexpectedError(connectionDuration, ex.GetType().Name, ex.Message, ex);
 
