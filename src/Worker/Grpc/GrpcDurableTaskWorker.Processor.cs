@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 
 using System.Text;
+using Dapr.DurableTask.Abstractions;
+using Dapr.DurableTask.Entities;
+using Dapr.DurableTask.Worker.Shims;
 using DurableTask.Core;
 using DurableTask.Core.Entities;
 using DurableTask.Core.Entities.OperationFormat;
 using DurableTask.Core.History;
-using Dapr.DurableTask.Abstractions;
-using Dapr.DurableTask.Entities;
-using Dapr.DurableTask.Worker.Shims;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using static Dapr.DurableTask.Protobuf.TaskHubSidecarService;
@@ -78,6 +78,7 @@ sealed partial class GrpcDurableTaskWorker
                 catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
                 {
                     // Shutting down, lets exit gracefully.
+                    this.Logger.SidecarCanceledOperation();
                     break;
                 }
                 catch (Exception ex)
@@ -94,29 +95,21 @@ sealed partial class GrpcDurableTaskWorker
                 catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
                 {
                     // Worker is shutting down - let the method exit gracefully
+                    this.Logger.SidecarCanceledOperationDuringDelay();
                     break;
                 }
             }
         }
 
-        static string GetActionsListForLogging(IReadOnlyList<P.OrchestratorAction> actions)
-        {
-            if (actions.Count == 0)
+        static string GetActionsListForLogging(IReadOnlyList<P.OrchestratorAction> actions) =>
+            actions.Count switch
             {
-                return string.Empty;
-            }
-            else if (actions.Count == 1)
-            {
-                return actions[0].OrchestratorActionTypeCase.ToString();
-            }
-            else
-            {
-                // Returns something like "ScheduleTask x5, CreateTimer x1,..."
-                return string.Join(", ", actions
-                    .GroupBy(a => a.OrchestratorActionTypeCase)
-                    .Select(group => $"{group.Key} x{group.Count()}"));
-            }
-        }
+                0 => string.Empty,
+                1 => actions[0].OrchestratorActionTypeCase.ToString(),
+                _ => string.Join(
+                    ", ",
+                    actions.GroupBy(a => a.OrchestratorActionTypeCase).Select(group => $"{group.Key} x{group.Count()}")),
+            };
 
         static P.TaskFailureDetails? EvaluateOrchestrationVersioning(DurableTaskWorkerOptions.VersioningOptions? versioning, string orchestrationVersion, out bool versionCheckFailed)
         {
@@ -258,67 +251,65 @@ sealed partial class GrpcDurableTaskWorker
             timeoutSource.CancelAfter(TimeSpan.FromSeconds(60));
             using var tokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellation, timeoutSource.Token);
 
-            await foreach (P.WorkItem workItem in stream.ResponseStream.ReadAllAsync(cancellationToken: cancellation))
+            try
             {
-                timeoutSource.CancelAfter(TimeSpan.FromSeconds(60));
-                if (workItem.RequestCase == P.WorkItem.RequestOneofCase.OrchestratorRequest)
+                await foreach (P.WorkItem workItem in stream.ResponseStream.ReadAllAsync(
+                                   cancellationToken: tokenSource.Token))
                 {
-                    this.RunBackgroundTask(
-                        workItem,
-                        () => this.OnRunOrchestratorAsync(
-                            workItem.OrchestratorRequest,
-                            workItem.CompletionToken,
-                            cancellation));
-                }
-                else if (workItem.RequestCase == P.WorkItem.RequestOneofCase.ActivityRequest)
-                {
-                    this.RunBackgroundTask(
-                        workItem,
-                        () => this.OnRunActivityAsync(
-                            workItem.ActivityRequest,
-                            workItem.CompletionToken,
-                            cancellation));
-                }
-                else if (workItem.RequestCase == P.WorkItem.RequestOneofCase.EntityRequest)
-                {
-                    this.RunBackgroundTask(
-                        workItem,
-                        () => this.OnRunEntityBatchAsync(workItem.EntityRequest.ToEntityBatchRequest(), cancellation));
-                }
-                else if (workItem.RequestCase == P.WorkItem.RequestOneofCase.EntityRequestV2)
-                {
-                    workItem.EntityRequestV2.ToEntityBatchRequest(
-                        out EntityBatchRequest batchRequest,
-                        out List<P.OperationInfo> operationInfos);
+                    // Reset the idle timeout after every message
+                    timeoutSource.CancelAfter(TimeSpan.FromSeconds(60));
 
-                    this.RunBackgroundTask(
-                        workItem,
-                        () => this.OnRunEntityBatchAsync(
-                            batchRequest,
-                            cancellation,
-                            workItem.CompletionToken,
-                            operationInfos));
-                }
-                else if (workItem.RequestCase == P.WorkItem.RequestOneofCase.HealthPing)
-                {
-                    // No-op
-                }
-                else
-                {
-                    this.Logger.UnexpectedWorkItemType(workItem.RequestCase.ToString());
+                    if (workItem.RequestCase == P.WorkItem.RequestOneofCase.OrchestratorRequest)
+                    {
+                        this.RunBackgroundTask(
+                            workItem,
+                            () => this.OnRunOrchestratorAsync(
+                                workItem.OrchestratorRequest,
+                                workItem.CompletionToken,
+                                cancellation));
+                    }
+                    else if (workItem.RequestCase == P.WorkItem.RequestOneofCase.ActivityRequest)
+                    {
+                        this.RunBackgroundTask(
+                            workItem,
+                            () => this.OnRunActivityAsync(
+                                workItem.ActivityRequest,
+                                workItem.CompletionToken,
+                                cancellation));
+                    }
+                    else if (workItem.RequestCase == P.WorkItem.RequestOneofCase.EntityRequest)
+                    {
+                        this.RunBackgroundTask(
+                            workItem,
+                            () => this.OnRunEntityBatchAsync(workItem.EntityRequest.ToEntityBatchRequest(),
+                                cancellation));
+                    }
+                    else if (workItem.RequestCase == P.WorkItem.RequestOneofCase.EntityRequestV2)
+                    {
+                        workItem.EntityRequestV2.ToEntityBatchRequest(
+                            out EntityBatchRequest batchRequest,
+                            out List<P.OperationInfo> operationInfos);
+
+                        this.RunBackgroundTask(
+                            workItem,
+                            () => this.OnRunEntityBatchAsync(
+                                batchRequest,
+                                cancellation,
+                                workItem.CompletionToken,
+                                operationInfos));
+                    }
+                    else
+                    {
+                        this.Logger.UnexpectedWorkItemType(workItem.RequestCase.ToString());
+                    }
                 }
             }
-
-            if (tokenSource.IsCancellationRequested || tokenSource.Token.IsCancellationRequested)
+            catch (OperationCanceledException) when (!cancellation.IsCancellationRequested &&
+                                                     timeoutSource.IsCancellationRequested)
             {
-                // The token has cancelled, this means either:
-                // 1. The broader 'cancellation' was triggered, return here to start a graceful shutdown.
-                // 2. The timeoutSource was triggered, return here to trigger a reconnect to the backend.
-                if (!cancellation.IsCancellationRequested)
-                {
-                    // Since the cancellation came from the timeout, log a warning.
-                    this.Logger.ConnectionTimeout();
-                }
+                // The idle timeout fired: treat as a connection drop and trigger a reconnect
+                this.Logger.ConnectionTimeout();
+                return;
             }
         }
 
@@ -334,6 +325,7 @@ sealed partial class GrpcDurableTaskWorker
                 catch (OperationCanceledException)
                 {
                     // Shutting down - ignore
+                    this.Logger.SidecarCanceledOperationDuringBackgroundTask();
                 }
                 catch (Exception ex)
                 {
