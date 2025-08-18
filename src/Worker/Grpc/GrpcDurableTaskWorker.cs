@@ -51,7 +51,6 @@ sealed partial class GrpcDurableTaskWorker : DurableTaskWorker
         await new Processor(this, new(callInvoker)).ExecuteAsync(stoppingToken);
     }
 
-#if NET6_0_OR_GREATER
     static GrpcChannel GetChannel(string? address)
     {
         if (string.IsNullOrEmpty(address))
@@ -59,21 +58,22 @@ sealed partial class GrpcDurableTaskWorker : DurableTaskWorker
             address = "http://localhost:4001";
         }
 
-        return GrpcChannel.ForAddress(address);
-    }
-#endif
-
-#if NETSTANDARD2_0
-    static GrpcChannel GetChannel(string? address)
-    {
-        if (string.IsNullOrEmpty(address))
+        // Configure HTTP2/ keepalive pings so intermediaries don't silently drop idle connections
+        var handler = new SocketsHttpHandler
         {
-            address = "localhost:4001";
-        }
+            // Send a ping every 15 seconds if there is no activity
+            KeepAlivePingDelay = TimeSpan.FromSeconds(15),
 
-        return new(address, ChannelCredentials.Insecure);
+            // If a ping isn't acknowledged within 10s, consider the connection dead
+            KeepAlivePingTimeout = TimeSpan.FromSeconds(10),
+
+            // Ensure idle pooled connections don't linger tool long
+            PooledConnectionIdleTimeout = TimeSpan.FromMinutes(2),
+            EnableMultipleHttp2Connections = true,
+        };
+
+        return GrpcChannel.ForAddress(address, new GrpcChannelOptions { HttpHandler = handler });
     }
-#endif
 
     AsyncDisposable GetCallInvoker(out CallInvoker callInvoker, out string address)
     {
@@ -94,6 +94,12 @@ sealed partial class GrpcDurableTaskWorker : DurableTaskWorker
         c = GetChannel(this.grpcOptions.Address);
         callInvoker = c.CreateCallInvoker();
         address = c.Target;
-        return new AsyncDisposable(() => new(c.ShutdownAsync()));
+
+        // Properly dispose the Grpc.Net.Client channel
+        return new AsyncDisposable(() =>
+        {
+            c?.Dispose();
+            return ValueTask.CompletedTask;
+        });
     }
 }

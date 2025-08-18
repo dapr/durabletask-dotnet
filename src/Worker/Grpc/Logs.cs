@@ -57,5 +57,14 @@ namespace Dapr.DurableTask.Worker.Grpc
 
         [LoggerMessage(EventId = 58, Level = LogLevel.Information, Message = "Abandoning orchestration. InstanceId = '{instanceId}'. Completion token = '{completionToken}'")]
         public static partial void AbandoningOrchestrationDueToVersioning(this ILogger logger, string instanceId, string completionToken);
+        
+        [LoggerMessage(EventId = 60, Level = LogLevel.Debug, Message = "Sidecar processor is observing the token cancellation and shutting down.")]
+        public static partial void SidecarCanceledOperation(this ILogger logger);
+
+        [LoggerMessage(EventId = 61, Level = LogLevel.Debug, Message = "Sidecar processor is observing the token cancellation requested during timeout and shutting down.")]
+        public static partial void SidecarCanceledOperationDuringDelay(this ILogger logger);
+
+        [LoggerMessage(EventId = 62, Level = LogLevel.Debug, Message = "Observing operation cancellation during background task.")]
+        public static partial void SidecarCanceledOperationDuringBackgroundTask(this ILogger logger);
     }
 }
