@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Diagnostics;
 using Dapr.DurableTask.Worker.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -10,13 +11,14 @@ namespace Dapr.DurableTask.Worker.Grpc;
 /// <summary>
 /// The gRPC Durable Task worker.
 /// </summary>
-sealed partial class GrpcDurableTaskWorker : DurableTaskWorker
+partial class GrpcDurableTaskWorker : DurableTaskWorker
 {
     readonly GrpcDurableTaskWorkerOptions grpcOptions;
     readonly DurableTaskWorkerOptions workerOptions;
     readonly IServiceProvider services;
     readonly ILoggerFactory loggerFactory;
     readonly ILogger logger;
+    int reconnectAttempts;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GrpcDurableTaskWorker" /> class.
@@ -43,15 +45,72 @@ sealed partial class GrpcDurableTaskWorker : DurableTaskWorker
         this.logger = loggerFactory.CreateLogger("Dapr.DurableTask");
     }
 
+    /// <summary>
+    /// Creates call options with appropriate settings for long-running connections.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>CallOptions configured for long-running connections.</returns>
+    internal CallOptions CreateCallOptions(CancellationToken cancellationToken)
+    {
+        // Create call options with NO deadline to ensure unlimited connection time
+        // This aligns with our channel settings for long-running connections
+        var options = new CallOptions(cancellationToken: cancellationToken);
+
+        // By not setting a Deadline property, we ensure the connection can
+        // stay open indefinitely, which matches our channel settings
+        this.logger.ConfiguringGrpcCallOptions();
+
+        return options;
+    }
+
     /// <inheritdoc />
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await using AsyncDisposable disposable = this.GetCallInvoker(out CallInvoker callInvoker, out string address);
-        this.logger.StartingTaskHubWorker(address);
-        await new Processor(this, new(callInvoker)).ExecuteAsync(stoppingToken);
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                // Reset reconnect counter when we start a new attempt
+                if (this.reconnectAttempts > 0)
+                {
+                    this.logger.StartingReconnectAttempt(this.reconnectAttempts);
+                }
+
+                await using AsyncDisposable disposable =
+                    this.GetCallInvoker(out CallInvoker callInvoker, out string address);
+                this.logger.StartingTaskHubWorker(address);
+
+                var stopwatch = Stopwatch.StartNew();
+                await new Processor(this, new(callInvoker)).ExecuteAsync(stoppingToken);
+                stopwatch.Stop();
+
+                this.logger.TaskHubWorkerExited(stopwatch.ElapsedMilliseconds);
+
+                // If we got here without an exception, break out of the retry loop
+                break;
+            }
+            catch (Exception ex) when (!stoppingToken.IsCancellationRequested)
+            {
+                this.reconnectAttempts++;
+
+                // Log exception with detailed context
+                this.logger.TaskHubWorkerError(this.reconnectAttempts, ex.GetType().Name, ex.Message, ex);
+
+                // Add a brief delay before retrying to avoid tight CPU-bound loops
+                await Task.Delay(
+                    TimeSpan.FromSeconds(Math.Min(30, Math.Pow(2, Math.Min(this.reconnectAttempts, 5)))),
+                    stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                this.logger.UnexpectedError(ex, nameof(GrpcDurableTaskWorker));
+                throw;
+            }
+        }
+
+        this.logger.CancellationRequested($"Cancellation handled at {nameof(this.ExecuteAsync)} in {nameof(GrpcDurableTaskWorker)}");
     }
 
-#if NET6_0_OR_GREATER
     static GrpcChannel GetChannel(string? address)
     {
         if (string.IsNullOrEmpty(address))
@@ -59,41 +118,62 @@ sealed partial class GrpcDurableTaskWorker : DurableTaskWorker
             address = "http://localhost:4001";
         }
 
-        return GrpcChannel.ForAddress(address);
-    }
-#endif
-
-#if NETSTANDARD2_0
-    static GrpcChannel GetChannel(string? address)
-    {
-        if (string.IsNullOrEmpty(address))
+        // Create and configure the gRPC channel options for long-lived connections
+        var channelOptions = new GrpcChannelOptions
         {
-            address = "localhost:4001";
-        }
+            // No message size limit
+            MaxReceiveMessageSize = null,
 
-        return new(address, ChannelCredentials.Insecure);
+            // Configure keep-alive settings to maintain long-lived connections
+            HttpHandler = new SocketsHttpHandler
+            {
+                // Enable keep-alive
+                KeepAlivePingPolicy = HttpKeepAlivePingPolicy.Always,
+                KeepAlivePingDelay = TimeSpan.FromSeconds(30),
+                KeepAlivePingTimeout = TimeSpan.FromSeconds(30),
+
+                // Pooled connections are reused and won't time out from inactivity
+                EnableMultipleHttp2Connections = true,
+
+                // Set a very long connection lifetime - this allows a controlled connection refresh strategy
+                PooledConnectionLifetime = TimeSpan.FromDays(1),
+
+                // Disable idle timeout entirely
+                PooledConnectionIdleTimeout = Timeout.InfiniteTimeSpan,
+            },
+
+            DisposeHttpClient = true,
+        };
+
+        return GrpcChannel.ForAddress(address, channelOptions);
     }
-#endif
 
     AsyncDisposable GetCallInvoker(out CallInvoker callInvoker, out string address)
     {
-        if (this.grpcOptions.Channel is GrpcChannel c)
+        if (this.grpcOptions.Channel is { } c)
         {
+            this.logger.GrpcChannelTarget(c.Target);
             callInvoker = c.CreateCallInvoker();
             address = c.Target;
             return default;
         }
 
-        if (this.grpcOptions.CallInvoker is CallInvoker invoker)
+        if (this.grpcOptions.CallInvoker is { } invoker)
         {
+            this.logger.SelectGrpcCallInvoker();
             callInvoker = invoker;
             address = "(unspecified)";
             return default;
         }
 
+        this.logger.CreatingGrpcChannelForAddress(this.grpcOptions.Address);
         c = GetChannel(this.grpcOptions.Address);
         callInvoker = c.CreateCallInvoker();
         address = c.Target;
-        return new AsyncDisposable(() => new(c.ShutdownAsync()));
+        return new AsyncDisposable(() =>
+        {
+            this.logger.ShuttingDownGrpcChannel(c.Target);
+            return new(c.ShutdownAsync());
+        });
     }
 }

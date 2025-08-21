@@ -20,7 +20,9 @@ public static class DurableTaskWorkerBuilderExtensions
     /// <b>Note:</b> only 1 instance of gRPC worker is supported per sidecar.
     /// </remarks>
     public static IDurableTaskWorkerBuilder UseGrpc(this IDurableTaskWorkerBuilder builder)
-        => builder.UseGrpc(opt => { });
+        => builder.UseGrpc(opt =>
+        {
+        });
 
     /// <summary>
     /// Configures the <see cref="IDurableTaskWorkerBuilder" /> to be a gRPC client.
