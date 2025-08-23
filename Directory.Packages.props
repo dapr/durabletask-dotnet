@@ -6,7 +6,6 @@
     -->
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
-
   <!-- Microsoft.Extensions.* Packages -->
   <ItemGroup>
     <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.5" />
@@ -14,23 +13,21 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.5" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.5" />
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.5" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.5" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.5" />
     <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.5" />
   </ItemGroup>
-
   <!-- Azure.* Packages -->
   <ItemGroup>
     <PackageVersion Include="Azure.Identity" Version="1.13.1" />
     <PackageVersion Include="Microsoft.Azure.Functions.Worker" Version="1.21.0" />
   </ItemGroup>
-
   <!-- DurableTask Packages -->
   <ItemGroup>
     <PackageVersion Include="Microsoft.Azure.DurableTask.Core" Version="3.1.0" />
     <PackageVersion Include="Microsoft.Azure.Functions.Worker.Extensions.DurableTask" Version="1.2.2" />
   </ItemGroup>
-
   <!-- Grpc / Protobuf Packages -->
   <ItemGroup>
     <PackageVersion Include="Google.Protobuf" Version="3.31.0" />
@@ -39,7 +36,6 @@
     <PackageVersion Include="Grpc.Tools" Version="2.72.0" />
     <PackageVersion Include="Grpc.AspNetCore.Server" Version="2.71.0" />
   </ItemGroup>
-
   <!-- Microsoft.CodeAnalysis.* Packages -->
   <ItemGroup>
     <PackageVersion Include="Microsoft.CodeAnalysis" Version="4.9.2" />
@@ -52,12 +48,11 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing" Version="1.1.2" />
     <PackageVersion Include="Microsoft.CodeAnalysis.ResxSourceGenerator" Version="3.11.0-beta1.24165.2" />
   </ItemGroup>
-
   <!-- Testing Frameworks & Analysis Packages -->
   <ItemGroup>
     <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageVersion Include="FluentAssertions" Version="6.7.0" />
-    <PackageVersion Include="FluentAssertions.Analyzers" Version="0.17.2"/>
+    <PackageVersion Include="FluentAssertions.Analyzers" Version="0.17.2" />
     <PackageVersion Include="GitHubActionsTestLogger" Version="2.4.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.0" />
     <PackageVersion Include="MinVer" Version="6.0.0" />
@@ -67,10 +62,9 @@
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.extensibility.core" Version="2.9.3" />
     <PackageVersion Include="xunit.abstractions" Version="2.0.3" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.0"/>
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.0" />
     <PackageVersion Include="Xunit.Combinatorial" Version="1.6.24" />
   </ItemGroup>
-
   <!-- Base-class library dependencies -->
   <ItemGroup>
     <PackageVersion Include="DotNext" Version="4.13.1" />
@@ -80,5 +74,4 @@
     <PackageVersion Include="System.Text.Json" Version="9.0.5" />
     <PackageVersion Include="System.Collections.Immutable" Version="9.0.5" />
   </ItemGroup>
-
 </Project>
