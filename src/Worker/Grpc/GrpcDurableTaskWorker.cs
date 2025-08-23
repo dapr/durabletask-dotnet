@@ -32,11 +32,11 @@ sealed partial class GrpcDurableTaskWorker : DurableTaskWorker
     public GrpcDurableTaskWorker(
         string name,
         IDurableTaskFactory factory,
-        IHttpClientFactory? httpClientFactory,
         IOptionsMonitor<GrpcDurableTaskWorkerOptions> grpcOptions,
         IOptionsMonitor<DurableTaskWorkerOptions> workerOptions,
         IServiceProvider services,
-        ILoggerFactory loggerFactory)
+        ILoggerFactory loggerFactory,
+        IHttpClientFactory? httpClientFactory = null)
         : base(name, factory)
     {
         this.grpcOptions = Check.NotNull(grpcOptions).Get(name);
