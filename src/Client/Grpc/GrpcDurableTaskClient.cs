@@ -75,10 +75,10 @@ public sealed class GrpcDurableTaskClient : DurableTaskClient
     public override async Task<string> ScheduleNewOrchestrationInstanceAsync(
         TaskName orchestratorName,
         object? input = null,
-        StartOrchestrationOptions? options = null,
+        StartOrchestrationOptions? orchestrationOptions = null,
         CancellationToken cancellation = default)
     {
-        Check.NotEntity(this.options.EnableEntitySupport, options?.InstanceId);
+        Check.NotEntity(this.options.EnableEntitySupport, orchestrationOptions?.InstanceId);
 
         string version = string.Empty;
         if (!string.IsNullOrEmpty(orchestratorName.Version))
@@ -94,14 +94,14 @@ public sealed class GrpcDurableTaskClient : DurableTaskClient
         {
             Name = orchestratorName.Name,
             Version = version,
-            InstanceId = options?.InstanceId ?? Guid.NewGuid().ToString("N"),
+            InstanceId = orchestrationOptions?.InstanceId ?? Guid.NewGuid().ToString("N"),
             Input = this.DataConverter.Serialize(input),
         };
 
         // Add tags to the collection
-        if (request?.Tags != null && options?.Tags != null)
+        if (request?.Tags != null && orchestrationOptions?.Tags != null)
         {
-            foreach (KeyValuePair<string, string> tag in options.Tags)
+            foreach (KeyValuePair<string, string> tag in orchestrationOptions.Tags)
             {
                 request.Tags.Add(tag.Key, tag.Value);
             }
@@ -125,7 +125,7 @@ public sealed class GrpcDurableTaskClient : DurableTaskClient
             }
         }
 
-        DateTimeOffset? startAt = options?.StartAt;
+        DateTimeOffset? startAt = orchestrationOptions?.StartAt;
         this.logger.SchedulingOrchestration(
             request.InstanceId,
             orchestratorName,
@@ -164,10 +164,10 @@ public sealed class GrpcDurableTaskClient : DurableTaskClient
 
     /// <inheritdoc/>
     public override async Task TerminateInstanceAsync(
-        string instanceId, TerminateInstanceOptions? options = null, CancellationToken cancellation = default)
+        string instanceId, TerminateInstanceOptions? instanceOptions = null, CancellationToken cancellation = default)
     {
-        object? output = options?.Output;
-        bool recursive = options?.Recursive ?? false;
+        object? output = instanceOptions?.Output;
+        bool recursive = instanceOptions?.Recursive ?? false;
 
         Check.NotNullOrEmpty(instanceId);
         Check.NotEntity(this.options.EnableEntitySupport, instanceId);
@@ -369,15 +369,15 @@ public sealed class GrpcDurableTaskClient : DurableTaskClient
             }
         }
 
-        // If the operation was cancelled in between requests, we should still throw instead of returning a null value.
+        // If the operation was canceled in between requests, we should still throw instead of returning a null value.
         throw new OperationCanceledException($"The {nameof(this.WaitForInstanceCompletionAsync)} operation was canceled.");
     }
 
     /// <inheritdoc/>
     public override Task<PurgeResult> PurgeInstanceAsync(
-        string instanceId, PurgeInstanceOptions? options = null, CancellationToken cancellation = default)
+        string instanceId, PurgeInstanceOptions? instanceOptions = null, CancellationToken cancellation = default)
     {
-        bool recursive = options?.Recursive ?? false;
+        bool recursive = instanceOptions?.Recursive ?? false;
         this.logger.PurgingInstanceMetadata(instanceId);
 
         P.PurgeInstancesRequest request = new() { InstanceId = instanceId, Recursive = recursive };
@@ -386,9 +386,9 @@ public sealed class GrpcDurableTaskClient : DurableTaskClient
 
     /// <inheritdoc/>
     public override Task<PurgeResult> PurgeAllInstancesAsync(
-        PurgeInstancesFilter filter, PurgeInstanceOptions? options = null, CancellationToken cancellation = default)
+        PurgeInstancesFilter filter, PurgeInstanceOptions? purgeOptions = null, CancellationToken cancellation = default)
     {
-        bool recursive = options?.Recursive ?? false;
+        bool recursive = purgeOptions?.Recursive ?? false;
         this.logger.PurgingInstances(filter);
         P.PurgeInstancesRequest request = new()
         {

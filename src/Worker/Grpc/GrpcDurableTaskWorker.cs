@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Dapr.DurableTask.Worker.Hosting;
+using Grpc.Net.Client.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
