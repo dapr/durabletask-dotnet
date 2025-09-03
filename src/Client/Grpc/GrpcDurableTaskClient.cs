@@ -3,15 +3,14 @@
 
 using System.Diagnostics;
 using System.Text;
-using DurableTask.Core.Serializing;
-using Google.Protobuf.WellKnownTypes;
 using Dapr.DurableTask.Client.Entities;
+using Google.Protobuf.WellKnownTypes;
+using Grpc.Net.Client.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using static Dapr.DurableTask.Protobuf.TaskHubSidecarService;
 using P = Dapr.DurableTask.Protobuf;
-using TaskName = Dapr.DurableTask.TaskName;
 
 namespace Dapr.DurableTask.Client.Grpc;
 
