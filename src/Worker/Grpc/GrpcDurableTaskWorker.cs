@@ -93,6 +93,23 @@ sealed partial class GrpcDurableTaskWorker : DurableTaskWorker
             HttpClient = httpClient,
             MaxReceiveMessageSize = null, // No message size limit
             DisposeHttpClient = false, // Lifetime managed by the HttpClientFactory
+            ServiceConfig = new ServiceConfig
+            {
+                MethodConfigs =
+                {
+                    new MethodConfig
+                    {
+                        Names = { MethodName.Default },
+                        RetryPolicy = new global::Grpc.Net.Client.Configuration.RetryPolicy
+                        {
+                            MaxAttempts = 5,
+                            MaxBackoff = TimeSpan.FromSeconds(12),
+                            BackoffMultiplier = 1.25,
+                            InitialBackoff = TimeSpan.FromSeconds(2),
+                        },
+                    },
+                },
+            },
         });
     }
 
