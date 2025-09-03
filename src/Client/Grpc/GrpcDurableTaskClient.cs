@@ -426,7 +426,6 @@ public sealed class GrpcDurableTaskClient : DurableTaskClient
         return new AsyncDisposable(() => new(c.ShutdownAsync()));
     }
 
-#if NET6_0_OR_GREATER
     static GrpcChannel GetChannel(string? address)
     {
         if (string.IsNullOrEmpty(address))
@@ -436,19 +435,6 @@ public sealed class GrpcDurableTaskClient : DurableTaskClient
 
         return GrpcChannel.ForAddress(address);
     }
-#endif
-
-#if NETSTANDARD2_0
-    static GrpcChannel GetChannel(string? address)
-    {
-        if (string.IsNullOrEmpty(address))
-        {
-            address = "localhost:4001";
-        }
-
-        return new(address, ChannelCredentials.Insecure);
-    }
-#endif
 
     async Task<PurgeResult> PurgeInstancesCoreAsync(
         P.PurgeInstancesRequest request, CancellationToken cancellation = default)
