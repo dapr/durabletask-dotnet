@@ -433,7 +433,53 @@ public sealed class GrpcDurableTaskClient : DurableTaskClient
             address = "http://localhost:4001";
         }
 
-        return GrpcChannel.ForAddress(address);
+        // Create the HttpClient so we can remove the 100 second timeout
+        // As this service is created as a singleton, it's ok to creawte the HttpClient once here as well
+        var httpClient = new HttpClient();
+        httpClient.Timeout = Timeout.InfiniteTimeSpan;
+
+        // Configure gRPC keep-alive settings to maintain long-lived connections
+        var handler = new SocketsHttpHandler
+        {
+            // Enable keep-alive
+            KeepAlivePingPolicy = HttpKeepAlivePingPolicy.Always,
+            KeepAlivePingDelay = TimeSpan.FromSeconds(30),
+            KeepAlivePingTimeout = TimeSpan.FromSeconds(30),
+
+            // Pooled connections are reused and won't time out from inactivity
+            EnableMultipleHttp2Connections = true,
+
+            // Set a very long connection lifetime - this allows a controlled connection refresh strategy
+            PooledConnectionLifetime = TimeSpan.FromDays(1),
+
+            // Disable idle timeout entirely
+            PooledConnectionIdleTimeout = Timeout.InfiniteTimeSpan,
+        };
+
+        return GrpcChannel.ForAddress(address, new GrpcChannelOptions
+        {
+            HttpHandler = handler,
+            HttpClient = httpClient,
+            MaxReceiveMessageSize = null, // No message size limit
+            DisposeHttpClient = false,
+            ServiceConfig = new ServiceConfig
+            {
+                MethodConfigs =
+                {
+                    new MethodConfig
+                    {
+                        Names = { MethodName.Default },
+                        RetryPolicy = new global::Grpc.Net.Client.Configuration.RetryPolicy
+                        {
+                            MaxAttempts = 5,
+                            MaxBackoff = TimeSpan.FromSeconds(12),
+                            BackoffMultiplier = 1.25,
+                            InitialBackoff = TimeSpan.FromSeconds(2),
+                        },
+                    },
+                },
+            },
+        });
     }
 
     async Task<PurgeResult> PurgeInstancesCoreAsync(
