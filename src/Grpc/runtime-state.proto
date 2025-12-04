@@ -24,6 +24,11 @@ import "orchestrator_service.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
+message RuntimeStateStalled {
+  StalledReason reason = 1;
+  optional string description = 2;
+}
+
 // OrchestrationRuntimeState holds the current state for an orchestration.
 message OrchestrationRuntimeState {
   string instanceId = 1;
@@ -42,6 +47,7 @@ message OrchestrationRuntimeState {
   bool isSuspended = 13;
 
   google.protobuf.StringValue customStatus = 14;
+  optional RuntimeStateStalled stalled = 15;
 }
 
 // OrchestrationRuntimeStateMessage holds an OrchestratorMessage and the target instance ID.
