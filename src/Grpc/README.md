@@ -13,7 +13,7 @@ To update the protobuf definitions in this directory, follow these steps:
 .\refresh-protos.ps1
 ```
 
-This script will download the latest protobuf definitions from the `https://github.com/microsoft/durabletask-protobuf` repository and copy them to this directory.
+This script will download the latest protobuf definitions from the `https://github.com/dapr/durabletask-protobuf` repository and copy them to this directory.
 
 By default, the latest versions of the protobufs are downloaded from the `main` branch. To specify an alternative branch, use the `-branch` parameter:
 
